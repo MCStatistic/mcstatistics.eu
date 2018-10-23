@@ -1,4 +1,4 @@
-baseurl = "/"
+baseurl = "https://mcstatistic.github.io/mcstatistics.eu/"
 languageCode = "en-us"
 title = "mcstatistics"
 theme = "blackburn"
