@@ -1,9 +1,10 @@
-baseurl = "https://www.example.com/"
+
+baseurl = "/"
 languageCode = "en-us"
 title = "mcstatistics"
 theme = "blackburn"
 author = "Yoshiharu Yamashita"
-copyright = "&copy; 2016. All rights reserved."
+copyright = "&copy; 2018. All rights reserved."
 canonifyurls = true
 paginate = 10
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
@@ -41,7 +42,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     pre = "<i class='fa fa-user fa-fw'></i>"
     weight = 3
     identifier = "about"
-    url = "/about-me/"
+    url = "/about/"
   [[menu.main]]
     name = "Contact"
     pre = "<i class='fa fa-phone fa-fw'></i>"
