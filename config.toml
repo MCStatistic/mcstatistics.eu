@@ -1,11 +1,12 @@
 baseurl = "https://www.example.com/"
 languageCode = "en-us"
-title = "Blackburn Theme Demo"
+title = "mcstatistics"
 theme = "blackburn"
 author = "Yoshiharu Yamashita"
 copyright = "&copy; 2016. All rights reserved."
 canonifyurls = true
 paginate = 10
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [indexes]
   tag = "tags"
@@ -13,8 +14,8 @@ paginate = 10
 
 [params]
   # Shown in the home page
-  subtitle = "A Hugo Theme"
-  brand = "Blackburn"
+  subtitle = "All about statistics"
+  brand = "mcstatistics"
   googleAnalytics = "Your Google Analytics tracking ID"
   disqus = "Your Disqus shortname"
   # CSS name for highlight.js
@@ -36,11 +37,11 @@ paginate = 10
     identifier = "post"
     url = "/post/"
   [[menu.main]]
-    name = "About"
+    name = "About Me"
     pre = "<i class='fa fa-user fa-fw'></i>"
     weight = 3
     identifier = "about"
-    url = "/about/"
+    url = "/about-me/"
   [[menu.main]]
     name = "Contact"
     pre = "<i class='fa fa-phone fa-fw'></i>"
@@ -53,6 +54,6 @@ paginate = 10
   twitter = "*"
   facebook = "*"
   instagram = "*"
-  github = "yoshiharuyamashita"
+  github = "mcstatistic"
   stackoverflow = "*"
   linkedin = "*"
