@@ -50,7 +50,7 @@ semPaths(fit,
          nodeLabels = c("Y", "X2", "X1"))
 ```
    
-$\small Ind. \ Effect_{X1\rightarrow Y} = Dir. \ Effect_{X1\rightarrow X2}*Direct \ Effect_{X2\rightarrow Y} = .9*-.47 = -.43$ 
+$\small Ind. \ Effect_{X1\rightarrow Y} = Dir. \ Effect_{X1\rightarrow X2}*Dir. \ Effect_{X2\rightarrow Y} = .9*-.47 = -.43$ 
 $\small Tot. \ Effect_{X1\rightarrow Y} = Ind. \ Effect_{X1\rightarrow Y} + Dir. \ Effect_{X1\rightarrow Y} = -.43 -.42 = -.85$
 
 ## Identification

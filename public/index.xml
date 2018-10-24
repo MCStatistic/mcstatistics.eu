@@ -33,7 +33,7 @@ SEM distinguished between measurement and latent variables. One major difference
 Regarding most methods, only the relationship of a dependent variable to one or more independent variables can be estimated. However, using SEM, it is also possible to estimate the relationship between multiple dependent variables. But the simultaneous estimation gives another advantage. Thus, in addition to the direct effect, the indirect and total effects can be easily calculated. Just a small example:
 &lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2018-10-13-structural-equation-modeling-a-short-introduction_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\small Ind. \ Effect_{X1\rightarrow Y} = Dir. \ Effect_{X1\rightarrow X2}*Direct \ Effect_{X2\rightarrow Y} = .9*-.47 = -.43\)&lt;/span&gt; &lt;span class=&#34;math inline&#34;&gt;\(\small Tot. \ Effect_{X1\rightarrow Y} = Ind. \ Effect_{X1\rightarrow Y} + Dir. \ Effect_{X1\rightarrow Y} = -.43 -.42 = -.85\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\small Ind. \ Effect_{X1\rightarrow Y} = Dir. \ Effect_{X1\rightarrow X2}*Dir. \ Effect_{X2\rightarrow Y} = .9*-.47 = -.43\)&lt;/span&gt; &lt;span class=&#34;math inline&#34;&gt;\(\small Tot. \ Effect_{X1\rightarrow Y} = Ind. \ Effect_{X1\rightarrow Y} + Dir. \ Effect_{X1\rightarrow Y} = -.43 -.42 = -.85\)&lt;/span&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&#34;identification&#34; class=&#34;section level2&#34;&gt;
