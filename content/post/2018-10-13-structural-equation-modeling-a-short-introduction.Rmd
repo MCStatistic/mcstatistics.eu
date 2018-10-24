@@ -66,7 +66,7 @@ $$t \leq\frac{p(p+1)}{2}\\
 p = observed \ variables \\
 t = estimated\ paramters$$
 
-The same formula can be used to calculate the degrees of freedom as well:
+The same formula can be used to calculate the degree of freedoms as well:
 
 $$df =\frac{p(p+1)}{2} - t$$
 
@@ -86,7 +86,7 @@ $$\sum = \sum(0)$$
 <p align="justify">Where $\sum$ stands for the population covariance matrix and $\sum{0}$ for the covariance matrix implied by the specified model. To check this null hypothesis, a $\chi^2$-test can be used. However, this test is extremely sensitive to high sample sizes [@cangur2015comparison]. For this reason, other methods have been developed to test the qualtiy of a model. In the following, some important Fit Indices will be discussed.</p>
 
 ### $\chi^2$-Test
-<p align="justify">Despite the high sensitivity with high case numbers, I would nevertheless explain the test briefly. The $\chi^2$ is calculated as follows, where O represents the observations and E represents the expected values:</p>
+<p align="justify">Despite the high sensitivity with high sample sizes, I would nevertheless explain the test briefly. The $\chi^2$ is calculated as follows, where O represents the observations and E represents the expected values:</p>
 
 $$\chi^{2} = \sum_{i=1}^{n}\frac{(O_{i}-E_{i})^2}{E_{i}}$$
 
@@ -97,7 +97,7 @@ $$\chi^{2} = \sum_{i=1}^{n}\frac{(O_{i}-E_{i})^2}{E_{i}}$$
 
 $$CFI = 1-\bigg(\frac{\lambda_{k}}{\lambda_{i}}\bigg) = 1 - \bigg(\frac{max[(\chi^2_{t}-df_{t}), 0]}{max[(\chi^2_{t}-df_{t}),(\chi^2_{n}-df_{n}),0]}\bigg)$$
 
-<p align="justify">$\chi^2_{t}$ and $\chi^2_{n}$ are the  $\chi^2$ statistics for the target and the baseline model. The degrees of freedom of the target and the null model are represented by $df_{t}$ and $df_{n}$. However, the CFI evaluates the extent to which the tested model is superior to a alternative model in reproducing the observed covariance matrix. The range of the CFI is between $0$ and $1$, whereas a value of $1$ indicates a perfect fit. The cut off value is $.95$ [@hu1999cutoff].</p>
+<p align="justify">$\chi^2_{t}$ and $\chi^2_{n}$ are the  $\chi^2$ statistics for the target and the baseline model. The degree of freedoms of the target and the null model are represented by $df_{t}$ and $df_{n}$. However, the CFI evaluates the extent to which the tested model is superior to a alternative model in reproducing the observed covariance matrix. The range of the CFI is between $0$ and $1$, whereas a value of $1$ indicates a perfect fit. The cut off value is $.95$ [@hu1999cutoff].</p>
 
 ### RMSEA - Root Mean Square Error of Approximation
 <p align="justify">RMSEA expresses the discrepancy between the observed covariance matrix and the covariance matrix implied by the model per degree of freedom:</p>

@@ -57,7 +57,7 @@ The aim should be that there is over-identification at all model levels. In orde
 <p><span class="math display">\[t \leq\frac{p(p+1)}{2}\\
 p = observed \ variables \\
 t = estimated\ paramters\]</span></p>
-<p>The same formula can be used to calculate the degrees of freedom as well:</p>
+<p>The same formula can be used to calculate the degree of freedoms as well:</p>
 <p><span class="math display">\[df =\frac{p(p+1)}{2} - t\]</span></p>
 <p>Consequently, there are three scenarios for identification:</p>
 <ul>
@@ -81,7 +81,7 @@ Where <span class="math inline">\(\sum\)</span> stands for the population covari
 <div id="chi2-test" class="section level3">
 <h3><span class="math inline">\(\chi^2\)</span>-Test</h3>
 <p align="justify">
-Despite the high sensitivity with high case numbers, I would nevertheless explain the test briefly. The <span class="math inline">\(\chi^2\)</span> is calculated as follows, where O represents the observations and E represents the expected values:
+Despite the high sensitivity with high sample sizes, I would nevertheless explain the test briefly. The <span class="math inline">\(\chi^2\)</span> is calculated as follows, where O represents the observations and E represents the expected values:
 </p>
 <p><span class="math display">\[\chi^{2} = \sum_{i=1}^{n}\frac{(O_{i}-E_{i})^2}{E_{i}}\]</span></p>
 <p align="justify">
@@ -95,7 +95,7 @@ In contrast to the <span class="math inline">\(\chi^2\)</span>-test, the CFI tak
 </p>
 <p><span class="math display">\[CFI = 1-\bigg(\frac{\lambda_{k}}{\lambda_{i}}\bigg) = 1 - \bigg(\frac{max[(\chi^2_{t}-df_{t}), 0]}{max[(\chi^2_{t}-df_{t}),(\chi^2_{n}-df_{n}),0]}\bigg)\]</span></p>
 <p align="justify">
-<span class="math inline">\(\chi^2_{t}\)</span> and <span class="math inline">\(\chi^2_{n}\)</span> are the <span class="math inline">\(\chi^2\)</span> statistics for the target and the baseline model. The degrees of freedom of the target and the null model are represented by <span class="math inline">\(df_{t}\)</span> and <span class="math inline">\(df_{n}\)</span>. However, the CFI evaluates the extent to which the tested model is superior to a alternative model in reproducing the observed covariance matrix. The range of the CFI is between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>, whereas a value of <span class="math inline">\(1\)</span> indicates a perfect fit. The cut off value is <span class="math inline">\(.95\)</span><span class="citation"><sup>2</sup></span>.
+<span class="math inline">\(\chi^2_{t}\)</span> and <span class="math inline">\(\chi^2_{n}\)</span> are the <span class="math inline">\(\chi^2\)</span> statistics for the target and the baseline model. The degree of freedoms of the target and the null model are represented by <span class="math inline">\(df_{t}\)</span> and <span class="math inline">\(df_{n}\)</span>. However, the CFI evaluates the extent to which the tested model is superior to a alternative model in reproducing the observed covariance matrix. The range of the CFI is between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>, whereas a value of <span class="math inline">\(1\)</span> indicates a perfect fit. The cut off value is <span class="math inline">\(.95\)</span><span class="citation"><sup>2</sup></span>.
 </p>
 </div>
 <div id="rmsea---root-mean-square-error-of-approximation" class="section level3">
