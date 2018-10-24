@@ -4,7 +4,7 @@ widget = "hero"
 active = true
 date = 2017-10-15T00:00:00
 
-title = "mcstatistics"
+title = "mcstatistics | all about statistics"
 
 # Order that this section will appear in.
 weight = 3
@@ -23,5 +23,4 @@ weight = 3
 #   url = "./post/getting-started/"
 #   label = '<i class="fas fa-download"></i> Install Now'
 +++
-
-all about statistics
+R Tutorials | Data Analytics
