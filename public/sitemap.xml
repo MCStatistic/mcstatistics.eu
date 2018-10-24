@@ -4,6 +4,14 @@
     
     <url>
     
+      <loc>/post/structural-equation-modeling-a-short-introduction/</loc>
+      <lastmod>2018-10-13T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
       <loc>/tutorial/example/</loc>
       <lastmod>2018-09-09T00:00:00+02:00</lastmod>
     </url>
@@ -46,31 +54,6 @@
     
       <loc>/project/internal-project/</loc>
       <lastmod>2016-04-27T00:00:00+02:00</lastmod>
-    </url>
-    
-  
-    
-    <url>
-    
-      <loc>/post/getting-started/</loc>
-      <lastmod>2018-01-13T00:00:00+01:00</lastmod>
-    </url>
-    
-  
-    
-    <url>
-    
-      <loc>/post/2015-07-23-r-rmarkdown/</loc>
-      <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-    </url>
-    
-  
-    
-    <url>
-    
-      <loc>/tags/academic/</loc>
-      <lastmod>2018-01-13T00:00:00+01:00</lastmod>
-      <priority>0</priority>
     </url>
     
   
@@ -121,7 +104,7 @@
     <url>
     
       <loc>/categories/r/</loc>
-      <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+      <lastmod>2018-10-13T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -129,8 +112,8 @@
     
     <url>
     
-      <loc>/tags/r-markdown/</loc>
-      <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+      <loc>/tags/sem/</loc>
+      <lastmod>2018-10-13T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -153,8 +136,44 @@
     
     <url>
     
+      <loc>/tags/structural-equation-modeling/</loc>
+      <lastmod>2018-10-13T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
       <loc>/tags/</loc>
-      <lastmod>2018-01-13T00:00:00+01:00</lastmod>
+      <lastmod>2016-04-27T00:00:00+02:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/categories/tutorial/</loc>
+      <lastmod>2018-10-13T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/tags/fit-indices/</loc>
+      <lastmod>2018-10-13T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/tags/lavaan/</loc>
+      <lastmod>2018-10-13T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -171,17 +190,8 @@
     
     <url>
     
-      <loc>/tags/plot/</loc>
-      <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    <url>
-    
-      <loc>/tags/regression/</loc>
-      <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+      <loc>/tags/semplot/</loc>
+      <lastmod>2018-10-13T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     

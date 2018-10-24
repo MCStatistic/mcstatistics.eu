@@ -7,20 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
-    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    <lastBuildDate>Sat, 13 Oct 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Hello R Markdown</title>
-      <link>/post/2015-07-23-r-rmarkdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <title>Structural Equation Modeling: A Short Introduction</title>
+      <link>/post/structural-equation-modeling-a-short-introduction/</link>
+      <pubDate>Sat, 13 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/2015-07-23-r-rmarkdown/</guid>
-      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+      <guid>/post/structural-equation-modeling-a-short-introduction/</guid>
+      <description>body {text-align: justify}  Introduction &amp;amp; Advantages There are a lot of variations regarding Structural Equation Modeling (SEM). Therefore, this article is focusing on the basics of SEM. Fundamentally, SEM can be classified as a combination of path analysis and confirmatory factor analysis. With SEM and path analysis you will have a big felxibility for specifying relationships between theoretical constructs. For example, it is possible to postulate rather complex models that may include a single construct that is theorized to be a predictor of some constructs and is also predicted by other constructs.</description>
     </item>
     
   </channel>

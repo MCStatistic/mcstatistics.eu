@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Structural Equation Modeling on mcstatistics</title>
+    <link>/tags/structural-equation-modeling/</link>
+    <description>Recent content in Structural Equation Modeling on mcstatistics</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
+    <lastBuildDate>Sat, 13 Oct 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/structural-equation-modeling/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Structural Equation Modeling: A Short Introduction</title>
+      <link>/post/structural-equation-modeling-a-short-introduction/</link>
+      <pubDate>Sat, 13 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/structural-equation-modeling-a-short-introduction/</guid>
+      <description>body {text-align: justify}  Introduction &amp;amp; Advantages There are a lot of variations regarding Structural Equation Modeling (SEM). Therefore, this article is focusing on the basics of SEM. Fundamentally, SEM can be classified as a combination of path analysis and confirmatory factor analysis. With SEM and path analysis you will have a big felxibility for specifying relationships between theoretical constructs. For example, it is possible to postulate rather complex models that may include a single construct that is theorized to be a predictor of some constructs and is also predicted by other constructs.</description>
+    </item>
+    
+  </channel>
+</rss>
