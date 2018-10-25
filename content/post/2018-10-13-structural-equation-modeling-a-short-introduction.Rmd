@@ -16,8 +16,6 @@ bibliography: bibliography_001.bib
 csl: mcstatistics.csl
 output: 
   blogdown::html_page:
-    toc: true
-    toc_float: true
 ---
 
 ## Introduction & Advantages
