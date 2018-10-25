@@ -6,7 +6,7 @@
     <description>Recent content in SEM on mcstatistics</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; 2018</copyright>
+    <copyright>Marlon Schumacher &amp;copy; 2018</copyright>
     <lastBuildDate>Sat, 13 Oct 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/sem/index.xml" rel="self" type="application/rss+xml" />
@@ -18,7 +18,7 @@
       <pubDate>Sat, 13 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/structural-equation-modeling-a-short-introduction/</guid>
-      <description>Introduction &amp;amp; Advantages Latent Variables Simultaneous Estimation  Identification Fit Indices \(\chi^2\)-Test CFI - Comparative Fit Index RMSEA - Root Mean Square Error of Approximation SRMR - Standardized Root Mean Square Residual  Model Optimization References   Introduction &amp;amp; Advantages There are a lot of variations regarding Structural Equation Modeling (SEM). Therefore, this article is focusing on the basics of SEM. Fundamentally, SEM can be classified as a combination of path analysis and confirmatory factor analysis.</description>
+      <description>Introduction &amp;amp; Advantages There are a lot of variations regarding Structural Equation Modeling (SEM). Therefore, this article is focusing on the basics of SEM. Fundamentally, SEM can be classified as a combination of path analysis and confirmatory factor analysis. With SEM and path analysis you will have a big felxibility for specifying relationships between theoretical constructs. For example, it is possible to postulate rather complex models that may include a single construct that is theorized to be a predictor of some constructs and is also predicted by other constructs.</description>
     </item>
     
   </channel>

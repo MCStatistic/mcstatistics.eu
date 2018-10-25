@@ -6,7 +6,7 @@
     <description>Recent content in mcstatistics on mcstatistics</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; 2018</copyright>
+    <copyright>Marlon Schumacher &amp;copy; 2018</copyright>
     <lastBuildDate>Sun, 15 Oct 2017 00:00:00 +0200</lastBuildDate>
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
@@ -16,25 +16,7 @@
       <pubDate>Sat, 13 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/structural-equation-modeling-a-short-introduction/</guid>
-      <description>&lt;div id=&#34;TOC&#34;&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#introduction-advantages&#34;&gt;Introduction &amp;amp; Advantages&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#latent-variables&#34;&gt;Latent Variables&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#simultaneous-estimation&#34;&gt;Simultaneous Estimation&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#identification&#34;&gt;Identification&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#fit-indices&#34;&gt;Fit Indices&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#chi2-test&#34;&gt;&lt;span class=&#34;math inline&#34;&gt;\(\chi^2\)&lt;/span&gt;-Test&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#cfi---comparative-fit-index&#34;&gt;CFI - Comparative Fit Index&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#rmsea---root-mean-square-error-of-approximation&#34;&gt;RMSEA - Root Mean Square Error of Approximation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#srmr---standardized-root-mean-square-residual&#34;&gt;SRMR - Standardized Root Mean Square Residual&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#model-optimization&#34;&gt;Model Optimization&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#references&#34;&gt;References&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-
-&lt;div id=&#34;introduction-advantages&#34; class=&#34;section level2&#34;&gt;
+      <description>&lt;div id=&#34;introduction-advantages&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Introduction &amp;amp; Advantages&lt;/h2&gt;
 &lt;p align=&#34;justify&#34;&gt;
 There are a lot of variations regarding Structural Equation Modeling (SEM). Therefore, this article is focusing on the basics of SEM. Fundamentally, SEM can be classified as a combination of path analysis and confirmatory factor analysis. With SEM and path analysis you will have a big felxibility for specifying relationships between theoretical constructs. For example, it is possible to postulate rather complex models that may include a single construct that is theorized to be a predictor of some constructs and is also predicted by other constructs. You can estimate the multiple and interrelated dependence in a single analysis. Moreover, there are two types of variables which are used in SEM. Variables which are used only as a predictor are classified ad exogenous, whereas variables that are predicted by at least one other variable are classified as endogenous. But what are the exact benefits of SEM? Regarding this question, two main advantages of SEM will be discussed below.
