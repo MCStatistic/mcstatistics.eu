@@ -1,0 +1,32 @@
+---
+title: "Structural Equation Modeling in R"
+author: "Marlon Schumacher"
+date: '2018-10-24'
+slug: structural-equation-modeling-in-r
+categories:
+  - R
+  - Tutorial
+tags:
+  - SEM
+  - Structural Equation Modeling
+  - lavaan
+  - semplot
+  - fit indices
+image:
+  caption: ''
+  focal_point: ''
+bibliography: bibliography_001.bib 
+csl: mcstatistics.csl
+output: 
+  blogdown::html_page:
+    toc: false  
+---
+
+# lavaan: A Package for SEM
+In my pervious post I made a [short introduction to Structural Equation Modeling (SEM)](https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/). But now it's about using R for SEM. However, to use R for SEM we need the packages `lavaan` and `semPlot`:
+
+```{r}
+library(lavaan)
+library(semPlot)
+```
+

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -17,10 +15,11 @@
   
     
   
-  <meta name="description" content="Empirical Political and Social Research">
+  <meta name="description" content="lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the packages lavaan and semPlot:
+library(lavaan) ## This is lavaan 0.6-3 ## lavaan is BETA software! Please report any bugs. library(semPlot)  ">
 
   
-  <link rel="alternate" hreflang="en-us" href="/tags/semplot/">
+  <link rel="alternate" hreflang="en-us" href="/post/structural-equation-modeling-in-r/">
 
   
 
@@ -80,36 +79,39 @@
   
 
   
-  <link rel="alternate" href="/tags/semplot/index.xml" type="application/rss+xml" title="mcstatistics">
-  <link rel="feed" href="/tags/semplot/index.xml" type="application/rss+xml" title="mcstatistics">
+  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="mcstatistics">
+  <link rel="feed" href="/index.xml" type="application/rss+xml" title="mcstatistics">
   
 
   <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" type="image/png" href="/img/icon.png">
   <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
 
-  <link rel="canonical" href="/tags/semplot/">
+  <link rel="canonical" href="/post/structural-equation-modeling-in-r/">
 
   <meta property="twitter:card" content="summary_large_image">
   
   <meta property="og:site_name" content="mcstatistics">
-  <meta property="og:url" content="/tags/semplot/">
-  <meta property="og:title" content="semplot | mcstatistics">
-  <meta property="og:description" content="Empirical Political and Social Research">
+  <meta property="og:url" content="/post/structural-equation-modeling-in-r/">
+  <meta property="og:title" content="Structural Equation Modeling in R | mcstatistics">
+  <meta property="og:description" content="lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the packages lavaan and semPlot:
+library(lavaan) ## This is lavaan 0.6-3 ## lavaan is BETA software! Please report any bugs. library(semPlot)  ">
   
   
     
   <meta property="og:image" content="/img/icon-192.png">
   <meta property="og:locale" content="en-us">
   
-  <meta property="og:updated_time" content="2018-10-24T00:00:00&#43;00:00">
+  <meta property="article:published_time" content="2018-10-24T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2018-10-24T00:00:00&#43;00:00">
   
 
   
 
   
 
-  <title>semplot | mcstatistics</title>
+  <title>Structural Equation Modeling in R | mcstatistics</title>
 
 </head>
 <body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
@@ -222,7 +224,9 @@
 </nav>
 
 
+<article class="article" itemscope itemtype="http://schema.org/Article">
 
+  
 
 
 
@@ -239,47 +243,217 @@
 
   
   
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">Structural Equation Modeling in R</h1>
+
+  
+
   
     
-  
-<div class="universal-wrapper pt-3">
-  <h1 itemprop="name">semplot</h1>
+
+<div class="article-metadata">
 
   
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Marlon Schumacher">
+  </span>
+  
+
+  <span class="article-date">
+    
+    <meta content="2018-10-24 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+    <time datetime="2018-10-24 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+      October 24, 2018
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Marlon Schumacher">
+  </span>
+
+  
+
+  
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    
+    <a href="/categories/r/">R</a>, 
+    
+    <a href="/categories/tutorial/">Tutorial</a>
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Structural%20Equation%20Modeling%20in%20R&amp;url=%2fpost%2fstructural-equation-modeling-in-r%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fpost%2fstructural-equation-modeling-in-r%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2fstructural-equation-modeling-in-r%2f&amp;title=Structural%20Equation%20Modeling%20in%20R"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fpost%2fstructural-equation-modeling-in-r%2f&amp;title=Structural%20Equation%20Modeling%20in%20R"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Structural%20Equation%20Modeling%20in%20R&amp;body=%2fpost%2fstructural-equation-modeling-in-r%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
 
   
 </div>
 
 
 
-<div class="universal-wrapper">
-  
+  <div class="article-container">
 
-  
-  
-  <div>
-    <h2><a href="/post/structural-equation-modeling-in-r/">Structural Equation Modeling in R</a></h2>
-    <div class="article-style">
-      
-      lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the packages lavaan and semPlot:
-library(lavaan) ## This is lavaan 0.6-3 ## lavaan is BETA software! Please report any bugs. library(semPlot)  
-      
-    </div>
-  </div>
-  
-  <div>
-    <h2><a href="/post/structural-equation-modeling-a-short-introduction/">Structural Equation Modeling: A Short Introduction</a></h2>
-    <div class="article-style">
-      
-      Introduction &amp; Advantages There are a lot of variations regarding Structural Equation Modeling (SEM). Therefore, this article is focusing on the basics of SEM. Fundamentally, SEM can be classified as a combination of path analysis and confirmatory factor analysis. With SEM and path analysis you will have a big felxibility for specifying relationships between theoretical constructs. For example, it is possible to postulate rather complex models that may include a single construct that is theorized to be a predictor of some constructs and is also predicted by other constructs.
-      
-    </div>
-  </div>
-  
-
-  
-
+    <div class="article-style" itemprop="articleBody">
+      <div id="lavaan-a-package-for-sem" class="section level1">
+<h1>lavaan: A Package for SEM</h1>
+<p>In my pervious post I made a <a href="https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/">short introduction to Structural Equation Modeling (SEM)</a>. But now it’s about using R for SEM. However, to use R for SEM we need the packages <code>lavaan</code> and <code>semPlot</code>:</p>
+<pre class="r"><code>library(lavaan)</code></pre>
+<pre><code>## This is lavaan 0.6-3</code></pre>
+<pre><code>## lavaan is BETA software! Please report any bugs.</code></pre>
+<pre class="r"><code>library(semPlot)</code></pre>
 </div>
+
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/sem/">SEM</a>
+  
+  <a class="badge badge-light" href="/tags/structural-equation-modeling/">Structural Equation Modeling</a>
+  
+  <a class="badge badge-light" href="/tags/lavaan/">lavaan</a>
+  
+  <a class="badge badge-light" href="/tags/semplot/">semplot</a>
+  
+  <a class="badge badge-light" href="/tags/fit-indices/">fit indices</a>
+  
+</div>
+
+
+
+    
+
+
+
+
+
+
+<div class="media author-card" itemscope itemtype="http://schema.org/Person">
+  
+  <img class="portrait mr-3" src="/img/profile_fig.jpg" itemprop="image" alt="Avatar">
+  
+  <div class="media-body">
+    <h5 class="card-title" itemprop="name"><a href="/">Marlon Schumacher</a></h5>
+    <h6 class="card-subtitle">Empirical Political and Social Research</h6>
+    
+    <ul class="network-icon" aria-hidden="true">
+      
+      
+      
+      
+      
+      
+      <li>
+        <a itemprop="sameAs" href="mailto:marlon.schumacher@mcstatistics.eu" target="_blank" rel="noopener">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+      
+      
+      
+      
+      
+      
+      <li>
+        <a itemprop="sameAs" href="//twitter.com/MarlonSchumache" target="_blank" rel="noopener">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+      
+      
+      
+      
+      
+      
+      <li>
+        <a itemprop="sameAs" href="//github.com/MCStatistic" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i>
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+    
+    
+    <div class="article-widget">
+      <div class="hr-light"></div>
+      <h3>Related</h3>
+      <ul>
+        
+        <li><a href="/post/structural-equation-modeling-a-short-introduction/">Structural Equation Modeling: A Short Introduction</a></li>
+        
+      </ul>
+    </div>
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
 <div class="container">
   <footer class="site-footer">
   
@@ -428,6 +602,4 @@ library(lavaan) ## This is lavaan 0.6-3 ## lavaan is BETA software! Please repor
 
   </body>
 </html>
-
-
 

@@ -7,33 +7,15 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Marlon Schumacher &amp;copy; 2018</copyright>
-    <lastBuildDate>Wed, 27 Apr 2016 00:00:00 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 24 Oct 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Deep Learning</title>
-      <link>/tags/deep-learning/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 +0200</pubDate>
-      
-      <guid>/tags/deep-learning/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Demo</title>
-      <link>/tags/demo/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 +0200</pubDate>
-      
-      <guid>/tags/demo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>SEM</title>
       <link>/tags/sem/</link>
-      <pubDate>Sat, 13 Oct 2018 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/sem/</guid>
       <description></description>
@@ -42,7 +24,7 @@
     <item>
       <title>Structural Equation Modeling</title>
       <link>/tags/structural-equation-modeling/</link>
-      <pubDate>Sat, 13 Oct 2018 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/structural-equation-modeling/</guid>
       <description></description>
@@ -51,7 +33,7 @@
     <item>
       <title>fit indices</title>
       <link>/tags/fit-indices/</link>
-      <pubDate>Sat, 13 Oct 2018 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/fit-indices/</guid>
       <description></description>
@@ -60,7 +42,7 @@
     <item>
       <title>lavaan</title>
       <link>/tags/lavaan/</link>
-      <pubDate>Sat, 13 Oct 2018 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/lavaan/</guid>
       <description></description>
@@ -69,7 +51,7 @@
     <item>
       <title>semplot</title>
       <link>/tags/semplot/</link>
-      <pubDate>Sat, 13 Oct 2018 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/semplot/</guid>
       <description></description>

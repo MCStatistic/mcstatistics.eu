@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Marlon Schumacher &amp;copy; 2018</copyright>
-    <lastBuildDate>Sat, 13 Oct 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 24 Oct 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/sem/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Structural Equation Modeling in R</title>
+      <link>/post/structural-equation-modeling-in-r/</link>
+      <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/structural-equation-modeling-in-r/</guid>
+      <description>lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the packages lavaan and semPlot:
+library(lavaan) ## This is lavaan 0.6-3 ## lavaan is BETA software! Please report any bugs. library(semPlot)  </description>
+    </item>
     
     <item>
       <title>Structural Equation Modeling: A Short Introduction</title>
