@@ -15,8 +15,7 @@
   
     
   
-  <meta name="description" content="lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple:
-install.packages(&quot;lavaan&quot;) install.packages(&quot;semPlot&quot;)  Syntax for Modelling The modely syntax of lavaan is used for specifying a SEM.">
+  <meta name="description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple:">
 
   
   <link rel="alternate" hreflang="en-us" href="/post/structural-equation-modeling-in-r/">
@@ -94,8 +93,7 @@ install.packages(&quot;lavaan&quot;) install.packages(&quot;semPlot&quot;)  Synt
   <meta property="og:site_name" content="mcstatistics">
   <meta property="og:url" content="/post/structural-equation-modeling-in-r/">
   <meta property="og:title" content="Structural Equation Modeling in R | mcstatistics">
-  <meta property="og:description" content="lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple:
-install.packages(&quot;lavaan&quot;) install.packages(&quot;semPlot&quot;)  Syntax for Modelling The modely syntax of lavaan is used for specifying a SEM.">
+  <meta property="og:description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple:">
   
   
     
@@ -346,7 +344,15 @@ install.packages(&quot;lavaan&quot;) install.packages(&quot;semPlot&quot;)  Synt
   <div class="article-container">
 
     <div class="article-style" itemprop="articleBody">
-      <div id="lavaan-a-package-for-sem" class="section level2">
+      <div id="TOC">
+<ul>
+<li><a href="#lavaan-a-package-for-sem">lavaan: A Package for SEM</a></li>
+<li><a href="#syntax-for-modelling">Syntax for Modelling</a></li>
+<li><a href="#model-fitting">Model Fitting</a></li>
+</ul>
+</div>
+
+<div id="lavaan-a-package-for-sem" class="section level2">
 <h2>lavaan: A Package for SEM</h2>
 <p>In my pervious post I made a <a href="https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/">short introduction to Structural Equation Modeling (SEM)</a>. But now it’s about using R for SEM. However, to use R for SEM we need the package <code>lavaan</code>. For the visualization of the models we also need the package <code>semPlot</code>. As you probably know already the installation of the packages is very simple:</p>
 <pre class="r"><code>install.packages(&quot;lavaan&quot;)
@@ -372,6 +378,9 @@ V1 ~~ V3 # residual correlation
 
 # regressions
 F1 ~ F2&quot;</code></pre>
+</div>
+<div id="model-fitting" class="section level2">
+<h2>Model Fitting</h2>
 <p>Now, let’s specify the first model. I will use an own dataset from a previous work. It’s also possible to use the built-in datasets <code>HolzingerSwineford1939</code> or <code>PolitcialDemocracy</code> from lavaan to become familiar with the package. Moreover, the functions <code>cfa()</code> and <code>sem()</code> are currently similar but they may differ in the future.</p>
 <pre class="r"><code>library(lavaan)
 model &lt;- &quot;

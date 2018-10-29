@@ -16,7 +16,15 @@
       <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/structural-equation-modeling-in-r/</guid>
-      <description>&lt;div id=&#34;lavaan-a-package-for-sem&#34; class=&#34;section level2&#34;&gt;
+      <description>&lt;div id=&#34;TOC&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#lavaan-a-package-for-sem&#34;&gt;lavaan: A Package for SEM&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#syntax-for-modelling&#34;&gt;Syntax for Modelling&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#model-fitting&#34;&gt;Model Fitting&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div id=&#34;lavaan-a-package-for-sem&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;lavaan: A Package for SEM&lt;/h2&gt;
 &lt;p&gt;In my pervious post I made a &lt;a href=&#34;https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/&#34;&gt;short introduction to Structural Equation Modeling (SEM)&lt;/a&gt;. But now it’s about using R for SEM. However, to use R for SEM we need the package &lt;code&gt;lavaan&lt;/code&gt;. For the visualization of the models we also need the package &lt;code&gt;semPlot&lt;/code&gt;. As you probably know already the installation of the packages is very simple:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;lavaan&amp;quot;)
@@ -42,6 +50,9 @@ V1 ~~ V3 # residual correlation
 
 # regressions
 F1 ~ F2&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;model-fitting&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Model Fitting&lt;/h2&gt;
 &lt;p&gt;Now, let’s specify the first model. I will use an own dataset from a previous work. It’s also possible to use the built-in datasets &lt;code&gt;HolzingerSwineford1939&lt;/code&gt; or &lt;code&gt;PolitcialDemocracy&lt;/code&gt; from lavaan to become familiar with the package. Moreover, the functions &lt;code&gt;cfa()&lt;/code&gt; and &lt;code&gt;sem()&lt;/code&gt; are currently similar but they may differ in the future.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(lavaan)
 model &amp;lt;- &amp;quot;

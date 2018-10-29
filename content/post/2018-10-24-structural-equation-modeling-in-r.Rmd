@@ -19,7 +19,7 @@ bibliography: bibliography_001.bib
 csl: mcstatistics.csl
 output: 
   blogdown::html_page:
-    toc: false  
+    toc: true
 ---
 
 ## lavaan: A Package for SEM
@@ -53,7 +53,7 @@ V1 ~~ V3 # residual correlation
 F1 ~ F2"
 ```
 
-
+## Model Fitting
 Now, let's specify the first model. I will use an own dataset from a previous work. It's also possible to use the built-in datasets `HolzingerSwineford1939` or `PolitcialDemocracy` from lavaan to become familiar with the package. Moreover, the functions `cfa()` and `sem()` are currently similar but they may differ in the future.
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}

@@ -19,10 +19,17 @@ bibliography: bibliography_001.bib
 csl: mcstatistics.csl
 output: 
   blogdown::html_page:
-    toc: false  
+    toc: true
 ---
 
 
+<div id="TOC">
+<ul>
+<li><a href="#lavaan-a-package-for-sem">lavaan: A Package for SEM</a></li>
+<li><a href="#syntax-for-modelling">Syntax for Modelling</a></li>
+<li><a href="#model-fitting">Model Fitting</a></li>
+</ul>
+</div>
 
 <div id="lavaan-a-package-for-sem" class="section level2">
 <h2>lavaan: A Package for SEM</h2>
@@ -50,6 +57,9 @@ V1 ~~ V3 # residual correlation
 
 # regressions
 F1 ~ F2&quot;</code></pre>
+</div>
+<div id="model-fitting" class="section level2">
+<h2>Model Fitting</h2>
 <p>Now, let’s specify the first model. I will use an own dataset from a previous work. It’s also possible to use the built-in datasets <code>HolzingerSwineford1939</code> or <code>PolitcialDemocracy</code> from lavaan to become familiar with the package. Moreover, the functions <code>cfa()</code> and <code>sem()</code> are currently similar but they may differ in the future.</p>
 <pre class="r"><code>library(lavaan)
 model &lt;- &quot;
