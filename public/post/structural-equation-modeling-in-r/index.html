@@ -15,7 +15,7 @@
   
     
   
-  <meta name="description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting (Standardized) Estimated Parameter Change   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple:">
+  <meta name="description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting (Standardized) Estimated Parameter Change Visualization   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple:">
 
   
   <link rel="alternate" hreflang="en-us" href="/post/structural-equation-modeling-in-r/">
@@ -91,7 +91,7 @@
   <meta property="og:site_name" content="mcstatistics">
   <meta property="og:url" content="/post/structural-equation-modeling-in-r/">
   <meta property="og:title" content="Structural Equation Modeling in R | mcstatistics">
-  <meta property="og:description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting (Standardized) Estimated Parameter Change   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple:">
+  <meta property="og:description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting (Standardized) Estimated Parameter Change Visualization   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple:">
   
   
     
@@ -329,6 +329,7 @@
 <li><a href="#syntax-for-modelling">Syntax for Modelling</a></li>
 <li><a href="#model-fitting">Model Fitting</a></li>
 <li><a href="#standardized-estimated-parameter-change">(Standardized) Estimated Parameter Change</a></li>
+<li><a href="#visualization">Visualization</a></li>
 </ul>
 </div>
 
@@ -344,9 +345,9 @@ install.packages(&quot;semPlot&quot;)</code></pre>
 <ul>
 <li><code>=~</code> is used to specify latent variables/factors</li>
 <li><code>~~</code> is used to specify (residual) (co)variances</li>
-<li><code>~</code> is used to specify rgeression</li>
+<li><code>~</code> is used to specify rgeressions</li>
 </ul>
-<p>So kann mit diesen Operatoren folgendes Beispielmodell spezfiziert werden:</p>
+<p>An example model specification might look like this:</p>
 <pre class="r"><code>example &lt;- &quot;
 # measurement model
 F1 =~ 1*V1 + V2 + V3
@@ -490,6 +491,35 @@ head(modificationindices(fit, sort. = T), 10)</code></pre>
 ## 32  F2 =~  X5 16.266 -0.112  -0.158   -0.093   -0.093
 ## 75  Y1 ~~  Y4 14.993 -0.098  -0.098   -0.175   -0.175
 ## 71  X6 ~~  Y3 13.633  0.439   0.439    0.093    0.093</code></pre>
+</div>
+<div id="visualization" class="section level2">
+<h2>Visualization</h2>
+<p>For visualization of an structural equation model the package <code>semPlot</code> offers many possibilities. I would recommend you to look in the reference manual of this package. There are a lot of specifications you can do. However, the specification that I’m using should cover everything necessary for the beginning. In general, an adjustment of the rotation and the layout will probably be necessary.</p>
+<pre class="r"><code>library(semPlot)
+semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         whatLabels = &quot;std&quot;, # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = &quot;tree2&quot;, # type of layout
+         rotation = 2) # rotation of the layout</code></pre>
+<p><img src="/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>In addition, the following representation is often used when it comes to using the function <code>semPaths()</code>. There is a weighting of the edges depending on the standardized parameter estimates.</p>
+<pre class="r"><code>semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         what = &quot;std&quot;, # standardized parameter estimates as weighted edges 
+         whatLabels = &quot;std&quot;, # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = &quot;tree2&quot;, # type of layout
+         rotation = 2) # rotation of the layout</code></pre>
+<p><img src="/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 
     </div>

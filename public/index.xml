@@ -22,6 +22,7 @@
 &lt;li&gt;&lt;a href=&#34;#syntax-for-modelling&#34;&gt;Syntax for Modelling&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#model-fitting&#34;&gt;Model Fitting&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#standardized-estimated-parameter-change&#34;&gt;(Standardized) Estimated Parameter Change&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#visualization&#34;&gt;Visualization&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 
@@ -37,9 +38,9 @@ install.packages(&amp;quot;semPlot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;=~&lt;/code&gt; is used to specify latent variables/factors&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;~~&lt;/code&gt; is used to specify (residual) (co)variances&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;~&lt;/code&gt; is used to specify rgeression&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;~&lt;/code&gt; is used to specify rgeressions&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;So kann mit diesen Operatoren folgendes Beispielmodell spezfiziert werden:&lt;/p&gt;
+&lt;p&gt;An example model specification might look like this:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;example &amp;lt;- &amp;quot;
 # measurement model
 F1 =~ 1*V1 + V2 + V3
@@ -183,6 +184,35 @@ head(modificationindices(fit, sort. = T), 10)&lt;/code&gt;&lt;/pre&gt;
 ## 32  F2 =~  X5 16.266 -0.112  -0.158   -0.093   -0.093
 ## 75  Y1 ~~  Y4 14.993 -0.098  -0.098   -0.175   -0.175
 ## 71  X6 ~~  Y3 13.633  0.439   0.439    0.093    0.093&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;visualization&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Visualization&lt;/h2&gt;
+&lt;p&gt;For visualization of an structural equation model the package &lt;code&gt;semPlot&lt;/code&gt; offers many possibilities. I would recommend you to look in the reference manual of this package. There are a lot of specifications you can do. However, the specification that I’m using should cover everything necessary for the beginning. In general, an adjustment of the rotation and the layout will probably be necessary.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(semPlot)
+semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         whatLabels = &amp;quot;std&amp;quot;, # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = &amp;quot;tree2&amp;quot;, # type of layout
+         rotation = 2) # rotation of the layout&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In addition, the following representation is often used when it comes to using the function &lt;code&gt;semPaths()&lt;/code&gt;. There is a weighting of the edges depending on the standardized parameter estimates.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         what = &amp;quot;std&amp;quot;, # standardized parameter estimates as weighted edges 
+         whatLabels = &amp;quot;std&amp;quot;, # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = &amp;quot;tree2&amp;quot;, # type of layout
+         rotation = 2) # rotation of the layout&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 </description>
     </item>

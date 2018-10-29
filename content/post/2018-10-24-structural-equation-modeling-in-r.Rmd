@@ -35,9 +35,9 @@ The modely syntax of lavaan is used for specifying a SEM. There are three operat
 
 + `=~` is used to specify latent variables/factors
 + `~~` is used to specify (residual) (co)variances
-+ `~`  is used to specify rgeression
++ `~`  is used to specify rgeressions
 
-So kann mit diesen Operatoren folgendes Beispielmodell spezfiziert werden:
+An example model specification might look like this:
 
 ```{r}
 example <- "
@@ -82,7 +82,7 @@ summary(fit, standardized = T, fit.measures = T)
 ```
 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(lavaan)
 model <- "
 # measurement model
@@ -103,15 +103,49 @@ summary(fit, standardized = T, fit.measures = T)
 
 If you want to select specific fit measurements, you can use the function `fitmeasures()`. By using the command `fit.measures = "all"` you will get all available fit measures.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 fitmeasures(fit, fit.measures = c("chisq", "cfi", "rmsea", "srmr"))
 ```
+
 
 ## (Standardized) Estimated Parameter Change
 To identify potential model misspecification, you can use `modificationindices()`. If the SEPC is $\geq.20$, there may be a possible misspecification. However, adjustments to the model should be based on a theoretical justification.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # first 10 rows as output & sorting by mi-value
 head(modificationindices(fit, sort. = T), 10)
+```
+
+## Visualization
+For visualization of an structural equation model the package `semPlot` offers many possibilities. I would recommend you to look in the reference manual of this package. There are a lot of specifications you can do. However, the specification that I'm using should cover everything necessary for the beginning. In general, an adjustment of the rotation and the layout will probably be necessary.
+
+```{r message=FALSE, warning=FALSE}
+library(semPlot)
+semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         whatLabels = "std", # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = "tree2", # type of layout
+         rotation = 2) # rotation of the layout
+```
+
+In addition, the following representation is often used when it comes to using the function `semPaths()`. There is a weighting of the edges depending on the standardized parameter estimates. 
+
+```{r}
+semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         what = "std", # standardized parameter estimates as weighted edges 
+         whatLabels = "std", # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = "tree2", # type of layout
+         rotation = 2) # rotation of the layout
 ```
 
