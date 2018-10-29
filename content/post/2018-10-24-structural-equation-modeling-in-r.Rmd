@@ -179,7 +179,7 @@ sd_fit <- survey::svydesign(id = ~1,
                   data = data)
 
 # fitting the model again while taking the survey design into account
-surveyfit <- lavaan.survey(lavaan.fit = weighted_fit,
+surveyfit <- lavaan.survey(lavaan.fit = fit_2,
                            survey.design = sd_fit)
 
 summary(surveyfit, standardized = T)

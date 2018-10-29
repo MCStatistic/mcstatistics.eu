@@ -573,29 +573,152 @@ semPaths(fit, # fitted model
 </div>
 <div id="sampling-weights" class="section level2">
 <h2>Sampling Weights</h2>
-<pre class="r"><code>weighted_fit &lt;- cfa(model, 
+<p>With lavaan version 0.6-3 there are two ways for weighting. On the one hand, you can use the package <code>lavaan.survey</code>for taking sampling weights into account. On the other hand, it’s possible to specify the sampling weights within the <code>cfa()</code> function.</p>
+<pre class="r"><code>fit_2 &lt;- cfa(model, 
            data = data,
-           estimator = &quot;MLM&quot;) # robust estimator 
+           estimator = &quot;MLM&quot;)
 
 library(lavaan.survey)
+# specify survey design
 sd_fit &lt;- survey::svydesign(id = ~1,
                   weights = ~weight,
                   data = data)
 
-surveyfit &lt;- lavaan.survey(lavaan.fit = weighted_fit,
+# fitting the model again while taking the survey design into account
+surveyfit &lt;- lavaan.survey(lavaan.fit = fit_2,
                            survey.design = sd_fit)
 
-semPaths(surveyfit, # fitted model
-         nCharNodes = 0, # no abbreviation in node labels
-         whatLabels = &quot;std&quot;, # standardized parameter estimate 
-         residuals = F, # excluding residuals and variances
-         sizeLat = 10, # width latent
-         sizeLat2 = 10, # height latent
-         sizeMan = 6, # width manifest
-         edge.label.cex = 0.90, # font size of parameters
-         layout = &quot;tree2&quot;, # type of layout
-         rotation = 2) # rotation of the layout</code></pre>
-<p><img src="/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+summary(surveyfit, standardized = T)</code></pre>
+<pre><code>## lavaan 0.6-3 ended normally after 38 iterations
+## 
+##   Optimization method                           NLMINB
+##   Number of free parameters                         31
+## 
+##   Number of observations                          1914
+## 
+##   Estimator                                         ML      Robust
+##   Model Fit Test Statistic                     219.683     189.418
+##   Degrees of freedom                                34          34
+##   P-value (Chi-square)                           0.000       0.000
+##   Scaling correction factor                                  1.160
+##     for the Satorra-Bentler correction
+## 
+## Parameter Estimates:
+## 
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+##   Standard Errors                           Robust.sem
+## 
+## Latent Variables:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##   F1 =~                                                                 
+##     X1                1.000                               1.182    0.655
+##     X2                0.869    0.043   20.161    0.000    1.027    0.554
+##     X3                0.863    0.042   20.567    0.000    1.020    0.679
+##     X4                1.044    0.046   22.914    0.000    1.234    0.647
+##     X5                0.882    0.044   20.199    0.000    1.042    0.625
+##     X6                0.914    0.047   19.551    0.000    1.080    0.579
+##   F2 =~                                                                 
+##     Y1                1.000                               1.409    0.799
+##     Y2                6.841    0.261   26.160    0.000    9.636    0.763
+##     Y3                1.477    0.069   21.527    0.000    2.080    0.556
+##     Y4                0.280    0.013   22.094    0.000    0.394    0.599
+## 
+## Regressions:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##   F1 ~                                                                  
+##     F2               -0.207    0.026   -8.079    0.000   -0.247   -0.247
+## 
+## Intercepts:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##    .X1                3.567    0.043   83.354    0.000    3.567    1.977
+##    .X2                3.948    0.044   88.923    0.000    3.948    2.131
+##    .X3                2.508    0.036   69.819    0.000    2.508    1.669
+##    .X4                3.387    0.046   74.218    0.000    3.387    1.776
+##    .X5                2.785    0.039   70.605    0.000    2.785    1.671
+##    .X6                3.205    0.045   71.777    0.000    3.205    1.717
+##    .Y1                4.435    0.042  104.668    0.000    4.435    2.515
+##    .Y2               45.500    0.303  149.930    0.000   45.500    3.604
+##    .Y3               14.259    0.090  158.422    0.000   14.259    3.814
+##    .Y4                2.888    0.016  184.040    0.000    2.888    4.390
+##    .F1                0.000                               0.000    0.000
+##     F2                0.000                               0.000    0.000
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##    .X1                1.857    0.083   22.438    0.000    1.857    0.571
+##    .X2                2.377    0.084   28.178    0.000    2.377    0.693
+##    .X3                1.217    0.062   19.478    0.000    1.217    0.539
+##    .X4                2.115    0.089   23.802    0.000    2.115    0.581
+##    .X5                1.691    0.073   23.149    0.000    1.691    0.609
+##    .X6                2.317    0.094   24.653    0.000    2.317    0.665
+##    .Y1                1.126    0.078   14.497    0.000    1.126    0.362
+##    .Y2               66.544    3.832   17.366    0.000   66.544    0.418
+##    .Y3                9.653    0.382   25.275    0.000    9.653    0.690
+##    .Y4                0.278    0.011   25.751    0.000    0.278    0.641
+##    .F1                1.312    0.090   14.643    0.000    0.939    0.939
+##     F2                1.984    0.100   19.911    0.000    1.000    1.000</code></pre>
+<pre class="r"><code>weighted_fit &lt;- cfa(model, 
+           data = data,
+           estimator = &quot;MLM&quot;,
+           sampling.weights = &quot;weight&quot;) # sepcify sampling weights
+
+summary(weighted_fit, standardized = T)</code></pre>
+<pre><code>## lavaan 0.6-3 ended normally after 38 iterations
+## 
+##   Optimization method                           NLMINB
+##   Number of free parameters                         21
+## 
+##   Number of observations                          1914
+##   Sampling weights variable                     weight
+## 
+##   Estimator                                         ML      Robust
+##   Model Fit Test Statistic                     219.683     191.128
+##   Degrees of freedom                                34          34
+##   P-value (Chi-square)                           0.000       0.000
+##   Scaling correction factor                                  1.149
+##     for the Yuan-Bentler correction (Mplus variant)
+## 
+## Parameter Estimates:
+## 
+##   Information                                 Observed
+##   Observed information based on                Hessian
+##   Standard Errors                   Robust.huber.white
+## 
+## Latent Variables:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##   F1 =~                                                                 
+##     X1                1.000                               1.182    0.655
+##     X2                0.869    0.042   20.621    0.000    1.027    0.554
+##     X3                0.863    0.043   19.851    0.000    1.020    0.679
+##     X4                1.044    0.047   22.353    0.000    1.234    0.647
+##     X5                0.882    0.046   18.983    0.000    1.042    0.625
+##     X6                0.914    0.047   19.579    0.000    1.080    0.579
+##   F2 =~                                                                 
+##     Y1                1.000                               1.409    0.799
+##     Y2                6.841    0.236   29.036    0.000    9.636    0.763
+##     Y3                1.477    0.072   20.498    0.000    2.080    0.556
+##     Y4                0.280    0.013   21.018    0.000    0.394    0.599
+## 
+## Regressions:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##   F1 ~                                                                  
+##     F2               -0.207    0.026   -8.011    0.000   -0.247   -0.247
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##    .X1                1.857    0.084   22.175    0.000    1.857    0.571
+##    .X2                2.377    0.086   27.532    0.000    2.377    0.693
+##    .X3                1.217    0.063   19.245    0.000    1.217    0.539
+##    .X4                2.115    0.091   23.330    0.000    2.115    0.581
+##    .X5                1.691    0.074   22.828    0.000    1.691    0.609
+##    .X6                2.317    0.096   24.170    0.000    2.317    0.665
+##    .Y1                1.126    0.075   15.077    0.000    1.126    0.362
+##    .Y2               66.544    3.654   18.210    0.000   66.544    0.418
+##    .Y3                9.653    0.389   24.803    0.000    9.653    0.690
+##    .Y4                0.278    0.011   25.036    0.000    0.278    0.641
+##    .F1                1.312    0.092   14.338    0.000    0.939    0.939
+##     F2                1.984    0.097   20.377    0.000    1.000    1.000</code></pre>
 </div>
 
     </div>
