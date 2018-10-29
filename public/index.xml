@@ -222,18 +222,267 @@ std_residuals(fit)&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;(Standardized) Estimated Parameter Change&lt;/h2&gt;
 &lt;p&gt;To identify potential model misspecification, you can use &lt;code&gt;modificationindices()&lt;/code&gt;. If the SEPC is &lt;span class=&#34;math inline&#34;&gt;\(\geq.20\)&lt;/span&gt;, there may be a possible misspecification. However, adjustments to the model should be based on a theoretical justification.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# first 10 rows as output &amp;amp; sorting by mi-value
-head(modificationindices(fit, sort. = T), 10)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##    lhs op rhs     mi    epc sepc.lv sepc.all sepc.nox
-## 78  Y3 ~~  Y4 59.825  0.345   0.345    0.209    0.209
-## 73  Y1 ~~  Y2 50.655  4.900   4.900    0.574    0.574
-## 43  X2 ~~  X3 44.573  0.335   0.335    0.193    0.193
-## 33  F2 =~  X6 21.740  0.145   0.205    0.109    0.109
-## 53  X3 ~~  X6 20.476 -0.229  -0.229   -0.136   -0.136
-## 59  X4 ~~  X6 20.352  0.290   0.290    0.130    0.130
-## 44  X2 ~~  X4 20.235 -0.288  -0.288   -0.126   -0.126
-## 32  F2 =~  X5 16.266 -0.112  -0.158   -0.093   -0.093
-## 75  Y1 ~~  Y4 14.993 -0.098  -0.098   -0.175   -0.175
-## 71  X6 ~~  Y3 13.633  0.439   0.439    0.093    0.093&lt;/code&gt;&lt;/pre&gt;
+head(modificationindices(fit, sort. = T), 10) %&amp;gt;% 
+  dplyr::select(-sepc.lv, -sepc.nox) %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+lhs
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+op
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+rhs
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+mi
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+epc
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+sepc.all
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+78
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Y3
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+~~
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Y4
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+59.82491
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.3450967
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.2091268
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+73
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Y1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+~~
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Y2
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+50.65517
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+4.9004680
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.5736744
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+43
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+X2
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+~~
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+X3
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+44.57299
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.3354141
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.1934529
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+33
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+F2
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+=~
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+X6
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+21.73991
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.1452641
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.1094232
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+53
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+X3
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+~~
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+X6
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+20.47615
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-0.2289873
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-0.1355164
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+59
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+X4
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+~~
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+X6
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+20.35185
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.2900851
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.1302539
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+44
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+X2
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+~~
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+X4
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+20.23462
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-0.2881275
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-0.1260850
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+32
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+F2
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+=~
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+X5
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+16.26564
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-0.1121514
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-0.0930021
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+75
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Y1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+~~
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Y4
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+14.99285
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-0.0978666
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+-0.1749505
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+71
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+X6
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+~~
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Y3
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+13.63301
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.4394287
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.0932713
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;/div&gt;
 &lt;div id=&#34;visualization&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Visualization&lt;/h2&gt;
@@ -250,7 +499,7 @@ semPaths(fit, # fitted model
          layout = &amp;quot;tree2&amp;quot;, # type of layout
          rotation = 2) # rotation of the layout&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;In addition, the following representation is often used when it comes to using the function &lt;code&gt;semPaths()&lt;/code&gt;. There is a weighting of the edges depending on the standardized parameter estimates.&lt;/p&gt;
+&lt;p&gt;In addition, the following visualization is often used when it comes to using the function &lt;code&gt;semPaths()&lt;/code&gt;. There is a weighting of the edges depending on the standardized parameter estimates.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;semPaths(fit, # fitted model
          nCharNodes = 0, # no abbreviation in node labels
          what = &amp;quot;std&amp;quot;, # standardized parameter estimates as weighted edges 
@@ -351,7 +600,8 @@ summary(surveyfit, standardized = T)&lt;/code&gt;&lt;/pre&gt;
 ##    .Y4                0.278    0.011   25.751    0.000    0.278    0.641
 ##    .F1                1.312    0.090   14.643    0.000    0.939    0.939
 ##     F2                1.984    0.100   19.911    0.000    1.000    1.000&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;weighted_fit &amp;lt;- cfa(model, 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# weighting within the cfa() function
+weighted_fit &amp;lt;- cfa(model, 
            data = data,
            estimator = &amp;quot;MLM&amp;quot;,
            sampling.weights = &amp;quot;weight&amp;quot;) # sepcify sampling weights

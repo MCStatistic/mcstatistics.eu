@@ -128,7 +128,9 @@ To identify potential model misspecification, you can use `modificationindices()
 
 ```{r message=FALSE, warning=FALSE}
 # first 10 rows as output & sorting by mi-value
-head(modificationindices(fit, sort. = T), 10)
+head(modificationindices(fit, sort. = T), 10) %>% 
+  dplyr::select(-sepc.lv, -sepc.nox) %>% 
+  kableExtra::kable()
 ```
 
 ## Visualization
@@ -148,7 +150,7 @@ semPaths(fit, # fitted model
          rotation = 2) # rotation of the layout
 ```
 
-In addition, the following representation is often used when it comes to using the function `semPaths()`. There is a weighting of the edges depending on the standardized parameter estimates. 
+In addition, the following visualization is often used when it comes to using the function `semPaths()`. There is a weighting of the edges depending on the standardized parameter estimates. 
 
 ```{r message=FALSE, warning=FALSE}
 semPaths(fit, # fitted model
@@ -186,6 +188,7 @@ summary(surveyfit, standardized = T)
 ```
 
 ```{r}
+# weighting within the cfa() function
 weighted_fit <- cfa(model, 
            data = data,
            estimator = "MLM",
@@ -193,3 +196,5 @@ weighted_fit <- cfa(model,
 
 summary(weighted_fit, standardized = T)
 ```
+
+
