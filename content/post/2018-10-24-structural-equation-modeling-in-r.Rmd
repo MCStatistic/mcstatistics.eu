@@ -22,11 +22,81 @@ output:
     toc: false  
 ---
 
-# lavaan: A Package for SEM
-In my pervious post I made a [short introduction to Structural Equation Modeling (SEM)](https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/). But now it's about using R for SEM. However, to use R for SEM we need the packages `lavaan` and `semPlot`:
+## lavaan: A Package for SEM
+In my pervious post I made a [short introduction to Structural Equation Modeling (SEM)](https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/). But now it's about using R for SEM. However, to use R for SEM we need the package `lavaan`. For the visualization of the models we also need the package `semPlot`. As you probably know already the installation of the packages is very simple:
+
+```{r eval = FALSE}
+install.packages("lavaan")
+install.packages("semPlot")
+```
+
+## Syntax for Modelling
+The modely syntax of lavaan is used for specifying a SEM. There are three operators for model specification:
+
++ `=~` is used to specify latent variables/factors
++ `~~` is used to specify (residual) (co)variances
++ `~`  is used to specify rgeression
+
+So kann mit diesen Operatoren folgendes Beispielmodell spezfiziert werden:
+
+```{r}
+example <- "
+# measurement model
+F1 =~ 1*V1 + V2 + V3
+F2 =~ 1*V4 + V5 + V6
+
+# (residual) (co)variances
+V1 ~~ V1 # variance
+V1 ~~ V3 # residual correlation
+
+# regressions
+F1 ~ F2"
+```
+
+
+Now, let's specify the first model. I will use an own dataset from a previous work. It's also possible to use the built-in datasets `HolzingerSwineford1939` or `PolitcialDemocracy` from lavaan to become familiar with the package. Moreover, the functions `cfa()` and `sem()` are currently similar but they may differ in the future.
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+load("allbus_imp.RData")
+library(magrittr)
+library(tidyverse)
+library(lavaan)
+data <- allbus_imp %>% 
+  select(-age, -sex, -work, -mc04)
+
+colnames(data) <- c("X1", "X2", "X3", "X4", "X5", "X6", "Y1", "Y2", "Y3", "Y4", "weight")
+
+model <- "
+# measurement model
+F1 =~ 1*X1 + X2 + X3 + X4 + X5 + X6
+F2 =~ 1*Y1 + Y2 + Y3 + Y4
+
+# regression
+F1 ~ F2"
+
+# fitting the model
+fit <- cfa(model, data = data)
+
+# summary of the fit with standardized values and fit measurements
+summary(fit, standardized = T, fit.measures = T)
+```
+
 
 ```{r}
 library(lavaan)
-library(semPlot)
+model <- "
+# measurement model
+F1 =~ 1*X1 + X2 + X3 + X4 + X5 + X6
+F2 =~ 1*Y1 + Y2 + Y3 + Y4
+
+# regression
+F1 ~ F2"
+
+# let's fit the model
+fit <- cfa(model, data = data)
+
+# summary of the fit with standardized values and fit measurements
+summary(fit, standardized = T, fit.measures = T)
 ```
+
 
