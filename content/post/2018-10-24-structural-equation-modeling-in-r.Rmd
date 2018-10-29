@@ -54,7 +54,7 @@ F1 ~ F2"
 ```
 
 ## Model Fitting
-Now, let's specify the first model. I will use an own dataset from a previous work. It's also possible to use the built-in datasets `HolzingerSwineford1939` or `PolitcialDemocracy` from lavaan to become familiar with the package. Moreover, the functions `cfa()` and `sem()` are currently similar but they may differ in the future.
+Now, let's specify the first model. I will use an own dataset from a previous work. It's also possible to use the built-in datasets `HolzingerSwineford1939` or `PolitcialDemocracy` from lavaan to become familiar with the package. Moreover, the functions `cfa()` and `sem()` are currently similar but they may differ in the future. It's also possible to use one of the robust estimators, if you're fitting the model.
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 load("allbus_imp.RData")
@@ -92,11 +92,26 @@ F2 =~ 1*Y1 + Y2 + Y3 + Y4
 # regression
 F1 ~ F2"
 
-#let's fit the model
-fit <- cfa(model, data = data)
+# fitting the model
+fit <- cfa(model, 
+           data = data,
+           estimator = "MLM") # robust estimator 
 
-#summary of the fit with standardized values and fit measurements
+# summary of the fit with standardized values and fit measurements
 summary(fit, standardized = T, fit.measures = T)
 ```
 
+If you want to select specific fit measurements, you can use the function `fitmeasures()`. By using the command `fit.measures = "all"` you will get all available fit measures.
+
+```{r}
+fitmeasures(fit, fit.measures = c("chisq", "cfi", "rmsea", "srmr"))
+```
+
+## (Standardized) Estimated Parameter Change
+To identify potential model misspecification, you can use `modificationindices()`. If the SEPC is $\geq.20$, there may be a possible misspecification. However, adjustments to the model should be based on a theoretical justification.
+
+```{r}
+# first 10 rows as output & sorting by mi-value
+head(modificationindices(fit, sort. = T), 10)
+```
 

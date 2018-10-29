@@ -15,7 +15,7 @@
   
     
   
-  <meta name="description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple:">
+  <meta name="description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting (Standardized) Estimated Parameter Change   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple:">
 
   
   <link rel="alternate" hreflang="en-us" href="/post/structural-equation-modeling-in-r/">
@@ -53,9 +53,7 @@
     
       
       
-        
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
-        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
       
     
 
@@ -93,7 +91,7 @@
   <meta property="og:site_name" content="mcstatistics">
   <meta property="og:url" content="/post/structural-equation-modeling-in-r/">
   <meta property="og:title" content="Structural Equation Modeling in R | mcstatistics">
-  <meta property="og:description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple:">
+  <meta property="og:description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting (Standardized) Estimated Parameter Change   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple:">
   
   
     
@@ -330,6 +328,7 @@
 <li><a href="#lavaan-a-package-for-sem">lavaan: A Package for SEM</a></li>
 <li><a href="#syntax-for-modelling">Syntax for Modelling</a></li>
 <li><a href="#model-fitting">Model Fitting</a></li>
+<li><a href="#standardized-estimated-parameter-change">(Standardized) Estimated Parameter Change</a></li>
 </ul>
 </div>
 
@@ -362,7 +361,7 @@ F1 ~ F2&quot;</code></pre>
 </div>
 <div id="model-fitting" class="section level2">
 <h2>Model Fitting</h2>
-<p>Now, let’s specify the first model. I will use an own dataset from a previous work. It’s also possible to use the built-in datasets <code>HolzingerSwineford1939</code> or <code>PolitcialDemocracy</code> from lavaan to become familiar with the package. Moreover, the functions <code>cfa()</code> and <code>sem()</code> are currently similar but they may differ in the future.</p>
+<p>Now, let’s specify the first model. I will use an own dataset from a previous work. It’s also possible to use the built-in datasets <code>HolzingerSwineford1939</code> or <code>PolitcialDemocracy</code> from lavaan to become familiar with the package. Moreover, the functions <code>cfa()</code> and <code>sem()</code> are currently similar but they may differ in the future. It’s also possible to use one of the robust estimators, if you’re fitting the model.</p>
 <pre class="r"><code>library(lavaan)
 model &lt;- &quot;
 # measurement model
@@ -372,10 +371,12 @@ F2 =~ 1*Y1 + Y2 + Y3 + Y4
 # regression
 F1 ~ F2&quot;
 
-#let&#39;s fit the model
-fit &lt;- cfa(model, data = data)
+# fitting the model
+fit &lt;- cfa(model, 
+           data = data,
+           estimator = &quot;MLM&quot;) # robust estimator 
 
-#summary of the fit with standardized values and fit measurements
+# summary of the fit with standardized values and fit measurements
 summary(fit, standardized = T, fit.measures = T)</code></pre>
 <pre><code>## lavaan 0.6-3 ended normally after 39 iterations
 ## 
@@ -384,82 +385,111 @@ summary(fit, standardized = T, fit.measures = T)</code></pre>
 ## 
 ##   Number of observations                          1914
 ## 
-##   Estimator                                         ML
-##   Model Fit Test Statistic                     218.644
-##   Degrees of freedom                                34
-##   P-value (Chi-square)                           0.000
+##   Estimator                                         ML      Robust
+##   Model Fit Test Statistic                     218.644     204.758
+##   Degrees of freedom                                34          34
+##   P-value (Chi-square)                           0.000       0.000
+##   Scaling correction factor                                  1.068
+##     for the Satorra-Bentler correction
 ## 
 ## Model test baseline model:
 ## 
-##   Minimum Function Test Statistic             4983.424
-##   Degrees of freedom                                45
-##   P-value                                        0.000
+##   Minimum Function Test Statistic             4983.424    4648.582
+##   Degrees of freedom                                45          45
+##   P-value                                        0.000       0.000
 ## 
 ## User model versus baseline model:
 ## 
-##   Comparative Fit Index (CFI)                    0.963
-##   Tucker-Lewis Index (TLI)                       0.951
+##   Comparative Fit Index (CFI)                    0.963       0.963
+##   Tucker-Lewis Index (TLI)                       0.951       0.951
+## 
+##   Robust Comparative Fit Index (CFI)                         0.963
+##   Robust Tucker-Lewis Index (TLI)                            0.951
 ## 
 ## Loglikelihood and Information Criteria:
 ## 
-##   Loglikelihood user model (H0)             -39038.962
-##   Loglikelihood unrestricted model (H1)     -38929.641
+##   Loglikelihood user model (H0)             -39038.962  -39038.962
+##   Loglikelihood unrestricted model (H1)     -38929.641  -38929.641
 ## 
-##   Number of free parameters                         21
-##   Akaike (AIC)                               78119.925
-##   Bayesian (BIC)                             78236.621
-##   Sample-size adjusted Bayesian (BIC)        78169.903
+##   Number of free parameters                         21          21
+##   Akaike (AIC)                               78119.925   78119.925
+##   Bayesian (BIC)                             78236.621   78236.621
+##   Sample-size adjusted Bayesian (BIC)        78169.903   78169.903
 ## 
 ## Root Mean Square Error of Approximation:
 ## 
-##   RMSEA                                          0.053
-##   90 Percent Confidence Interval          0.047  0.060
-##   P-value RMSEA &lt;= 0.05                          0.203
+##   RMSEA                                          0.053       0.051
+##   90 Percent Confidence Interval          0.047  0.060       0.045  0.058
+##   P-value RMSEA &lt;= 0.05                          0.203       0.366
+## 
+##   Robust RMSEA                                               0.053
+##   90 Percent Confidence Interval                             0.046  0.060
 ## 
 ## Standardized Root Mean Square Residual:
 ## 
-##   SRMR                                           0.036
+##   SRMR                                           0.036       0.036
 ## 
 ## Parameter Estimates:
 ## 
 ##   Information                                 Expected
 ##   Information saturated (h1) model          Structured
-##   Standard Errors                             Standard
+##   Standard Errors                           Robust.sem
 ## 
 ## Latent Variables:
 ##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
 ##   F1 =~                                                                 
 ##     X1                1.000                               1.197    0.652
-##     X2                0.839    0.043   19.375    0.000    1.004    0.541
-##     X3                0.857    0.037   23.071    0.000    1.026    0.679
-##     X4                1.035    0.046   22.288    0.000    1.239    0.646
-##     X5                0.884    0.041   21.644    0.000    1.058    0.621
-##     X6                0.916    0.044   20.634    0.000    1.096    0.584
+##     X2                0.839    0.042   20.082    0.000    1.004    0.541
+##     X3                0.857    0.040   21.283    0.000    1.026    0.679
+##     X4                1.035    0.044   23.642    0.000    1.239    0.646
+##     X5                0.884    0.042   20.917    0.000    1.058    0.621
+##     X6                0.916    0.045   20.517    0.000    1.096    0.584
 ##   F2 =~                                                                 
 ##     Y1                1.000                               1.413    0.803
-##     Y2                6.793    0.244   27.820    0.000    9.597    0.763
-##     Y3                1.456    0.067   21.775    0.000    2.057    0.554
-##     Y4                0.280    0.012   23.360    0.000    0.395    0.596
+##     Y2                6.793    0.243   28.008    0.000    9.597    0.763
+##     Y3                1.456    0.065   22.322    0.000    2.057    0.554
+##     Y4                0.280    0.012   23.170    0.000    0.395    0.596
 ## 
 ## Regressions:
 ##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
 ##   F1 ~                                                                  
-##     F2               -0.228    0.025   -9.151    0.000   -0.270   -0.270
+##     F2               -0.228    0.024   -9.345    0.000   -0.270   -0.270
 ## 
 ## Variances:
 ##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
-##    .X1                1.933    0.077   24.991    0.000    1.933    0.574
-##    .X2                2.440    0.088   27.650    0.000    2.440    0.708
-##    .X3                1.232    0.051   24.071    0.000    1.232    0.539
-##    .X4                2.140    0.085   25.186    0.000    2.140    0.582
-##    .X5                1.783    0.069   25.906    0.000    1.783    0.614
-##    .X6                2.318    0.086   26.801    0.000    2.318    0.659
-##    .Y1                1.101    0.067   16.454    0.000    1.101    0.355
-##    .Y2               66.303    3.414   19.423    0.000   66.303    0.419
-##    .Y3                9.577    0.347   27.610    0.000    9.577    0.694
-##    .Y4                0.284    0.011   26.758    0.000    0.284    0.645
-##    .F1                1.328    0.094   14.162    0.000    0.927    0.927
-##     F2                1.996    0.109   18.251    0.000    1.000    1.000</code></pre>
+##    .X1                1.933    0.083   23.316    0.000    1.933    0.574
+##    .X2                2.440    0.082   29.879    0.000    2.440    0.708
+##    .X3                1.232    0.059   20.803    0.000    1.232    0.539
+##    .X4                2.140    0.086   25.025    0.000    2.140    0.582
+##    .X5                1.783    0.076   23.567    0.000    1.783    0.614
+##    .X6                2.318    0.088   26.265    0.000    2.318    0.659
+##    .Y1                1.101    0.072   15.382    0.000    1.101    0.355
+##    .Y2               66.303    3.638   18.223    0.000   66.303    0.419
+##    .Y3                9.577    0.369   25.929    0.000    9.577    0.694
+##    .Y4                0.284    0.011   26.420    0.000    0.284    0.645
+##    .F1                1.328    0.088   15.050    0.000    0.927    0.927
+##     F2                1.996    0.093   21.441    0.000    1.000    1.000</code></pre>
+<p>If you want to select specific fit measurements, you can use the function <code>fitmeasures()</code>. By using the command <code>fit.measures = &quot;all&quot;</code> you will get all available fit measures.</p>
+<pre class="r"><code>fitmeasures(fit, fit.measures = c(&quot;chisq&quot;, &quot;cfi&quot;, &quot;rmsea&quot;, &quot;srmr&quot;))</code></pre>
+<pre><code>##   chisq     cfi   rmsea    srmr 
+## 218.644   0.963   0.053   0.036</code></pre>
+</div>
+<div id="standardized-estimated-parameter-change" class="section level2">
+<h2>(Standardized) Estimated Parameter Change</h2>
+<p>To identify potential model misspecification, you can use <code>modificationindices()</code>. If the SEPC is <span class="math inline">\(\geq.20\)</span>, there may be a possible misspecification. However, adjustments to the model should be based on a theoretical justification.</p>
+<pre class="r"><code># first 10 rows as output &amp; sorting by mi-value
+head(modificationindices(fit, sort. = T), 10)</code></pre>
+<pre><code>##    lhs op rhs     mi    epc sepc.lv sepc.all sepc.nox
+## 78  Y3 ~~  Y4 59.825  0.345   0.345    0.209    0.209
+## 73  Y1 ~~  Y2 50.655  4.900   4.900    0.574    0.574
+## 43  X2 ~~  X3 44.573  0.335   0.335    0.193    0.193
+## 33  F2 =~  X6 21.740  0.145   0.205    0.109    0.109
+## 53  X3 ~~  X6 20.476 -0.229  -0.229   -0.136   -0.136
+## 59  X4 ~~  X6 20.352  0.290   0.290    0.130    0.130
+## 44  X2 ~~  X4 20.235 -0.288  -0.288   -0.126   -0.126
+## 32  F2 =~  X5 16.266 -0.112  -0.158   -0.093   -0.093
+## 75  Y1 ~~  Y4 14.993 -0.098  -0.098   -0.175   -0.175
+## 71  X6 ~~  Y3 13.633  0.439   0.439    0.093    0.093</code></pre>
 </div>
 
     </div>
