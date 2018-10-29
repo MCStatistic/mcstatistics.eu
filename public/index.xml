@@ -29,7 +29,9 @@
 
 &lt;div id=&#34;lavaan-a-package-for-sem&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;lavaan: A Package for SEM&lt;/h2&gt;
-&lt;p&gt;In my pervious post I made a &lt;a href=&#34;https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/&#34;&gt;short introduction to Structural Equation Modeling (SEM)&lt;/a&gt;. But now it’s about using R for SEM. However, to use R for SEM we need the package &lt;code&gt;lavaan&lt;/code&gt;. For the visualization of the models we also need the package &lt;code&gt;semPlot&lt;/code&gt;. As you probably know already the installation of the packages is very simple:&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+In my pervious post I made a &lt;a href=&#34;https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/&#34;&gt;short introduction to Structural Equation Modeling (SEM)&lt;/a&gt;. But now it’s about using R for SEM. However, to use R for SEM we need the package &lt;code&gt;lavaan&lt;/code&gt;. For the visualization of the models we also need the package &lt;code&gt;semPlot&lt;/code&gt;. As you probably know already the installation of the packages is very simple:
+&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;lavaan&amp;quot;)
 install.packages(&amp;quot;semPlot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -56,7 +58,9 @@ F1 ~ F2&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;model-fitting&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Model Fitting&lt;/h2&gt;
-&lt;p&gt;Now, let’s specify the first model. I will use an own dataset from a previous work. It’s also possible to use the built-in datasets &lt;code&gt;HolzingerSwineford1939&lt;/code&gt; or &lt;code&gt;PolitcialDemocracy&lt;/code&gt; from lavaan to become familiar with the package. Moreover, the functions &lt;code&gt;cfa()&lt;/code&gt; and &lt;code&gt;sem()&lt;/code&gt; are currently similar but they may differ in the future. It’s also possible to use one of the robust estimators, if you’re fitting the model.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+Now, let’s specify the first model. I will use an own dataset from a previous work. It’s also possible to use the built-in datasets &lt;code&gt;HolzingerSwineford1939&lt;/code&gt; or &lt;code&gt;PolitcialDemocracy&lt;/code&gt; from lavaan to become familiar with the package. Moreover, the functions &lt;code&gt;cfa()&lt;/code&gt; and &lt;code&gt;sem()&lt;/code&gt; are currently similar but they may differ in the future. It’s also possible to use one of the robust estimators, if you’re fitting the model.
+&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(lavaan)
 model &amp;lt;- &amp;quot;
 # measurement model
@@ -164,11 +168,15 @@ summary(fit, standardized = T, fit.measures = T)&lt;/code&gt;&lt;/pre&gt;
 ##    .Y4                0.284    0.011   26.420    0.000    0.284    0.645
 ##    .F1                1.328    0.088   15.050    0.000    0.927    0.927
 ##     F2                1.996    0.093   21.441    0.000    1.000    1.000&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;If you want to select specific fit measurements, you can use the function &lt;code&gt;fitmeasures()&lt;/code&gt;. By using the command &lt;code&gt;fit.measures = &amp;quot;all&amp;quot;&lt;/code&gt; you will get all available fit measures.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+If you want to select specific fit measurements, you can use the function &lt;code&gt;fitmeasures()&lt;/code&gt;. By using the command &lt;code&gt;fit.measures = &amp;quot;all&amp;quot;&lt;/code&gt; you will get all available fit measures.
+&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fitmeasures(fit, fit.measures = c(&amp;quot;chisq&amp;quot;, &amp;quot;cfi&amp;quot;, &amp;quot;rmsea&amp;quot;, &amp;quot;srmr&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##   chisq     cfi   rmsea    srmr 
 ## 218.644   0.963   0.053   0.036&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Apart from the fit indices, the standardized residuals can also be used to interpret the model fit. Unfortunately there is no function to get the standardized residuals. However, a function can be written very fast for this. Using &lt;code&gt;cov2cor&lt;/code&gt; on the covariance matrices gives us the fitted and observed correlation matrices. To get the residual correlation matrix we need to subtracting the fitted correlation matrix from the observed correlation matrix.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+Apart from the fit indices, the standardized residuals can also be used to interpret the model fit. Unfortunately there is no function to get the standardized residuals. However, a function can be written very fast for this. Using &lt;code&gt;cov2cor&lt;/code&gt; on the covariance matrices gives us the fitted and observed correlation matrices. To get the residual correlation matrix we need to subtracting the fitted correlation matrix from the observed correlation matrix.
+&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;std_residuals &amp;lt;- function(fit) {
   cov &amp;lt;- list(observed = inspect(fit, &amp;quot;sampstat&amp;quot;)$cov,
               fitted = fitted(fit)$cov)
@@ -220,7 +228,9 @@ std_residuals(fit)&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;standardized-estimated-parameter-change&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;(Standardized) Estimated Parameter Change&lt;/h2&gt;
-&lt;p&gt;To identify potential model misspecification, you can use &lt;code&gt;modificationindices()&lt;/code&gt;. If the SEPC is &lt;span class=&#34;math inline&#34;&gt;\(\geq.20\)&lt;/span&gt;, there may be a possible misspecification. However, adjustments to the model should be based on a theoretical justification.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+To identify potential model misspecification, you can use &lt;code&gt;modificationindices()&lt;/code&gt;. If the SEPC is &lt;span class=&#34;math inline&#34;&gt;\(\geq.20\)&lt;/span&gt;, there may be a possible misspecification. However, adjustments to the model should be based on a theoretical justification.
+&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# first 10 rows as output &amp;amp; sorting by mi-value
 head(modificationindices(fit, sort. = T), 10) %&amp;gt;% 
   dplyr::select(-sepc.lv, -sepc.nox) %&amp;gt;% 
@@ -486,7 +496,9 @@ Y3
 &lt;/div&gt;
 &lt;div id=&#34;visualization&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Visualization&lt;/h2&gt;
-&lt;p&gt;For visualization of an structural equation model the package &lt;code&gt;semPlot&lt;/code&gt; offers many possibilities. I would recommend you to look in the reference manual of this package. There are a lot of specifications you can do. However, the specification that I’m using should cover everything necessary for the beginning. In general, an adjustment of the rotation and the layout will probably be necessary.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+For visualization of an structural equation model the package &lt;code&gt;semPlot&lt;/code&gt; offers many possibilities. I would recommend you to look in the reference manual of this package. There are a lot of specifications you can do. However, the specification that I’m using should cover everything necessary for the beginning. In general, an adjustment of the rotation and the layout will probably be necessary.
+&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(semPlot)
 semPaths(fit, # fitted model
          nCharNodes = 0, # no abbreviation in node labels
@@ -499,7 +511,9 @@ semPaths(fit, # fitted model
          layout = &amp;quot;tree2&amp;quot;, # type of layout
          rotation = 2) # rotation of the layout&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;In addition, the following visualization is often used when it comes to using the function &lt;code&gt;semPaths()&lt;/code&gt;. There is a weighting of the edges depending on the standardized parameter estimates.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+In addition, the following visualization is often used when it comes to using the function &lt;code&gt;semPaths()&lt;/code&gt;. There is a weighting of the edges depending on the standardized parameter estimates.
+&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;semPaths(fit, # fitted model
          nCharNodes = 0, # no abbreviation in node labels
          what = &amp;quot;std&amp;quot;, # standardized parameter estimates as weighted edges 
@@ -515,7 +529,9 @@ semPaths(fit, # fitted model
 &lt;/div&gt;
 &lt;div id=&#34;sampling-weights&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Sampling Weights&lt;/h2&gt;
-&lt;p&gt;With lavaan version 0.6-3 there are two ways for weighting. On the one hand, you can use the package &lt;code&gt;lavaan.survey&lt;/code&gt;for taking sampling weights into account. On the other hand, it’s possible to specify the sampling weights within the &lt;code&gt;cfa()&lt;/code&gt; function.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+With lavaan version 0.6-3 there are two ways for weighting. On the one hand, you can use the package &lt;code&gt;lavaan.survey&lt;/code&gt;for taking sampling weights into account. On the other hand, it’s possible to specify the sampling weights within the &lt;code&gt;cfa()&lt;/code&gt; function.
+&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit_2 &amp;lt;- cfa(model, 
            data = data,
            estimator = &amp;quot;MLM&amp;quot;)
