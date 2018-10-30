@@ -15,7 +15,7 @@
   
     
   
-  <meta name="description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting (Standardized) Estimated Parameter Change Visualization Sampling Weights   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple: install.">
+  <meta name="description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting (Standardized) Estimated Parameter Change Visualization: Plotting SEM Sampling Weights   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan and I will introduce the basic functions of the package. For the visualization of the models we also need the package semPlot.">
 
   
   <link rel="alternate" hreflang="en-us" href="/post/structural-equation-modeling-in-r/">
@@ -91,7 +91,7 @@
   <meta property="og:site_name" content="mcstatistics">
   <meta property="og:url" content="/post/structural-equation-modeling-in-r/">
   <meta property="og:title" content="Structural Equation Modeling in R | mcstatistics">
-  <meta property="og:description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting (Standardized) Estimated Parameter Change Visualization Sampling Weights   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan. For the visualization of the models we also need the package semPlot. As you probably know already the installation of the packages is very simple: install.">
+  <meta property="og:description" content="lavaan: A Package for SEM Syntax for Modelling Model Fitting (Standardized) Estimated Parameter Change Visualization: Plotting SEM Sampling Weights   lavaan: A Package for SEM In my pervious post I made a short introduction to Structural Equation Modeling (SEM). But now it’s about using R for SEM. However, to use R for SEM we need the package lavaan and I will introduce the basic functions of the package. For the visualization of the models we also need the package semPlot.">
   
   
     
@@ -329,22 +329,24 @@
 <li><a href="#syntax-for-modelling">Syntax for Modelling</a></li>
 <li><a href="#model-fitting">Model Fitting</a></li>
 <li><a href="#standardized-estimated-parameter-change">(Standardized) Estimated Parameter Change</a></li>
-<li><a href="#visualization">Visualization</a></li>
+<li><a href="#visualization-plotting-sem">Visualization: Plotting SEM</a></li>
 <li><a href="#sampling-weights">Sampling Weights</a></li>
 </ul>
 </div>
 
-<div id="lavaan-a-package-for-sem" class="section level2">
-<h2>lavaan: A Package for SEM</h2>
+<div id="lavaan-a-package-for-sem" class="section level1">
+<h1>lavaan: A Package for SEM</h1>
 <p align="justify">
-In my pervious post I made a <a href="https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/">short introduction to Structural Equation Modeling (SEM)</a>. But now it’s about using R for SEM. However, to use R for SEM we need the package <code>lavaan</code>. For the visualization of the models we also need the package <code>semPlot</code>. As you probably know already the installation of the packages is very simple:
+In my pervious post I made a <a href="https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/">short introduction to Structural Equation Modeling (SEM)</a>. But now it’s about using R for SEM. However, to use R for SEM we need the package <code>lavaan</code> and I will introduce the basic functions of the package. For the visualization of the models we also need the package <code>semPlot</code>. As you probably know already the installation of the packages is very simple:
 </p>
 <pre class="r"><code>install.packages(&quot;lavaan&quot;)
 install.packages(&quot;semPlot&quot;)</code></pre>
 </div>
-<div id="syntax-for-modelling" class="section level2">
-<h2>Syntax for Modelling</h2>
-<p>The modely syntax of lavaan is used for specifying a SEM. There are three operators for model specification:</p>
+<div id="syntax-for-modelling" class="section level1">
+<h1>Syntax for Modelling</h1>
+<p align="justify">
+The modely syntax of lavaan is used for specifying a SEM and is also very intuitive. There are three operators for model specification:
+</p>
 <ul>
 <li><code>=~</code> is used to specify latent variables/factors</li>
 <li><code>~~</code> is used to specify (residual) (co)variances</li>
@@ -363,8 +365,8 @@ V1 ~~ V3 # residual correlation
 # regressions
 F1 ~ F2&quot;</code></pre>
 </div>
-<div id="model-fitting" class="section level2">
-<h2>Model Fitting</h2>
+<div id="model-fitting" class="section level1">
+<h1>Model Fitting</h1>
 <p align="justify">
 Now, let’s specify the first model. I will use an own dataset from a previous work. It’s also possible to use the built-in datasets <code>HolzingerSwineford1939</code> or <code>PolitcialDemocracy</code> from lavaan to become familiar with the package. Moreover, the functions <code>cfa()</code> and <code>sem()</code> are currently similar but they may differ in the future. It’s also possible to use one of the robust estimators, if you’re fitting the model.
 </p>
@@ -533,8 +535,8 @@ std_residuals(fit)</code></pre>
 ## Y3  0.01  0.00 -0.02  0.05 -0.04  0.10 -0.02 -0.03  0.00      
 ## Y4 -0.01  0.01 -0.03  0.00 -0.08  0.05 -0.02 -0.02  0.10  0.00</code></pre>
 </div>
-<div id="standardized-estimated-parameter-change" class="section level2">
-<h2>(Standardized) Estimated Parameter Change</h2>
+<div id="standardized-estimated-parameter-change" class="section level1">
+<h1>(Standardized) Estimated Parameter Change</h1>
 <p align="justify">
 To identify potential model misspecification, you can use <code>modificationindices()</code>. If the SEPC is <span class="math inline">\(\geq.20\)</span>, there may be a possible misspecification. However, adjustments to the model should be based on a theoretical justification.
 </p>
@@ -801,8 +803,8 @@ Y3
 </tbody>
 </table>
 </div>
-<div id="visualization" class="section level2">
-<h2>Visualization</h2>
+<div id="visualization-plotting-sem" class="section level1">
+<h1>Visualization: Plotting SEM</h1>
 <p align="justify">
 For visualization of an structural equation model the package <code>semPlot</code> offers many possibilities. I would recommend you to look in the reference manual of this package. There are a lot of specifications you can do. However, the specification that I’m using should cover everything necessary for the beginning. In general, an adjustment of the rotation and the layout will probably be necessary.
 </p>
@@ -818,6 +820,35 @@ semPaths(fit, # fitted model
          layout = &quot;tree2&quot;, # type of layout
          rotation = 2) # rotation of the layout</code></pre>
 <p><img src="/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>If you want to edit the label of the nodes, you can do this by using the <code>nodeLabels</code> argument. To do so, the order of the nodes must first be determined.</p>
+<pre class="r"><code># determine the order of the nodes 
+semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         whatLabels = &quot;std&quot;, # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = &quot;tree2&quot;, # type of layout
+         rotation = 2, # rotation of the layout
+         nodeLabels = letters[1:12]) # getting the order of the nodes</code></pre>
+<p><img src="/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code># labeling the nodes
+semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         whatLabels = &quot;std&quot;, # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = &quot;tree2&quot;, # type of layout
+         rotation = 2, # rotation of the layout
+         nodeLabels = c(&quot;var1&quot;, &quot;var2&quot;, &quot;var3&quot;, &quot;var4&quot;, &quot;var5&quot;, &quot;var6&quot;,
+                        &quot;var7&quot;, &quot;var8&quot;, &quot;var9&quot;, &quot;var10&quot;,
+                        &quot;Factor1&quot;, &quot;Factor2&quot;)) </code></pre>
+<p><img src="/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
 <p align="justify">
 In addition, the following visualization is often used when it comes to using the function <code>semPaths()</code>. There is a weighting of the edges depending on the standardized parameter estimates.
 </p>
@@ -832,10 +863,10 @@ In addition, the following visualization is often used when it comes to using th
          edge.label.cex = 0.90, # font size of parameters
          layout = &quot;tree2&quot;, # type of layout
          rotation = 2) # rotation of the layout</code></pre>
-<p><img src="/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
-<div id="sampling-weights" class="section level2">
-<h2>Sampling Weights</h2>
+<div id="sampling-weights" class="section level1">
+<h1>Sampling Weights</h1>
 <p align="justify">
 With lavaan version 0.6-3 there are two ways for weighting. On the one hand, you can use the package <code>lavaan.survey</code>for taking sampling weights into account. On the other hand, it’s possible to specify the sampling weights within the <code>cfa()</code> function.
 </p>

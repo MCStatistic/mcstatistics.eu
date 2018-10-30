@@ -520,6 +520,35 @@ semPaths(fit, # fitted model
          layout = &quot;tree2&quot;, # type of layout
          rotation = 2) # rotation of the layout</code></pre>
 <p><img src="/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>If you want to edit the label of the nodes, you can do this by using the <code>nodeLabels</code> argument. To do so, the order of the nodes must first be determined.</p>
+<pre class="r"><code># determine the order of the nodes 
+semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         whatLabels = &quot;std&quot;, # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = &quot;tree2&quot;, # type of layout
+         rotation = 2, # rotation of the layout
+         nodeLabels = letters[1:12]) # getting the order of the nodes</code></pre>
+<p><img src="/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code># labeling the nodes
+semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         whatLabels = &quot;std&quot;, # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = &quot;tree2&quot;, # type of layout
+         rotation = 2, # rotation of the layout
+         nodeLabels = c(&quot;var1&quot;, &quot;var2&quot;, &quot;var3&quot;, &quot;var4&quot;, &quot;var5&quot;, &quot;var6&quot;,
+                        &quot;var7&quot;, &quot;var8&quot;, &quot;var9&quot;, &quot;var10&quot;,
+                        &quot;Factor1&quot;, &quot;Factor2&quot;)) </code></pre>
+<p><img src="/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
 <p align="justify">
 In addition, the following visualization is often used when it comes to using the function <code>semPaths()</code>. There is a weighting of the edges depending on the standardized parameter estimates.
 </p>
@@ -534,7 +563,7 @@ In addition, the following visualization is often used when it comes to using th
          edge.label.cex = 0.90, # font size of parameters
          layout = &quot;tree2&quot;, # type of layout
          rotation = 2) # rotation of the layout</code></pre>
-<p><img src="/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 <div id="sampling-weights" class="section level1">
 <h1>Sampling Weights</h1>

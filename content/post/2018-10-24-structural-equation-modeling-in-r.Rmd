@@ -148,7 +148,41 @@ semPaths(fit, # fitted model
          edge.label.cex = 0.90, # font size of parameters
          layout = "tree2", # type of layout
          rotation = 2) # rotation of the layout
+
 ```
+
+If you want to edit the label of the nodes, you can do this by using the `nodeLabels` argument. To do so, the order of the nodes must first be determined.
+
+```{r}
+# determine the order of the nodes 
+semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         whatLabels = "std", # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = "tree2", # type of layout
+         rotation = 2, # rotation of the layout
+         nodeLabels = letters[1:12]) # getting the order of the nodes
+
+# labeling the nodes
+semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         whatLabels = "std", # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = "tree2", # type of layout
+         rotation = 2, # rotation of the layout
+         nodeLabels = c("var1", "var2", "var3", "var4", "var5", "var6",
+                        "var7", "var8", "var9", "var10",
+                        "Factor1", "Factor2")) 
+```
+
 
 <p align="justify">In addition, the following visualization is often used when it comes to using the function `semPaths()`. There is a weighting of the edges depending on the standardized parameter estimates.</p>
 

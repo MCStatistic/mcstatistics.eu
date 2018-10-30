@@ -22,22 +22,24 @@
 &lt;li&gt;&lt;a href=&#34;#syntax-for-modelling&#34;&gt;Syntax for Modelling&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#model-fitting&#34;&gt;Model Fitting&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#standardized-estimated-parameter-change&#34;&gt;(Standardized) Estimated Parameter Change&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#visualization&#34;&gt;Visualization&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#visualization-plotting-sem&#34;&gt;Visualization: Plotting SEM&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#sampling-weights&#34;&gt;Sampling Weights&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 
-&lt;div id=&#34;lavaan-a-package-for-sem&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;lavaan: A Package for SEM&lt;/h2&gt;
+&lt;div id=&#34;lavaan-a-package-for-sem&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;lavaan: A Package for SEM&lt;/h1&gt;
 &lt;p align=&#34;justify&#34;&gt;
-In my pervious post I made a &lt;a href=&#34;https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/&#34;&gt;short introduction to Structural Equation Modeling (SEM)&lt;/a&gt;. But now it’s about using R for SEM. However, to use R for SEM we need the package &lt;code&gt;lavaan&lt;/code&gt;. For the visualization of the models we also need the package &lt;code&gt;semPlot&lt;/code&gt;. As you probably know already the installation of the packages is very simple:
+In my pervious post I made a &lt;a href=&#34;https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/&#34;&gt;short introduction to Structural Equation Modeling (SEM)&lt;/a&gt;. But now it’s about using R for SEM. However, to use R for SEM we need the package &lt;code&gt;lavaan&lt;/code&gt; and I will introduce the basic functions of the package. For the visualization of the models we also need the package &lt;code&gt;semPlot&lt;/code&gt;. As you probably know already the installation of the packages is very simple:
 &lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;lavaan&amp;quot;)
 install.packages(&amp;quot;semPlot&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;div id=&#34;syntax-for-modelling&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Syntax for Modelling&lt;/h2&gt;
-&lt;p&gt;The modely syntax of lavaan is used for specifying a SEM. There are three operators for model specification:&lt;/p&gt;
+&lt;div id=&#34;syntax-for-modelling&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Syntax for Modelling&lt;/h1&gt;
+&lt;p align=&#34;justify&#34;&gt;
+The modely syntax of lavaan is used for specifying a SEM and is also very intuitive. There are three operators for model specification:
+&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;=~&lt;/code&gt; is used to specify latent variables/factors&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;~~&lt;/code&gt; is used to specify (residual) (co)variances&lt;/li&gt;
@@ -56,8 +58,8 @@ V1 ~~ V3 # residual correlation
 # regressions
 F1 ~ F2&amp;quot;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;div id=&#34;model-fitting&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Model Fitting&lt;/h2&gt;
+&lt;div id=&#34;model-fitting&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Model Fitting&lt;/h1&gt;
 &lt;p align=&#34;justify&#34;&gt;
 Now, let’s specify the first model. I will use an own dataset from a previous work. It’s also possible to use the built-in datasets &lt;code&gt;HolzingerSwineford1939&lt;/code&gt; or &lt;code&gt;PolitcialDemocracy&lt;/code&gt; from lavaan to become familiar with the package. Moreover, the functions &lt;code&gt;cfa()&lt;/code&gt; and &lt;code&gt;sem()&lt;/code&gt; are currently similar but they may differ in the future. It’s also possible to use one of the robust estimators, if you’re fitting the model.
 &lt;/p&gt;
@@ -226,8 +228,8 @@ std_residuals(fit)&lt;/code&gt;&lt;/pre&gt;
 ## Y3  0.01  0.00 -0.02  0.05 -0.04  0.10 -0.02 -0.03  0.00      
 ## Y4 -0.01  0.01 -0.03  0.00 -0.08  0.05 -0.02 -0.02  0.10  0.00&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;div id=&#34;standardized-estimated-parameter-change&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;(Standardized) Estimated Parameter Change&lt;/h2&gt;
+&lt;div id=&#34;standardized-estimated-parameter-change&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;(Standardized) Estimated Parameter Change&lt;/h1&gt;
 &lt;p align=&#34;justify&#34;&gt;
 To identify potential model misspecification, you can use &lt;code&gt;modificationindices()&lt;/code&gt;. If the SEPC is &lt;span class=&#34;math inline&#34;&gt;\(\geq.20\)&lt;/span&gt;, there may be a possible misspecification. However, adjustments to the model should be based on a theoretical justification.
 &lt;/p&gt;
@@ -494,8 +496,8 @@ Y3
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;/div&gt;
-&lt;div id=&#34;visualization&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Visualization&lt;/h2&gt;
+&lt;div id=&#34;visualization-plotting-sem&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Visualization: Plotting SEM&lt;/h1&gt;
 &lt;p align=&#34;justify&#34;&gt;
 For visualization of an structural equation model the package &lt;code&gt;semPlot&lt;/code&gt; offers many possibilities. I would recommend you to look in the reference manual of this package. There are a lot of specifications you can do. However, the specification that I’m using should cover everything necessary for the beginning. In general, an adjustment of the rotation and the layout will probably be necessary.
 &lt;/p&gt;
@@ -511,6 +513,35 @@ semPaths(fit, # fitted model
          layout = &amp;quot;tree2&amp;quot;, # type of layout
          rotation = 2) # rotation of the layout&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;If you want to edit the label of the nodes, you can do this by using the &lt;code&gt;nodeLabels&lt;/code&gt; argument. To do so, the order of the nodes must first be determined.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# determine the order of the nodes 
+semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         whatLabels = &amp;quot;std&amp;quot;, # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = &amp;quot;tree2&amp;quot;, # type of layout
+         rotation = 2, # rotation of the layout
+         nodeLabels = letters[1:12]) # getting the order of the nodes&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# labeling the nodes
+semPaths(fit, # fitted model
+         nCharNodes = 0, # no abbreviation in node labels
+         whatLabels = &amp;quot;std&amp;quot;, # standardized parameter estimate 
+         residuals = F, # excluding residuals and variances
+         sizeLat = 10, # width latent
+         sizeLat2 = 10, # height latent
+         sizeMan = 6, # width manifest
+         edge.label.cex = 0.90, # font size of parameters
+         layout = &amp;quot;tree2&amp;quot;, # type of layout
+         rotation = 2, # rotation of the layout
+         nodeLabels = c(&amp;quot;var1&amp;quot;, &amp;quot;var2&amp;quot;, &amp;quot;var3&amp;quot;, &amp;quot;var4&amp;quot;, &amp;quot;var5&amp;quot;, &amp;quot;var6&amp;quot;,
+                        &amp;quot;var7&amp;quot;, &amp;quot;var8&amp;quot;, &amp;quot;var9&amp;quot;, &amp;quot;var10&amp;quot;,
+                        &amp;quot;Factor1&amp;quot;, &amp;quot;Factor2&amp;quot;)) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-9-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p align=&#34;justify&#34;&gt;
 In addition, the following visualization is often used when it comes to using the function &lt;code&gt;semPaths()&lt;/code&gt;. There is a weighting of the edges depending on the standardized parameter estimates.
 &lt;/p&gt;
@@ -525,10 +556,10 @@ In addition, the following visualization is often used when it comes to using th
          edge.label.cex = 0.90, # font size of parameters
          layout = &amp;quot;tree2&amp;quot;, # type of layout
          rotation = 2) # rotation of the layout&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-10-24-structural-equation-modeling-in-r_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
-&lt;div id=&#34;sampling-weights&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Sampling Weights&lt;/h2&gt;
+&lt;div id=&#34;sampling-weights&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Sampling Weights&lt;/h1&gt;
 &lt;p align=&#34;justify&#34;&gt;
 With lavaan version 0.6-3 there are two ways for weighting. On the one hand, you can use the package &lt;code&gt;lavaan.survey&lt;/code&gt;for taking sampling weights into account. On the other hand, it’s possible to specify the sampling weights within the &lt;code&gt;cfa()&lt;/code&gt; function.
 &lt;/p&gt;
