@@ -22,16 +22,16 @@ output:
     toc: true
 ---
 
-## lavaan: A Package for SEM
-<p align="justify">In my pervious post I made a [short introduction to Structural Equation Modeling (SEM)](https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/). But now it's about using R for SEM. However, to use R for SEM we need the package `lavaan`. For the visualization of the models we also need the package `semPlot`. As you probably know already the installation of the packages is very simple:</p>
+# lavaan: A Package for SEM
+<p align="justify">In my pervious post I made a [short introduction to Structural Equation Modeling (SEM)](https://www.mcstatistics.eu/post/structural-equation-modeling-a-short-introduction/). But now it's about using R for SEM. However, to use R for SEM we need the package `lavaan` and I will introduce the basic functions of the package. For the visualization of the models we also need the package `semPlot`. As you probably know already the installation of the packages is very simple:</p>
 
 ```{r eval = FALSE}
 install.packages("lavaan")
 install.packages("semPlot")
 ```
 
-## Syntax for Modelling
-The modely syntax of lavaan is used for specifying a SEM. There are three operators for model specification:
+# Syntax for Modelling
+<p align="justify">The modely syntax of lavaan is used for specifying a SEM and is also very intuitive. There are three operators for model specification:</p>
 
 + `=~` is used to specify latent variables/factors
 + `~~` is used to specify (residual) (co)variances
@@ -53,7 +53,7 @@ V1 ~~ V3 # residual correlation
 F1 ~ F2"
 ```
 
-## Model Fitting
+# Model Fitting
 <p align="justify">Now, let's specify the first model. I will use an own dataset from a previous work. It's also possible to use the built-in datasets `HolzingerSwineford1939` or `PolitcialDemocracy` from lavaan to become familiar with the package. Moreover, the functions `cfa()` and `sem()` are currently similar but they may differ in the future. It's also possible to use one of the robust estimators, if you're fitting the model.</p>
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
@@ -123,7 +123,7 @@ std_residuals(fit)
 ```
 
 
-## (Standardized) Estimated Parameter Change
+# (Standardized) Estimated Parameter Change
 <p align="justify">To identify potential model misspecification, you can use `modificationindices()`. If the SEPC is $\geq.20$, there may be a possible misspecification. However, adjustments to the model should be based on a theoretical justification.</p>
 
 ```{r message=FALSE, warning=FALSE}
@@ -133,7 +133,7 @@ head(modificationindices(fit, sort. = T), 10) %>%
   kableExtra::kable()
 ```
 
-## Visualization
+# Visualization: Plotting SEM
 <p align="justify">For visualization of an structural equation model the package `semPlot` offers many possibilities. I would recommend you to look in the reference manual of this package. There are a lot of specifications you can do. However, the specification that I'm using should cover everything necessary for the beginning. In general, an adjustment of the rotation and the layout will probably be necessary.</p>
 
 ```{r message=FALSE, warning=FALSE}
@@ -166,7 +166,7 @@ semPaths(fit, # fitted model
          rotation = 2) # rotation of the layout
 ```
 
-## Sampling Weights
+# Sampling Weights
 <p align="justify">With lavaan version 0.6-3 there are two ways for weighting. On the one hand, you can use the package `lavaan.survey`for taking sampling weights into account. On the other hand, it's possible to specify the sampling weights within the `cfa()` function.</p>
 
 ```{r message=FALSE, warning=FALSE}
@@ -187,7 +187,7 @@ surveyfit <- lavaan.survey(lavaan.fit = fit_2,
 summary(surveyfit, standardized = T)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # weighting within the cfa() function
 weighted_fit <- cfa(model, 
            data = data,

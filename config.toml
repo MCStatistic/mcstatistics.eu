@@ -167,7 +167,7 @@ enableGitInfo = false
   PygmentsCodeFences = true
   PygmentsStyle = default
   #highlight_languages = [igor]
-  highlight_style = "github"
+  #highlight_style = "github"
 
   # Enable native social sharing buttons?
   sharing = true
