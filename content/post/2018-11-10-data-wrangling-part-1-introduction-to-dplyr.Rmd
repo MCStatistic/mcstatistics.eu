@@ -33,7 +33,7 @@ output:
 
 # filter()
 
-In many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the `filter()` function provides an easy way to do that.
+<p align="justify">n many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the `filter()` function provides an easy way to do that.</p>
 
 Let's take a look into the `gapminder` df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:
 ```{r message=FALSE, warning=FALSE}
@@ -57,7 +57,7 @@ gapminder %>%
   kableExtra::kable()
 ```
 
-It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.
+<p align="justify">It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.</p>
 ```{r}
 # filtering by the year 1997 and the continent asia
 gapminder %>% 
@@ -66,7 +66,7 @@ gapminder %>%
   kableExtra::kable()
 ```
 
-As you can imagine, there are many logical operators that you can use. I guess, most of you know these operators already.
+<p align="justify">As you can imagine, there are many logical operators that you can use. I guess, most of you know these operators already.</p>
 
 + `<`: less than
 + `<=`: less than or equal to
@@ -86,7 +86,7 @@ You will see a few of these operators in action later.
 
 # select() function
 
-The `select()` function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also *delete* sepcific coloumns.
+<p align="justify">The `select()` function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also *delete* sepcific coloumns.</p>
 
 ```{r}
 # let's select the coloumns country, continent, year and lifeExp
@@ -113,7 +113,7 @@ gapminder %>%
 
 # mutate() function
 
-You can create new columns with the `mutate()` function. Moreover, it is possible to use the `mutate()` function in combination with other functions (e.g. `case_when()`). In the following code I create a new variable, where the value is 10% of the population size.
+<p align="justify">You can create new columns with the `mutate()` function. Moreover, it is possible to use the `mutate()` function in combination with other functions (e.g. `case_when()`). In the following code I create a new variable, where the value is 10% of the population size.</p>
 
 ```{r}
 # creating a new coloumn where the value is 10% of the population
@@ -123,7 +123,7 @@ gapminder %>%
   kableExtra::kable()
 ```
 
-Now, let's create a new variable with three categories. Therefore, we will use the `mutate()` function and the `case_when()` function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp < 50), medium life expectancy (lifeExp >= 50 & <70) and high life expectancy (>= 70). 
+<p align="justify">Now, let's create a new variable with three categories. Therefore, we will use the `mutate()` function and the `case_when()` function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp < 50), medium life expectancy (lifeExp >= 50 & <70) and high life expectancy (>= 70).</p>
 
 ```{r}
 # creating three categories
@@ -137,11 +137,11 @@ gapminder %>%
   kableExtra::kable()
 ```
 
-As you can see, you can add a bunch of conditions with the `case_when()` function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it's needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.
+<p align="justify">As you can see, you can add a bunch of conditions with the `case_when()` function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it's needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.</p>
 
 # group_by() & summarise() function
 
-If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The `group_by()` function in combination with the `summarise()` function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the pipe operator (`%>%`). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it.
+<p align="justify">If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The `group_by()` function in combination with the `summarise()` function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the pipe operator (`%>%`). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it.</p>
 
 ```{r}
 library(ggplot2)

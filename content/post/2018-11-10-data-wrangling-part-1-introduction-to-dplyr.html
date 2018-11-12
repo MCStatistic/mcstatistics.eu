@@ -39,7 +39,9 @@ In addition to these functions <code>dplyr</code> offers you the ability to use 
 </div>
 <div id="filter" class="section level1">
 <h1>filter()</h1>
-<p>In many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the <code>filter()</code> function provides an easy way to do that.</p>
+<p align="justify">
+n many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the <code>filter()</code> function provides an easy way to do that.
+</p>
 <p>Let’s take a look into the <code>gapminder</code> df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:</p>
 <pre class="r"><code>library(dplyr)
 library(gapminder)
@@ -264,7 +266,9 @@ Oceania
 </tr>
 </tbody>
 </table>
-<p>It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.</p>
+<p align="justify">
+It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.
+</p>
 <pre class="r"><code># filtering by the year 1997 and the continent asia
 gapminder %&gt;% 
   filter(year == 1997 &amp; continent == &quot;Asia&quot;) %&gt;% 
@@ -416,7 +420,9 @@ Asia
 </tr>
 </tbody>
 </table>
-<p>As you can imagine, there are many logical operators that you can use. I guess, most of you know these operators already.</p>
+<p align="justify">
+As you can imagine, there are many logical operators that you can use. I guess, most of you know these operators already.
+</p>
 <ul>
 <li><code>&lt;</code>: less than</li>
 <li><code>&lt;=</code>: less than or equal to</li>
@@ -436,7 +442,9 @@ Asia
 </div>
 <div id="select-function" class="section level1">
 <h1>select() function</h1>
-<p>The <code>select()</code> function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also <em>delete</em> sepcific coloumns.</p>
+<p align="justify">
+The <code>select()</code> function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also <em>delete</em> sepcific coloumns.
+</p>
 <pre class="r"><code># let&#39;s select the coloumns country, continent, year and lifeExp
 gapminder %&gt;% 
   select(country, continent, year, lifeExp) %&gt;% 
@@ -789,7 +797,9 @@ Asia
 </div>
 <div id="mutate-function" class="section level1">
 <h1>mutate() function</h1>
-<p>You can create new columns with the <code>mutate()</code> function. Moreover, it is possible to use the <code>mutate()</code> function in combination with other functions (e.g. <code>case_when()</code>). In the following code I create a new variable, where the value is 10% of the population size.</p>
+<p align="justify">
+You can create new columns with the <code>mutate()</code> function. Moreover, it is possible to use the <code>mutate()</code> function in combination with other functions (e.g. <code>case_when()</code>). In the following code I create a new variable, where the value is 10% of the population size.
+</p>
 <pre class="r"><code># creating a new coloumn where the value is 10% of the population
 gapminder %&gt;% 
   mutate(new_pop = round(pop*0.1)) %&gt;% 
@@ -962,7 +972,9 @@ Asia
 </tr>
 </tbody>
 </table>
-<p>Now, let’s create a new variable with three categories. Therefore, we will use the <code>mutate()</code> function and the <code>case_when()</code> function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp &lt; 50), medium life expectancy (lifeExp &gt;= 50 &amp; &lt;70) and high life expectancy (&gt;= 70).</p>
+<p align="justify">
+Now, let’s create a new variable with three categories. Therefore, we will use the <code>mutate()</code> function and the <code>case_when()</code> function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp &lt; 50), medium life expectancy (lifeExp &gt;= 50 &amp; &lt;70) and high life expectancy (&gt;= 70).
+</p>
 <pre class="r"><code># creating three categories
 gapminder %&gt;% 
   mutate(lifeExp_cat = case_when(
@@ -1139,11 +1151,15 @@ low
 </tr>
 </tbody>
 </table>
-<p>As you can see, you can add a bunch of conditions with the <code>case_when()</code> function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it’s needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.</p>
+<p align="justify">
+As you can see, you can add a bunch of conditions with the <code>case_when()</code> function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it’s needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.
+</p>
 </div>
 <div id="group_by-summarise-function" class="section level1">
 <h1>group_by() &amp; summarise() function</h1>
-<p>If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The <code>group_by()</code> function in combination with the <code>summarise()</code> function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the pipe operator (<code>%&gt;%</code>). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it.</p>
+<p align="justify">
+If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The <code>group_by()</code> function in combination with the <code>summarise()</code> function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the pipe operator (<code>%&gt;%</code>). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it.
+</p>
 <pre class="r"><code>library(ggplot2)
 gapminder %&gt;% 
   group_by(continent, year) %&gt;% 

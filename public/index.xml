@@ -35,7 +35,9 @@ In addition to these functions &lt;code&gt;dplyr&lt;/code&gt; offers you the abi
 &lt;/div&gt;
 &lt;div id=&#34;filter&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;filter()&lt;/h1&gt;
-&lt;p&gt;In many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the &lt;code&gt;filter()&lt;/code&gt; function provides an easy way to do that.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+n many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the &lt;code&gt;filter()&lt;/code&gt; function provides an easy way to do that.
+&lt;/p&gt;
 &lt;p&gt;Let’s take a look into the &lt;code&gt;gapminder&lt;/code&gt; df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
 library(gapminder)
@@ -260,7 +262,9 @@ Oceania
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.
+&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# filtering by the year 1997 and the continent asia
 gapminder %&amp;gt;% 
   filter(year == 1997 &amp;amp; continent == &amp;quot;Asia&amp;quot;) %&amp;gt;% 
@@ -412,7 +416,9 @@ Asia
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;As you can imagine, there are many logical operators that you can use. I guess, most of you know these operators already.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+As you can imagine, there are many logical operators that you can use. I guess, most of you know these operators already.
+&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;&amp;lt;&lt;/code&gt;: less than&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;&amp;lt;=&lt;/code&gt;: less than or equal to&lt;/li&gt;
@@ -432,7 +438,9 @@ Asia
 &lt;/div&gt;
 &lt;div id=&#34;select-function&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;select() function&lt;/h1&gt;
-&lt;p&gt;The &lt;code&gt;select()&lt;/code&gt; function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also &lt;em&gt;delete&lt;/em&gt; sepcific coloumns.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+The &lt;code&gt;select()&lt;/code&gt; function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also &lt;em&gt;delete&lt;/em&gt; sepcific coloumns.
+&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# let&amp;#39;s select the coloumns country, continent, year and lifeExp
 gapminder %&amp;gt;% 
   select(country, continent, year, lifeExp) %&amp;gt;% 
@@ -785,7 +793,9 @@ Asia
 &lt;/div&gt;
 &lt;div id=&#34;mutate-function&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;mutate() function&lt;/h1&gt;
-&lt;p&gt;You can create new columns with the &lt;code&gt;mutate()&lt;/code&gt; function. Moreover, it is possible to use the &lt;code&gt;mutate()&lt;/code&gt; function in combination with other functions (e.g. &lt;code&gt;case_when()&lt;/code&gt;). In the following code I create a new variable, where the value is 10% of the population size.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+You can create new columns with the &lt;code&gt;mutate()&lt;/code&gt; function. Moreover, it is possible to use the &lt;code&gt;mutate()&lt;/code&gt; function in combination with other functions (e.g. &lt;code&gt;case_when()&lt;/code&gt;). In the following code I create a new variable, where the value is 10% of the population size.
+&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# creating a new coloumn where the value is 10% of the population
 gapminder %&amp;gt;% 
   mutate(new_pop = round(pop*0.1)) %&amp;gt;% 
@@ -958,7 +968,9 @@ Asia
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;Now, let’s create a new variable with three categories. Therefore, we will use the &lt;code&gt;mutate()&lt;/code&gt; function and the &lt;code&gt;case_when()&lt;/code&gt; function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp &amp;lt; 50), medium life expectancy (lifeExp &amp;gt;= 50 &amp;amp; &amp;lt;70) and high life expectancy (&amp;gt;= 70).&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+Now, let’s create a new variable with three categories. Therefore, we will use the &lt;code&gt;mutate()&lt;/code&gt; function and the &lt;code&gt;case_when()&lt;/code&gt; function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp &amp;lt; 50), medium life expectancy (lifeExp &amp;gt;= 50 &amp;amp; &amp;lt;70) and high life expectancy (&amp;gt;= 70).
+&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# creating three categories
 gapminder %&amp;gt;% 
   mutate(lifeExp_cat = case_when(
@@ -1135,11 +1147,15 @@ low
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;As you can see, you can add a bunch of conditions with the &lt;code&gt;case_when()&lt;/code&gt; function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it’s needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+As you can see, you can add a bunch of conditions with the &lt;code&gt;case_when()&lt;/code&gt; function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it’s needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.
+&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;group_by-summarise-function&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;group_by() &amp;amp; summarise() function&lt;/h1&gt;
-&lt;p&gt;If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The &lt;code&gt;group_by()&lt;/code&gt; function in combination with the &lt;code&gt;summarise()&lt;/code&gt; function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the pipe operator (&lt;code&gt;%&amp;gt;%&lt;/code&gt;). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The &lt;code&gt;group_by()&lt;/code&gt; function in combination with the &lt;code&gt;summarise()&lt;/code&gt; function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the pipe operator (&lt;code&gt;%&amp;gt;%&lt;/code&gt;). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it.
+&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(ggplot2)
 gapminder %&amp;gt;% 
   group_by(continent, year) %&amp;gt;% 
