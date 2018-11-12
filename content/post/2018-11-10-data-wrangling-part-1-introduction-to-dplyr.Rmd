@@ -35,7 +35,7 @@ In addition to these functions `dplyr` offers you the ability to use the pipe-op
 
 In many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the `filter()` function provides an easy way to do that.
 
-Let's take a look into the gapminder df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:
+Let's take a look into the `gapminder` df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:
 ```{r message=FALSE, warning=FALSE}
 library(dplyr)
 library(gapminder)
@@ -48,7 +48,7 @@ Now, different aspects of the data may be of interest:
 + data for specific continent(s)
 + data for specific continent(s) and year(s)
 
-Let's filter the df:
+A very simple filtering could look like this one:
 ```{r}
 # filtering by the year 1997
 gapminder %>% 
@@ -56,6 +56,7 @@ gapminder %>%
   head()
 ```
 
+It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.
 ```{r}
 # filtering by the year 1997 and the continent asia
 gapminder %>% 
@@ -63,7 +64,7 @@ gapminder %>%
   head()
 ```
 
-There are a few loglical operators you can use for filtering:
+As you can imagine, there are many logical operators that you can use. I guess, most of you know these operators already.
 
 + `<`: less than
 + `<=`: less than or equal to
@@ -74,7 +75,7 @@ There are a few loglical operators you can use for filtering:
 + `%in%`: matching argument
 + `!x`: not x (e.g. often used for NA exclusion `!is.na(variable)`)
 
-The following operators can be used in combination:
+The following operators can be used to combine different conditions:
 
 + `&`: filtering by condition 1 **and** contiditon 2
 + `|`: filtering by condition 1 **or** condition 2
@@ -107,7 +108,7 @@ gapminder %>%
 
 # mutate() function
 
-You can create new columns with the `mutate()` function. Moreover, it is possible to use the `mutate()` function in combination with other functions (e.g. `case_when()`). 
+You can create new columns with the `mutate()` function. Moreover, it is possible to use the `mutate()` function in combination with other functions (e.g. `case_when()`). In the following code I create a new variable, where the value is 10% of the population size.
 
 ```{r}
 # creating a new coloumn where the value is 10% of the population
@@ -116,7 +117,7 @@ gapminder %>%
   head()
 ```
 
-Now, let's create a new variable with three categories. Therefore, we will use the `mutate()` function and the `case_when()` function in combination. In the following example the new variable should include three cateogires: low life expectancy (lifeExp < 50), medium life expectancy (lifeExp >= 50 & <70) and high life expectancy (>= 70). 
+Now, let's create a new variable with three categories. Therefore, we will use the `mutate()` function and the `case_when()` function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp < 50), medium life expectancy (lifeExp >= 50 & <70) and high life expectancy (>= 70). 
 
 ```{r}
 # creating three categories
@@ -129,11 +130,11 @@ gapminder %>%
   head()
 ```
 
-Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.
+As you can see, you can add a bunch of conditions with the `case_when()` function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it's needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.
 
 # group_by() & summarise() function
 
-If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The `group_by()` function in combination with the `summarise()` function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time.
+If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The `group_by()` function in combination with the `summarise()` function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the pipe operator (`%>%`). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it.
 
 ```{r}
 library(ggplot2)
@@ -143,4 +144,5 @@ gapminder %>%
   ggplot(aes(x = year, y = mean_lifeExp, col = continent)) +
     geom_line()
 ```
+
 

@@ -36,7 +36,7 @@ output:
 <div id="filter" class="section level1">
 <h1>filter()</h1>
 <p>In many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the <code>filter()</code> function provides an easy way to do that.</p>
-<p>Let’s take a look into the gapminder df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:</p>
+<p>Let’s take a look into the <code>gapminder</code> df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:</p>
 <pre class="r"><code>library(dplyr)
 library(gapminder)
 head(gapminder)</code></pre>
@@ -55,7 +55,7 @@ head(gapminder)</code></pre>
 <li>data for specific continent(s)</li>
 <li>data for specific continent(s) and year(s)</li>
 </ul>
-<p>Let’s filter the df:</p>
+<p>A very simple filtering could look like this one:</p>
 <pre class="r"><code># filtering by the year 1997
 gapminder %&gt;% 
   filter(year == 1997) %&gt;% 
@@ -69,6 +69,7 @@ gapminder %&gt;%
 ## 4 Angola      Africa     1997    41.0  9875024     2277.
 ## 5 Argentina   Americas   1997    73.3 36203463    10967.
 ## 6 Australia   Oceania    1997    78.8 18565243    26998.</code></pre>
+<p>It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.</p>
 <pre class="r"><code># filtering by the year 1997 and the continent asia
 gapminder %&gt;% 
   filter(year == 1997 &amp; continent == &quot;Asia&quot;) %&gt;% 
@@ -82,7 +83,7 @@ gapminder %&gt;%
 ## 4 Cambodia         Asia       1997    56.5   11782962      734.
 ## 5 China            Asia       1997    70.4 1230075000     2289.
 ## 6 Hong Kong, China Asia       1997    80      6495918    28378.</code></pre>
-<p>There are a few loglical operators you can use for filtering:</p>
+<p>As you can imagine, there are many logical operators that you can use. I guess, most of you know these operators already.</p>
 <ul>
 <li><code>&lt;</code>: less than</li>
 <li><code>&lt;=</code>: less than or equal to</li>
@@ -93,7 +94,7 @@ gapminder %&gt;%
 <li><code>%in%</code>: matching argument</li>
 <li><code>!x</code>: not x (e.g. often used for NA exclusion <code>!is.na(variable)</code>)</li>
 </ul>
-<p>The following operators can be used in combination:</p>
+<p>The following operators can be used to combine different conditions:</p>
 <ul>
 <li><code>&amp;</code>: filtering by condition 1 <strong>and</strong> contiditon 2</li>
 <li><code>|</code>: filtering by condition 1 <strong>or</strong> condition 2</li>
@@ -146,7 +147,7 @@ gapminder %&gt;%
 </div>
 <div id="mutate-function" class="section level1">
 <h1>mutate() function</h1>
-<p>You can create new columns with the <code>mutate()</code> function. Moreover, it is possible to use the <code>mutate()</code> function in combination with other functions (e.g. <code>case_when()</code>).</p>
+<p>You can create new columns with the <code>mutate()</code> function. Moreover, it is possible to use the <code>mutate()</code> function in combination with other functions (e.g. <code>case_when()</code>). In the following code I create a new variable, where the value is 10% of the population size.</p>
 <pre class="r"><code># creating a new coloumn where the value is 10% of the population
 gapminder %&gt;% 
   mutate(new_pop = round(pop*0.1)) %&gt;% 
@@ -160,7 +161,7 @@ gapminder %&gt;%
 ## 4 Afghanistan Asia       1967    34.0 11537966      836. 1153797
 ## 5 Afghanistan Asia       1972    36.1 13079460      740. 1307946
 ## 6 Afghanistan Asia       1977    38.4 14880372      786. 1488037</code></pre>
-<p>Now, let’s create a new variable with three categories. Therefore, we will use the <code>mutate()</code> function and the <code>case_when()</code> function in combination. In the following example the new variable should include three cateogires: low life expectancy (lifeExp &lt; 50), medium life expectancy (lifeExp &gt;= 50 &amp; &lt;70) and high life expectancy (&gt;= 70).</p>
+<p>Now, let’s create a new variable with three categories. Therefore, we will use the <code>mutate()</code> function and the <code>case_when()</code> function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp &lt; 50), medium life expectancy (lifeExp &gt;= 50 &amp; &lt;70) and high life expectancy (&gt;= 70).</p>
 <pre class="r"><code># creating three categories
 gapminder %&gt;% 
   mutate(lifeExp_cat = case_when(
@@ -178,11 +179,11 @@ gapminder %&gt;%
 ## 4 Afghanistan Asia       1967    34.0 11537966      836. low        
 ## 5 Afghanistan Asia       1972    36.1 13079460      740. low        
 ## 6 Afghanistan Asia       1977    38.4 14880372      786. low</code></pre>
-<p>Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.</p>
+<p>As you can see, you can add a bunch of conditions with the <code>case_when()</code> function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it’s needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.</p>
 </div>
 <div id="group_by-summarise-function" class="section level1">
 <h1>group_by() &amp; summarise() function</h1>
-<p>If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The <code>group_by()</code> function in combination with the <code>summarise()</code> function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time.</p>
+<p>If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The <code>group_by()</code> function in combination with the <code>summarise()</code> function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the pipe operator (<code>%&gt;%</code>). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it.</p>
 <pre class="r"><code>library(ggplot2)
 gapminder %&gt;% 
   group_by(continent, year) %&gt;% 
