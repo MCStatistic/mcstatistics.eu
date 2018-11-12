@@ -11,6 +11,186 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Data Wrangling Part 1: Introduction to dplyr</title>
+      <link>/post/data-wrangling-part-1-introduction-to-dplyr/</link>
+      <pubDate>Sat, 10 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/data-wrangling-part-1-introduction-to-dplyr/</guid>
+      <description>&lt;div id=&#34;introduction-to-dplyr&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction to dplyr&lt;/h1&gt;
+&lt;p&gt;When it comes to data manipulation, &lt;code&gt;dplyr&lt;/code&gt; is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;filter()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;select()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mutate()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;arrange()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;group_by()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;summarise()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In addition to these functions &lt;code&gt;dplyr&lt;/code&gt; offers you the ability to use the pipe-operator out of the &lt;code&gt;magrittr&lt;/code&gt; package. This operator is very useful and I highly recommend you to get used to it. Except these functions, &lt;code&gt;dplyr&lt;/code&gt; offers a lot more functions which are very useful. And, like always, you should look into the &lt;a href=&#34;https://cran.r-project.org/web/packages/dplyr/dplyr.pdf&#34;&gt;reference manual of dplyr&lt;/a&gt; for more details! I will mostly use the data frame &lt;code&gt;gapminder&lt;/code&gt; for explaining the functions.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;filter&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;filter()&lt;/h1&gt;
+&lt;p&gt;In many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the &lt;code&gt;filter()&lt;/code&gt; function provides an easy way to do that.&lt;/p&gt;
+&lt;p&gt;Let’s take a look into the gapminder df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
+library(gapminder)
+head(gapminder)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 6
+##   country     continent  year lifeExp      pop gdpPercap
+##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;    &amp;lt;int&amp;gt;     &amp;lt;dbl&amp;gt;
+## 1 Afghanistan Asia       1952    28.8  8425333      779.
+## 2 Afghanistan Asia       1957    30.3  9240934      821.
+## 3 Afghanistan Asia       1962    32.0 10267083      853.
+## 4 Afghanistan Asia       1967    34.0 11537966      836.
+## 5 Afghanistan Asia       1972    36.1 13079460      740.
+## 6 Afghanistan Asia       1977    38.4 14880372      786.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, different aspects of the data may be of interest:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;data for specific year(s)&lt;/li&gt;
+&lt;li&gt;data for specific continent(s)&lt;/li&gt;
+&lt;li&gt;data for specific continent(s) and year(s)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Let’s filter the df:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# filtering by the year 1997
+gapminder %&amp;gt;% 
+  filter(year == 1997) %&amp;gt;% 
+  head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 6
+##   country     continent  year lifeExp      pop gdpPercap
+##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;    &amp;lt;int&amp;gt;     &amp;lt;dbl&amp;gt;
+## 1 Afghanistan Asia       1997    41.8 22227415      635.
+## 2 Albania     Europe     1997    73.0  3428038     3193.
+## 3 Algeria     Africa     1997    69.2 29072015     4797.
+## 4 Angola      Africa     1997    41.0  9875024     2277.
+## 5 Argentina   Americas   1997    73.3 36203463    10967.
+## 6 Australia   Oceania    1997    78.8 18565243    26998.&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# filtering by the year 1997 and the continent asia
+gapminder %&amp;gt;% 
+  filter(year == 1997 &amp;amp; continent == &amp;quot;Asia&amp;quot;) %&amp;gt;% 
+  head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 6
+##   country          continent  year lifeExp        pop gdpPercap
+##   &amp;lt;fct&amp;gt;            &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;      &amp;lt;int&amp;gt;     &amp;lt;dbl&amp;gt;
+## 1 Afghanistan      Asia       1997    41.8   22227415      635.
+## 2 Bahrain          Asia       1997    73.9     598561    20292.
+## 3 Bangladesh       Asia       1997    59.4  123315288      973.
+## 4 Cambodia         Asia       1997    56.5   11782962      734.
+## 5 China            Asia       1997    70.4 1230075000     2289.
+## 6 Hong Kong, China Asia       1997    80      6495918    28378.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are a few loglical operators you can use for filtering:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;&lt;/code&gt;: less than&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;=&lt;/code&gt;: less than or equal to&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;==&lt;/code&gt;: equal to&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;!=&lt;/code&gt;: not equal to&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;gt;=&lt;/code&gt;: greater than or eqal to&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;gt;&lt;/code&gt;: greater than&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;%in%&lt;/code&gt;: matching argument&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;!x&lt;/code&gt;: not x (e.g. often used for NA exclusion &lt;code&gt;!is.na(variable)&lt;/code&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The following operators can be used in combination:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;amp;&lt;/code&gt;: filtering by condition 1 &lt;strong&gt;and&lt;/strong&gt; contiditon 2&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;|&lt;/code&gt;: filtering by condition 1 &lt;strong&gt;or&lt;/strong&gt; condition 2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You will see a few of these operators in action later.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;select-function&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;select() function&lt;/h1&gt;
+&lt;p&gt;The &lt;code&gt;select()&lt;/code&gt; function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also &lt;em&gt;delete&lt;/em&gt; sepcific coloumns.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# let&amp;#39;s select the coloumns country, continent, year and lifeExp
+gapminder %&amp;gt;% 
+  select(country, continent, year, lifeExp) %&amp;gt;% 
+  head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 4
+##   country     continent  year lifeExp
+##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;
+## 1 Afghanistan Asia       1952    28.8
+## 2 Afghanistan Asia       1957    30.3
+## 3 Afghanistan Asia       1962    32.0
+## 4 Afghanistan Asia       1967    34.0
+## 5 Afghanistan Asia       1972    36.1
+## 6 Afghanistan Asia       1977    38.4&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# a shorter way to select these coloumns
+gapminder %&amp;gt;% 
+  select(country:lifeExp) %&amp;gt;% 
+  head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 4
+##   country     continent  year lifeExp
+##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;
+## 1 Afghanistan Asia       1952    28.8
+## 2 Afghanistan Asia       1957    30.3
+## 3 Afghanistan Asia       1962    32.0
+## 4 Afghanistan Asia       1967    34.0
+## 5 Afghanistan Asia       1972    36.1
+## 6 Afghanistan Asia       1977    38.4&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If we want to delete only a few columns of the df, we can do this by using &lt;code&gt;-&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# deleting the column population
+gapminder %&amp;gt;% 
+  select(-pop) %&amp;gt;% 
+  head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 5
+##   country     continent  year lifeExp gdpPercap
+##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;
+## 1 Afghanistan Asia       1952    28.8      779.
+## 2 Afghanistan Asia       1957    30.3      821.
+## 3 Afghanistan Asia       1962    32.0      853.
+## 4 Afghanistan Asia       1967    34.0      836.
+## 5 Afghanistan Asia       1972    36.1      740.
+## 6 Afghanistan Asia       1977    38.4      786.&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;mutate-function&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;mutate() function&lt;/h1&gt;
+&lt;p&gt;You can create new columns with the &lt;code&gt;mutate()&lt;/code&gt; function. Moreover, it is possible to use the &lt;code&gt;mutate()&lt;/code&gt; function in combination with other functions (e.g. &lt;code&gt;case_when()&lt;/code&gt;).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# creating a new coloumn where the value is 10% of the population
+gapminder %&amp;gt;% 
+  mutate(new_pop = round(pop*0.1)) %&amp;gt;% 
+  head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 7
+##   country     continent  year lifeExp      pop gdpPercap new_pop
+##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;    &amp;lt;int&amp;gt;     &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;
+## 1 Afghanistan Asia       1952    28.8  8425333      779.  842533
+## 2 Afghanistan Asia       1957    30.3  9240934      821.  924093
+## 3 Afghanistan Asia       1962    32.0 10267083      853. 1026708
+## 4 Afghanistan Asia       1967    34.0 11537966      836. 1153797
+## 5 Afghanistan Asia       1972    36.1 13079460      740. 1307946
+## 6 Afghanistan Asia       1977    38.4 14880372      786. 1488037&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, let’s create a new variable with three categories. Therefore, we will use the &lt;code&gt;mutate()&lt;/code&gt; function and the &lt;code&gt;case_when()&lt;/code&gt; function in combination. In the following example the new variable should include three cateogires: low life expectancy (lifeExp &amp;lt; 50), medium life expectancy (lifeExp &amp;gt;= 50 &amp;amp; &amp;lt;70) and high life expectancy (&amp;gt;= 70).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# creating three categories
+gapminder %&amp;gt;% 
+  mutate(lifeExp_cat = case_when(
+    lifeExp &amp;lt; 50 ~ &amp;quot;low&amp;quot;,
+    lifeExp &amp;lt; 70 &amp;amp; lifeExp &amp;gt;= 50 ~ &amp;quot;medium&amp;quot;, 
+    lifeExp &amp;gt;= 70 ~ &amp;quot;high&amp;quot;
+  )) %&amp;gt;% 
+  head()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 7
+##   country     continent  year lifeExp      pop gdpPercap lifeExp_cat
+##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;    &amp;lt;int&amp;gt;     &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;      
+## 1 Afghanistan Asia       1952    28.8  8425333      779. low        
+## 2 Afghanistan Asia       1957    30.3  9240934      821. low        
+## 3 Afghanistan Asia       1962    32.0 10267083      853. low        
+## 4 Afghanistan Asia       1967    34.0 11537966      836. low        
+## 5 Afghanistan Asia       1972    36.1 13079460      740. low        
+## 6 Afghanistan Asia       1977    38.4 14880372      786. low&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;group_by-summarise-function&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;group_by() &amp;amp; summarise() function&lt;/h1&gt;
+&lt;p&gt;If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The &lt;code&gt;group_by()&lt;/code&gt; function in combination with the &lt;code&gt;summarise()&lt;/code&gt; function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(ggplot2)
+gapminder %&amp;gt;% 
+  group_by(continent, year) %&amp;gt;% 
+  summarise(mean_lifeExp = mean(lifeExp)) %&amp;gt;% 
+  ggplot(aes(x = year, y = mean_lifeExp, col = continent)) +
+    geom_line()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Structural Equation Modeling in R</title>
       <link>/post/structural-equation-modeling-in-r/</link>
       <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 3.0.0">
+  <meta name="generator" content="Hugo 0.49.2" />
+  <meta name="author" content="Marlon Schumacher">
+
+  
+  
+  
+  
+    
+  
+  <meta name="description" content="Introduction to dplyr When it comes to data manipulation, dplyr is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:
+ filter() select() mutate() arrange() group_by() summarise()  In addition to these functions dplyr offers you the ability to use the pipe-operator out of the magrittr package. This operator is very useful and I highly recommend you to get used to it.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/data-wrangling-part-1-introduction-to-dplyr/">
+
+  
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" crossorigin="anonymous">
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  
+
+  <link rel="stylesheet" href="/styles.css">
+  
+
+  
+  
+  
+
+  
+  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="mcstatistics">
+  <link rel="feed" href="/index.xml" type="application/rss+xml" title="mcstatistics">
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/data-wrangling-part-1-introduction-to-dplyr/">
+
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="og:site_name" content="mcstatistics">
+  <meta property="og:url" content="/post/data-wrangling-part-1-introduction-to-dplyr/">
+  <meta property="og:title" content="Data Wrangling Part 1: Introduction to dplyr | mcstatistics">
+  <meta property="og:description" content="Introduction to dplyr When it comes to data manipulation, dplyr is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:
+ filter() select() mutate() arrange() group_by() summarise()  In addition to these functions dplyr offers you the ability to use the pipe-operator out of the magrittr package. This operator is very useful and I highly recommend you to get used to it.">
+  
+  
+    
+  <meta property="og:image" content="/img/icon-192.png">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2018-11-10T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2018-11-10T00:00:00&#43;00:00">
+  
+
+  
+
+  
+
+  <title>Data Wrangling Part 1: Introduction to dplyr | mcstatistics</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">mcstatistics</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav ml-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#posts">
+            
+            <span>Posts</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/#projects">
+            
+            <span>Projects</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+      
+
+        
+
+        
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">Data Wrangling Part 1: Introduction to dplyr</h1>
+
+  
+
+  
+    
+
+<div class="article-metadata">
+
+  
+  
+  <span itemscope itemprop="author" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Marlon Schumacher">
+  </span>
+  
+
+  <span class="article-date">
+    
+    <meta content="2018-11-10 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+    <time datetime="2018-11-10 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+      November 10, 2018
+    </time>
+  </span>
+  <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Marlon Schumacher">
+  </span>
+
+  
+
+  
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    
+    <a href="/categories/r/">R</a>, 
+    
+    <a href="/categories/tutorial/">Tutorial</a>
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Data%20Wrangling%20Part%201%3a%20Introduction%20to%20dplyr&amp;url=%2fpost%2fdata-wrangling-part-1-introduction-to-dplyr%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=%2fpost%2fdata-wrangling-part-1-introduction-to-dplyr%2f"
+         target="_blank" rel="noopener">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fpost%2fdata-wrangling-part-1-introduction-to-dplyr%2f&amp;title=Data%20Wrangling%20Part%201%3a%20Introduction%20to%20dplyr"
+         target="_blank" rel="noopener">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=%2fpost%2fdata-wrangling-part-1-introduction-to-dplyr%2f&amp;title=Data%20Wrangling%20Part%201%3a%20Introduction%20to%20dplyr"
+         target="_blank" rel="noopener">
+        <i class="fab fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Data%20Wrangling%20Part%201%3a%20Introduction%20to%20dplyr&amp;body=%2fpost%2fdata-wrangling-part-1-introduction-to-dplyr%2f">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      <div id="introduction-to-dplyr" class="section level1">
+<h1>Introduction to dplyr</h1>
+<p>When it comes to data manipulation, <code>dplyr</code> is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:</p>
+<ul>
+<li><code>filter()</code></li>
+<li><code>select()</code></li>
+<li><code>mutate()</code></li>
+<li><code>arrange()</code></li>
+<li><code>group_by()</code></li>
+<li><code>summarise()</code></li>
+</ul>
+<p>In addition to these functions <code>dplyr</code> offers you the ability to use the pipe-operator out of the <code>magrittr</code> package. This operator is very useful and I highly recommend you to get used to it. Except these functions, <code>dplyr</code> offers a lot more functions which are very useful. And, like always, you should look into the <a href="https://cran.r-project.org/web/packages/dplyr/dplyr.pdf">reference manual of dplyr</a> for more details! I will mostly use the data frame <code>gapminder</code> for explaining the functions.</p>
+</div>
+<div id="filter" class="section level1">
+<h1>filter()</h1>
+<p>In many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the <code>filter()</code> function provides an easy way to do that.</p>
+<p>Let’s take a look into the gapminder df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:</p>
+<pre class="r"><code>library(dplyr)
+library(gapminder)
+head(gapminder)</code></pre>
+<pre><code>## # A tibble: 6 x 6
+##   country     continent  year lifeExp      pop gdpPercap
+##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+## 1 Afghanistan Asia       1952    28.8  8425333      779.
+## 2 Afghanistan Asia       1957    30.3  9240934      821.
+## 3 Afghanistan Asia       1962    32.0 10267083      853.
+## 4 Afghanistan Asia       1967    34.0 11537966      836.
+## 5 Afghanistan Asia       1972    36.1 13079460      740.
+## 6 Afghanistan Asia       1977    38.4 14880372      786.</code></pre>
+<p>Now, different aspects of the data may be of interest:</p>
+<ul>
+<li>data for specific year(s)</li>
+<li>data for specific continent(s)</li>
+<li>data for specific continent(s) and year(s)</li>
+</ul>
+<p>Let’s filter the df:</p>
+<pre class="r"><code># filtering by the year 1997
+gapminder %&gt;% 
+  filter(year == 1997) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 6
+##   country     continent  year lifeExp      pop gdpPercap
+##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+## 1 Afghanistan Asia       1997    41.8 22227415      635.
+## 2 Albania     Europe     1997    73.0  3428038     3193.
+## 3 Algeria     Africa     1997    69.2 29072015     4797.
+## 4 Angola      Africa     1997    41.0  9875024     2277.
+## 5 Argentina   Americas   1997    73.3 36203463    10967.
+## 6 Australia   Oceania    1997    78.8 18565243    26998.</code></pre>
+<pre class="r"><code># filtering by the year 1997 and the continent asia
+gapminder %&gt;% 
+  filter(year == 1997 &amp; continent == &quot;Asia&quot;) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 6
+##   country          continent  year lifeExp        pop gdpPercap
+##   &lt;fct&gt;            &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;
+## 1 Afghanistan      Asia       1997    41.8   22227415      635.
+## 2 Bahrain          Asia       1997    73.9     598561    20292.
+## 3 Bangladesh       Asia       1997    59.4  123315288      973.
+## 4 Cambodia         Asia       1997    56.5   11782962      734.
+## 5 China            Asia       1997    70.4 1230075000     2289.
+## 6 Hong Kong, China Asia       1997    80      6495918    28378.</code></pre>
+<p>There are a few loglical operators you can use for filtering:</p>
+<ul>
+<li><code>&lt;</code>: less than</li>
+<li><code>&lt;=</code>: less than or equal to</li>
+<li><code>==</code>: equal to</li>
+<li><code>!=</code>: not equal to</li>
+<li><code>&gt;=</code>: greater than or eqal to</li>
+<li><code>&gt;</code>: greater than</li>
+<li><code>%in%</code>: matching argument</li>
+<li><code>!x</code>: not x (e.g. often used for NA exclusion <code>!is.na(variable)</code>)</li>
+</ul>
+<p>The following operators can be used in combination:</p>
+<ul>
+<li><code>&amp;</code>: filtering by condition 1 <strong>and</strong> contiditon 2</li>
+<li><code>|</code>: filtering by condition 1 <strong>or</strong> condition 2</li>
+</ul>
+<p>You will see a few of these operators in action later.</p>
+</div>
+<div id="select-function" class="section level1">
+<h1>select() function</h1>
+<p>The <code>select()</code> function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also <em>delete</em> sepcific coloumns.</p>
+<pre class="r"><code># let&#39;s select the coloumns country, continent, year and lifeExp
+gapminder %&gt;% 
+  select(country, continent, year, lifeExp) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 4
+##   country     continent  year lifeExp
+##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;
+## 1 Afghanistan Asia       1952    28.8
+## 2 Afghanistan Asia       1957    30.3
+## 3 Afghanistan Asia       1962    32.0
+## 4 Afghanistan Asia       1967    34.0
+## 5 Afghanistan Asia       1972    36.1
+## 6 Afghanistan Asia       1977    38.4</code></pre>
+<pre class="r"><code># a shorter way to select these coloumns
+gapminder %&gt;% 
+  select(country:lifeExp) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 4
+##   country     continent  year lifeExp
+##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;
+## 1 Afghanistan Asia       1952    28.8
+## 2 Afghanistan Asia       1957    30.3
+## 3 Afghanistan Asia       1962    32.0
+## 4 Afghanistan Asia       1967    34.0
+## 5 Afghanistan Asia       1972    36.1
+## 6 Afghanistan Asia       1977    38.4</code></pre>
+<p>If we want to delete only a few columns of the df, we can do this by using <code>-</code>:</p>
+<pre class="r"><code># deleting the column population
+gapminder %&gt;% 
+  select(-pop) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 5
+##   country     continent  year lifeExp gdpPercap
+##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;dbl&gt;
+## 1 Afghanistan Asia       1952    28.8      779.
+## 2 Afghanistan Asia       1957    30.3      821.
+## 3 Afghanistan Asia       1962    32.0      853.
+## 4 Afghanistan Asia       1967    34.0      836.
+## 5 Afghanistan Asia       1972    36.1      740.
+## 6 Afghanistan Asia       1977    38.4      786.</code></pre>
+</div>
+<div id="mutate-function" class="section level1">
+<h1>mutate() function</h1>
+<p>You can create new columns with the <code>mutate()</code> function. Moreover, it is possible to use the <code>mutate()</code> function in combination with other functions (e.g. <code>case_when()</code>).</p>
+<pre class="r"><code># creating a new coloumn where the value is 10% of the population
+gapminder %&gt;% 
+  mutate(new_pop = round(pop*0.1)) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 7
+##   country     continent  year lifeExp      pop gdpPercap new_pop
+##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Afghanistan Asia       1952    28.8  8425333      779.  842533
+## 2 Afghanistan Asia       1957    30.3  9240934      821.  924093
+## 3 Afghanistan Asia       1962    32.0 10267083      853. 1026708
+## 4 Afghanistan Asia       1967    34.0 11537966      836. 1153797
+## 5 Afghanistan Asia       1972    36.1 13079460      740. 1307946
+## 6 Afghanistan Asia       1977    38.4 14880372      786. 1488037</code></pre>
+<p>Now, let’s create a new variable with three categories. Therefore, we will use the <code>mutate()</code> function and the <code>case_when()</code> function in combination. In the following example the new variable should include three cateogires: low life expectancy (lifeExp &lt; 50), medium life expectancy (lifeExp &gt;= 50 &amp; &lt;70) and high life expectancy (&gt;= 70).</p>
+<pre class="r"><code># creating three categories
+gapminder %&gt;% 
+  mutate(lifeExp_cat = case_when(
+    lifeExp &lt; 50 ~ &quot;low&quot;,
+    lifeExp &lt; 70 &amp; lifeExp &gt;= 50 ~ &quot;medium&quot;, 
+    lifeExp &gt;= 70 ~ &quot;high&quot;
+  )) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 7
+##   country     continent  year lifeExp      pop gdpPercap lifeExp_cat
+##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;      
+## 1 Afghanistan Asia       1952    28.8  8425333      779. low        
+## 2 Afghanistan Asia       1957    30.3  9240934      821. low        
+## 3 Afghanistan Asia       1962    32.0 10267083      853. low        
+## 4 Afghanistan Asia       1967    34.0 11537966      836. low        
+## 5 Afghanistan Asia       1972    36.1 13079460      740. low        
+## 6 Afghanistan Asia       1977    38.4 14880372      786. low</code></pre>
+<p>Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.</p>
+</div>
+<div id="group_by-summarise-function" class="section level1">
+<h1>group_by() &amp; summarise() function</h1>
+<p>If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The <code>group_by()</code> function in combination with the <code>summarise()</code> function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time.</p>
+<pre class="r"><code>library(ggplot2)
+gapminder %&gt;% 
+  group_by(continent, year) %&gt;% 
+  summarise(mean_lifeExp = mean(lifeExp)) %&gt;% 
+  ggplot(aes(x = year, y = mean_lifeExp, col = continent)) +
+    geom_line()</code></pre>
+<p><img src="/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/dplyr/">dplyr</a>
+  
+  <a class="badge badge-light" href="/tags/data-wrangling/">data wrangling</a>
+  
+  <a class="badge badge-light" href="/tags/data-manipulation/">data manipulation</a>
+  
+</div>
+
+
+
+    
+
+
+
+
+
+
+<div class="media author-card" itemscope itemtype="http://schema.org/Person">
+  
+  <img class="portrait mr-3" src="/img/profile_fig.jpg" itemprop="image" alt="Avatar">
+  
+  <div class="media-body">
+    <h5 class="card-title" itemprop="name"><a href="/">Marlon Schumacher</a></h5>
+    <h6 class="card-subtitle">Empirical Political and Social Research</h6>
+    
+    <ul class="network-icon" aria-hidden="true">
+      
+      
+      
+      
+      
+      
+      <li>
+        <a itemprop="sameAs" href="mailto:marlon.schumacher@mcstatistics.eu" target="_blank" rel="noopener">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+      
+      
+      
+      
+      
+      
+      <li>
+        <a itemprop="sameAs" href="//twitter.com/MarlonSchumache" target="_blank" rel="noopener">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+      
+      
+      
+      
+      
+      
+      <li>
+        <a itemprop="sameAs" href="//github.com/MCStatistic" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i>
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+    
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+<div class="container">
+  <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    Marlon Schumacher &copy; 2018 &middot; 
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+</div>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+    
+    
+    <script src="/js/mathjax-config.500a6cbb2c0f345fcecc21b3116d6637aa78f1f11db8081ea581abe05390c2e8f3bbffe61be3cf0217baf785c40efceabe51050a4f007e69af94efd3643260e8.js" integrity="sha512-UApsuywPNF/OzCGzEW1mN6p48fEduAgepYGr4FOQwujzu//mG&#43;PPAhe694XEDvzqvlEFCk8AfmmvlO/TZDJg6A=="></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+        
+      
+
+      
+      
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML-full" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async></script>
+      
+    
+
+    <script src="/js/hugo-academic.js"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "Search Results",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    <script src="/js/search.js"></script>
+    
+
+    
+    
+
+  </body>
+</html>
+

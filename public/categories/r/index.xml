@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Marlon Schumacher &amp;copy; 2018</copyright>
-    <lastBuildDate>Wed, 24 Oct 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 10 Nov 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Data Wrangling Part 1: Introduction to dplyr</title>
+      <link>/post/data-wrangling-part-1-introduction-to-dplyr/</link>
+      <pubDate>Sat, 10 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/data-wrangling-part-1-introduction-to-dplyr/</guid>
+      <description>Introduction to dplyr When it comes to data manipulation, dplyr is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:
+ filter() select() mutate() arrange() group_by() summarise()  In addition to these functions dplyr offers you the ability to use the pipe-operator out of the magrittr package. This operator is very useful and I highly recommend you to get used to it.</description>
+    </item>
     
     <item>
       <title>Structural Equation Modeling in R</title>
