@@ -173,9 +173,53 @@ summary(fit, standardized = T, fit.measures = T)&lt;/code&gt;&lt;/pre&gt;
 &lt;p align=&#34;justify&#34;&gt;
 If you want to select specific fit measurements, you can use the function &lt;code&gt;fitmeasures()&lt;/code&gt;. By using the command &lt;code&gt;fit.measures = &amp;quot;all&amp;quot;&lt;/code&gt; you will get all available fit measures.
 &lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fitmeasures(fit, fit.measures = c(&amp;quot;chisq&amp;quot;, &amp;quot;cfi&amp;quot;, &amp;quot;rmsea&amp;quot;, &amp;quot;srmr&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##   chisq     cfi   rmsea    srmr 
-## 218.644   0.963   0.053   0.036&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fitmeasures(fit, fit.measures = c(&amp;quot;chisq&amp;quot;, &amp;quot;cfi&amp;quot;, &amp;quot;rmsea&amp;quot;, &amp;quot;srmr&amp;quot;)) %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+x
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+chisq
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+218.64363505
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+cfi
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.96261082
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+rmsea
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.05326682
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+srmr
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.03600232
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;p align=&#34;justify&#34;&gt;
 Apart from the fit indices, the standardized residuals can also be used to interpret the model fit. Unfortunately there is no function to get the standardized residuals. However, a function can be written very fast for this. Using &lt;code&gt;cov2cor&lt;/code&gt; on the covariance matrices gives us the fitted and observed correlation matrices. To get the residual correlation matrix we need to subtracting the fitted correlation matrix from the observed correlation matrix.
 &lt;/p&gt;

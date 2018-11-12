@@ -180,9 +180,53 @@ summary(fit, standardized = T, fit.measures = T)</code></pre>
 <p align="justify">
 If you want to select specific fit measurements, you can use the function <code>fitmeasures()</code>. By using the command <code>fit.measures = &quot;all&quot;</code> you will get all available fit measures.
 </p>
-<pre class="r"><code>fitmeasures(fit, fit.measures = c(&quot;chisq&quot;, &quot;cfi&quot;, &quot;rmsea&quot;, &quot;srmr&quot;))</code></pre>
-<pre><code>##   chisq     cfi   rmsea    srmr 
-## 218.644   0.963   0.053   0.036</code></pre>
+<pre class="r"><code>fitmeasures(fit, fit.measures = c(&quot;chisq&quot;, &quot;cfi&quot;, &quot;rmsea&quot;, &quot;srmr&quot;)) %&gt;% 
+  kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+x
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+chisq
+</td>
+<td style="text-align:right;">
+218.64363505
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+cfi
+</td>
+<td style="text-align:right;">
+0.96261082
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rmsea
+</td>
+<td style="text-align:right;">
+0.05326682
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+srmr
+</td>
+<td style="text-align:right;">
+0.03600232
+</td>
+</tr>
+</tbody>
+</table>
 <p align="justify">
 Apart from the fit indices, the standardized residuals can also be used to interpret the model fit. Unfortunately there is no function to get the standardized residuals. However, a function can be written very fast for this. Using <code>cov2cor</code> on the covariance matrices gives us the fitted and observed correlation matrices. To get the residual correlation matrix we need to subtracting the fitted correlation matrix from the observed correlation matrix.
 </p>

@@ -104,7 +104,8 @@ summary(fit, standardized = T, fit.measures = T)
 <p align="justify">If you want to select specific fit measurements, you can use the function `fitmeasures()`. By using the command `fit.measures = "all"` you will get all available fit measures.</p>
 
 ```{r message=FALSE, warning=FALSE}
-fitmeasures(fit, fit.measures = c("chisq", "cfi", "rmsea", "srmr"))
+fitmeasures(fit, fit.measures = c("chisq", "cfi", "rmsea", "srmr")) %>% 
+  kableExtra::kable()
 ```
 
 <p align="justify">Apart from the fit indices, the standardized residuals can also be used to interpret the model fit. Unfortunately there is no function to get the standardized residuals. However, a function can be written very fast for this. Using `cov2cor` on the covariance matrices gives us the fitted and observed correlation matrices. To get the residual correlation matrix we need to subtracting the fitted correlation matrix from the observed correlation matrix.</p>
