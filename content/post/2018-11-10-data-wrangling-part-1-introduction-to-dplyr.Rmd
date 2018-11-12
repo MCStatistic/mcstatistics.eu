@@ -20,7 +20,7 @@ output:
 
 # Introduction to dplyr
 
-When it comes to data manipulation, `dplyr` is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:
+<p align="justify">When it comes to data manipulation, `dplyr` is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:</p>
 
 + `filter()`
 + `select()`
@@ -29,7 +29,7 @@ When it comes to data manipulation, `dplyr` is a very powerful package with very
 + `group_by()`
 + `summarise()`
 
-In addition to these functions `dplyr` offers you the ability to use the pipe-operator out of the `magrittr` package. This operator is very useful and I highly recommend you to get used to it. Except these functions, `dplyr` offers a lot more functions which are very useful. And, like always, you should look into the [reference manual of dplyr](https://cran.r-project.org/web/packages/dplyr/dplyr.pdf) for more details! I will mostly use the data frame `gapminder` for explaining the functions. 
+<p align="justify">In addition to these functions `dplyr` offers you the ability to use the pipe-operator out of the `magrittr` package. This operator is very useful and I highly recommend you to get used to it. Except these functions, `dplyr` offers a lot more functions which are very useful. And, like always, you should look into the [reference manual of dplyr](https://cran.r-project.org/web/packages/dplyr/dplyr.pdf) for more details! I will mostly use the data frame `gapminder` for explaining the functions.</p>
 
 # filter()
 

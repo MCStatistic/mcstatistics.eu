@@ -18,7 +18,9 @@
       <guid>/post/data-wrangling-part-1-introduction-to-dplyr/</guid>
       <description>&lt;div id=&#34;introduction-to-dplyr&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Introduction to dplyr&lt;/h1&gt;
-&lt;p&gt;When it comes to data manipulation, &lt;code&gt;dplyr&lt;/code&gt; is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+When it comes to data manipulation, &lt;code&gt;dplyr&lt;/code&gt; is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:
+&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;filter()&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;select()&lt;/code&gt;&lt;/li&gt;
@@ -27,7 +29,9 @@
 &lt;li&gt;&lt;code&gt;group_by()&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;summarise()&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;In addition to these functions &lt;code&gt;dplyr&lt;/code&gt; offers you the ability to use the pipe-operator out of the &lt;code&gt;magrittr&lt;/code&gt; package. This operator is very useful and I highly recommend you to get used to it. Except these functions, &lt;code&gt;dplyr&lt;/code&gt; offers a lot more functions which are very useful. And, like always, you should look into the &lt;a href=&#34;https://cran.r-project.org/web/packages/dplyr/dplyr.pdf&#34;&gt;reference manual of dplyr&lt;/a&gt; for more details! I will mostly use the data frame &lt;code&gt;gapminder&lt;/code&gt; for explaining the functions.&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+In addition to these functions &lt;code&gt;dplyr&lt;/code&gt; offers you the ability to use the pipe-operator out of the &lt;code&gt;magrittr&lt;/code&gt; package. This operator is very useful and I highly recommend you to get used to it. Except these functions, &lt;code&gt;dplyr&lt;/code&gt; offers a lot more functions which are very useful. And, like always, you should look into the &lt;a href=&#34;https://cran.r-project.org/web/packages/dplyr/dplyr.pdf&#34;&gt;reference manual of dplyr&lt;/a&gt; for more details! I will mostly use the data frame &lt;code&gt;gapminder&lt;/code&gt; for explaining the functions.
+&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;filter&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;filter()&lt;/h1&gt;
