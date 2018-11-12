@@ -15,7 +15,7 @@ image:
   focal_point: ''
 output: 
   blogdown::html_page:
-    toc: false
+    toc: true
 ---
 
 # Introduction to dplyr
@@ -113,12 +113,12 @@ gapminder %>%
 
 # mutate() function
 
-<p align="justify">You can create new columns with the `mutate()` function. Moreover, it is possible to use the `mutate()` function in combination with other functions (e.g. `case_when()`). In the following code I create a new variable, where the value is 10% of the population size.</p>
+<p align="justify">You can create new columns with the `mutate()` function. Moreover, it is possible to use the `mutate()` function in combination with other functions (e.g. `case_when()`). In the following code I create a new variable, where the value is the log of the population size.</p>
 
 ```{r}
 # creating a new coloumn where the value is 10% of the population
 gapminder %>% 
-  mutate(new_pop = round(pop*0.1)) %>% 
+  mutate(log_pop = log(pop)) %>% 
   head() %>% 
   kableExtra::kable()
 ```
@@ -138,6 +138,35 @@ gapminder %>%
 ```
 
 <p align="justify">As you can see, you can add a bunch of conditions with the `case_when()` function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it's needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.</p>
+
+# arrange() function
+
+<p align="justify">This function can be used for sorting the data by one variable. You can also use multiple variables for this function. It is good for a first exploratory analysis or if you want to familiarize yourself with the data. The following code sorts the data by `lifeExp`:</p>
+
+```{r}
+gapminder %>% 
+  arrange(lifeExp) %>% 
+  head() %>% 
+  kableExtra::kable()
+```
+
+<p align="justify">If you want to sort your data in descending order instead of ascending order, you can do this by using `desc()`:</p>
+```{r}
+gapminder %>% 
+  arrange(desc(lifeExp)) %>% 
+  head() %>% 
+  kableExtra::kable()
+```
+
+<p align="justify">As mentioned above, it is possible to sort the data by multiple variables. The following code sorts the data by year in ascending order and then by lifeExp in descending order:</p>
+
+```{r}
+gapminder %>% 
+  arrange(year, desc(lifeExp)) %>% 
+  head() %>% 
+  kableExtra::kable()
+```
+
 
 # group_by() & summarise() function
 

@@ -16,7 +16,18 @@
       <pubDate>Sat, 10 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/data-wrangling-part-1-introduction-to-dplyr/</guid>
-      <description>&lt;div id=&#34;introduction-to-dplyr&#34; class=&#34;section level1&#34;&gt;
+      <description>&lt;div id=&#34;TOC&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#introduction-to-dplyr&#34;&gt;Introduction to dplyr&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#filter&#34;&gt;filter()&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#select-function&#34;&gt;select() function&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#mutate-function&#34;&gt;mutate() function&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#arrange-function&#34;&gt;arrange() function&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#group_by-summarise-function&#34;&gt;group_by() &amp;amp; summarise() function&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div id=&#34;introduction-to-dplyr&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Introduction to dplyr&lt;/h1&gt;
 &lt;p align=&#34;justify&#34;&gt;
 When it comes to data manipulation, &lt;code&gt;dplyr&lt;/code&gt; is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:
@@ -794,11 +805,11 @@ Asia
 &lt;div id=&#34;mutate-function&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;mutate() function&lt;/h1&gt;
 &lt;p align=&#34;justify&#34;&gt;
-You can create new columns with the &lt;code&gt;mutate()&lt;/code&gt; function. Moreover, it is possible to use the &lt;code&gt;mutate()&lt;/code&gt; function in combination with other functions (e.g. &lt;code&gt;case_when()&lt;/code&gt;). In the following code I create a new variable, where the value is 10% of the population size.
+You can create new columns with the &lt;code&gt;mutate()&lt;/code&gt; function. Moreover, it is possible to use the &lt;code&gt;mutate()&lt;/code&gt; function in combination with other functions (e.g. &lt;code&gt;case_when()&lt;/code&gt;). In the following code I create a new variable, where the value is the log of the population size.
 &lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# creating a new coloumn where the value is 10% of the population
 gapminder %&amp;gt;% 
-  mutate(new_pop = round(pop*0.1)) %&amp;gt;% 
+  mutate(log_pop = log(pop)) %&amp;gt;% 
   head() %&amp;gt;% 
   kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
 &lt;table&gt;
@@ -823,7 +834,7 @@ pop
 gdpPercap
 &lt;/th&gt;
 &lt;th style=&#34;text-align:right;&#34;&gt;
-new_pop
+log_pop
 &lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
@@ -848,7 +859,7 @@ Asia
 779.4453
 &lt;/td&gt;
 &lt;td style=&#34;text-align:right;&#34;&gt;
-842533
+15.94675
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -871,7 +882,7 @@ Asia
 820.8530
 &lt;/td&gt;
 &lt;td style=&#34;text-align:right;&#34;&gt;
-924093
+16.03915
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -894,7 +905,7 @@ Asia
 853.1007
 &lt;/td&gt;
 &lt;td style=&#34;text-align:right;&#34;&gt;
-1026708
+16.14445
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -917,7 +928,7 @@ Asia
 836.1971
 &lt;/td&gt;
 &lt;td style=&#34;text-align:right;&#34;&gt;
-1153797
+16.26115
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -940,7 +951,7 @@ Asia
 739.9811
 &lt;/td&gt;
 &lt;td style=&#34;text-align:right;&#34;&gt;
-1307946
+16.38655
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -963,7 +974,7 @@ Asia
 786.1134
 &lt;/td&gt;
 &lt;td style=&#34;text-align:right;&#34;&gt;
-1488037
+16.51555
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
@@ -1151,6 +1162,468 @@ low
 As you can see, you can add a bunch of conditions with the &lt;code&gt;case_when()&lt;/code&gt; function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it’s needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.
 &lt;/p&gt;
 &lt;/div&gt;
+&lt;div id=&#34;arrange-function&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;arrange() function&lt;/h1&gt;
+&lt;p align=&#34;justify&#34;&gt;
+This function can be used for sorting the data by one variable. You can also use multiple variables for this function. It is good for a first exploratory analysis or if you want to familiarize yourself with the data. The following code sorts the data by &lt;code&gt;lifeExp&lt;/code&gt;:
+&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gapminder %&amp;gt;% 
+  arrange(lifeExp) %&amp;gt;% 
+  head() %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+country
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+continent
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+year
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+lifeExp
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+pop
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+gdpPercap
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Rwanda
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Africa
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1992
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+23.599
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+7290203
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+737.0686
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+28.801
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+8425333
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+779.4453
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Gambia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Africa
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+30.000
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+284320
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+485.2307
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Angola
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Africa
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+30.015
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+4232095
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3520.6103
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Sierra Leone
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Africa
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+30.331
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2143249
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+879.7877
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1957
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+30.332
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9240934
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+820.8530
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p align=&#34;justify&#34;&gt;
+If you want to sort your data in descending order instead of ascending order, you can do this by using &lt;code&gt;desc()&lt;/code&gt;:
+&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gapminder %&amp;gt;% 
+  arrange(desc(lifeExp)) %&amp;gt;% 
+  head() %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+country
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+continent
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+year
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+lifeExp
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+pop
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+gdpPercap
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Japan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2007
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+82.603
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+127467972
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+31656.07
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Hong Kong, China
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2007
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+82.208
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+6980412
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+39724.98
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Japan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2002
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+82.000
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+127065841
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+28604.59
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Iceland
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Europe
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2007
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+81.757
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+301931
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+36180.79
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Switzerland
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Europe
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2007
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+81.701
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+7554661
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+37506.42
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Hong Kong, China
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2002
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+81.495
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+6762476
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+30209.02
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p align=&#34;justify&#34;&gt;
+As mentioned above, it is possible to sort the data by multiple variables. The following code sorts the data by year in ascending order and then by lifeExp in descending order:
+&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gapminder %&amp;gt;% 
+  arrange(year, desc(lifeExp)) %&amp;gt;% 
+  head() %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+country
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+continent
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+year
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+lifeExp
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+pop
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+gdpPercap
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Norway
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Europe
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+72.67
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3327728
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10095.422
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Iceland
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Europe
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+72.49
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+147962
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+7267.688
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Netherlands
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Europe
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+72.13
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10381988
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+8941.572
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Sweden
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Europe
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+71.86
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+7124673
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+8527.845
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Denmark
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Europe
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+70.78
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+4334000
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9692.385
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Switzerland
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Europe
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+69.62
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+4815000
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+14734.233
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
 &lt;div id=&#34;group_by-summarise-function&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;group_by() &amp;amp; summarise() function&lt;/h1&gt;
 &lt;p align=&#34;justify&#34;&gt;
@@ -1162,7 +1635,7 @@ gapminder %&amp;gt;%
   summarise(mean_lifeExp = mean(lifeExp)) %&amp;gt;% 
   ggplot(aes(x = year, y = mean_lifeExp, col = continent)) +
     geom_line()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 </description>
     </item>

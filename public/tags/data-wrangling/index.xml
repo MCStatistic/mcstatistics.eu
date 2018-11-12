@@ -18,7 +18,7 @@
       <pubDate>Sat, 10 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/data-wrangling-part-1-introduction-to-dplyr/</guid>
-      <description>Introduction to dplyr When it comes to data manipulation, dplyr is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:  filter() select() mutate() arrange() group_by() summarise()  In addition to these functions dplyr offers you the ability to use the pipe-operator out of the magrittr package. This operator is very useful and I highly recommend you to get used to it.</description>
+      <description>Introduction to dplyr filter() select() function mutate() function arrange() function group_by() &amp;amp; summarise() function   Introduction to dplyr When it comes to data manipulation, dplyr is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:  filter() select() mutate() arrange() group_by() summarise()  In addition to these functions dplyr offers you the ability to use the pipe-operator out of the magrittr package.</description>
     </item>
     
   </channel>

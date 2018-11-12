@@ -15,10 +15,20 @@ image:
   focal_point: ''
 output: 
   blogdown::html_page:
-    toc: false
+    toc: true
 ---
 
 
+<div id="TOC">
+<ul>
+<li><a href="#introduction-to-dplyr">Introduction to dplyr</a></li>
+<li><a href="#filter">filter()</a></li>
+<li><a href="#select-function">select() function</a></li>
+<li><a href="#mutate-function">mutate() function</a></li>
+<li><a href="#arrange-function">arrange() function</a></li>
+<li><a href="#group_by-summarise-function">group_by() &amp; summarise() function</a></li>
+</ul>
+</div>
 
 <div id="introduction-to-dplyr" class="section level1">
 <h1>Introduction to dplyr</h1>
@@ -798,11 +808,11 @@ Asia
 <div id="mutate-function" class="section level1">
 <h1>mutate() function</h1>
 <p align="justify">
-You can create new columns with the <code>mutate()</code> function. Moreover, it is possible to use the <code>mutate()</code> function in combination with other functions (e.g. <code>case_when()</code>). In the following code I create a new variable, where the value is 10% of the population size.
+You can create new columns with the <code>mutate()</code> function. Moreover, it is possible to use the <code>mutate()</code> function in combination with other functions (e.g. <code>case_when()</code>). In the following code I create a new variable, where the value is the log of the population size.
 </p>
 <pre class="r"><code># creating a new coloumn where the value is 10% of the population
 gapminder %&gt;% 
-  mutate(new_pop = round(pop*0.1)) %&gt;% 
+  mutate(log_pop = log(pop)) %&gt;% 
   head() %&gt;% 
   kableExtra::kable()</code></pre>
 <table>
@@ -827,7 +837,7 @@ pop
 gdpPercap
 </th>
 <th style="text-align:right;">
-new_pop
+log_pop
 </th>
 </tr>
 </thead>
@@ -852,7 +862,7 @@ Asia
 779.4453
 </td>
 <td style="text-align:right;">
-842533
+15.94675
 </td>
 </tr>
 <tr>
@@ -875,7 +885,7 @@ Asia
 820.8530
 </td>
 <td style="text-align:right;">
-924093
+16.03915
 </td>
 </tr>
 <tr>
@@ -898,7 +908,7 @@ Asia
 853.1007
 </td>
 <td style="text-align:right;">
-1026708
+16.14445
 </td>
 </tr>
 <tr>
@@ -921,7 +931,7 @@ Asia
 836.1971
 </td>
 <td style="text-align:right;">
-1153797
+16.26115
 </td>
 </tr>
 <tr>
@@ -944,7 +954,7 @@ Asia
 739.9811
 </td>
 <td style="text-align:right;">
-1307946
+16.38655
 </td>
 </tr>
 <tr>
@@ -967,7 +977,7 @@ Asia
 786.1134
 </td>
 <td style="text-align:right;">
-1488037
+16.51555
 </td>
 </tr>
 </tbody>
@@ -1155,6 +1165,468 @@ low
 As you can see, you can add a bunch of conditions with the <code>case_when()</code> function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it’s needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.
 </p>
 </div>
+<div id="arrange-function" class="section level1">
+<h1>arrange() function</h1>
+<p align="justify">
+This function can be used for sorting the data by one variable. You can also use multiple variables for this function. It is good for a first exploratory analysis or if you want to familiarize yourself with the data. The following code sorts the data by <code>lifeExp</code>:
+</p>
+<pre class="r"><code>gapminder %&gt;% 
+  arrange(lifeExp) %&gt;% 
+  head() %&gt;% 
+  kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+continent
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+lifeExp
+</th>
+<th style="text-align:right;">
+pop
+</th>
+<th style="text-align:right;">
+gdpPercap
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Rwanda
+</td>
+<td style="text-align:left;">
+Africa
+</td>
+<td style="text-align:right;">
+1992
+</td>
+<td style="text-align:right;">
+23.599
+</td>
+<td style="text-align:right;">
+7290203
+</td>
+<td style="text-align:right;">
+737.0686
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+28.801
+</td>
+<td style="text-align:right;">
+8425333
+</td>
+<td style="text-align:right;">
+779.4453
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gambia
+</td>
+<td style="text-align:left;">
+Africa
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+30.000
+</td>
+<td style="text-align:right;">
+284320
+</td>
+<td style="text-align:right;">
+485.2307
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Angola
+</td>
+<td style="text-align:left;">
+Africa
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+30.015
+</td>
+<td style="text-align:right;">
+4232095
+</td>
+<td style="text-align:right;">
+3520.6103
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sierra Leone
+</td>
+<td style="text-align:left;">
+Africa
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+30.331
+</td>
+<td style="text-align:right;">
+2143249
+</td>
+<td style="text-align:right;">
+879.7877
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1957
+</td>
+<td style="text-align:right;">
+30.332
+</td>
+<td style="text-align:right;">
+9240934
+</td>
+<td style="text-align:right;">
+820.8530
+</td>
+</tr>
+</tbody>
+</table>
+<p align="justify">
+If you want to sort your data in descending order instead of ascending order, you can do this by using <code>desc()</code>:
+</p>
+<pre class="r"><code>gapminder %&gt;% 
+  arrange(desc(lifeExp)) %&gt;% 
+  head() %&gt;% 
+  kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+continent
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+lifeExp
+</th>
+<th style="text-align:right;">
+pop
+</th>
+<th style="text-align:right;">
+gdpPercap
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Japan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+2007
+</td>
+<td style="text-align:right;">
+82.603
+</td>
+<td style="text-align:right;">
+127467972
+</td>
+<td style="text-align:right;">
+31656.07
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hong Kong, China
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+2007
+</td>
+<td style="text-align:right;">
+82.208
+</td>
+<td style="text-align:right;">
+6980412
+</td>
+<td style="text-align:right;">
+39724.98
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Japan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+2002
+</td>
+<td style="text-align:right;">
+82.000
+</td>
+<td style="text-align:right;">
+127065841
+</td>
+<td style="text-align:right;">
+28604.59
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Iceland
+</td>
+<td style="text-align:left;">
+Europe
+</td>
+<td style="text-align:right;">
+2007
+</td>
+<td style="text-align:right;">
+81.757
+</td>
+<td style="text-align:right;">
+301931
+</td>
+<td style="text-align:right;">
+36180.79
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Switzerland
+</td>
+<td style="text-align:left;">
+Europe
+</td>
+<td style="text-align:right;">
+2007
+</td>
+<td style="text-align:right;">
+81.701
+</td>
+<td style="text-align:right;">
+7554661
+</td>
+<td style="text-align:right;">
+37506.42
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hong Kong, China
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+2002
+</td>
+<td style="text-align:right;">
+81.495
+</td>
+<td style="text-align:right;">
+6762476
+</td>
+<td style="text-align:right;">
+30209.02
+</td>
+</tr>
+</tbody>
+</table>
+<p align="justify">
+As mentioned above, it is possible to sort the data by multiple variables. The following code sorts the data by year in ascending order and then by lifeExp in descending order:
+</p>
+<pre class="r"><code>gapminder %&gt;% 
+  arrange(year, desc(lifeExp)) %&gt;% 
+  head() %&gt;% 
+  kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+continent
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+lifeExp
+</th>
+<th style="text-align:right;">
+pop
+</th>
+<th style="text-align:right;">
+gdpPercap
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Norway
+</td>
+<td style="text-align:left;">
+Europe
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+72.67
+</td>
+<td style="text-align:right;">
+3327728
+</td>
+<td style="text-align:right;">
+10095.422
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Iceland
+</td>
+<td style="text-align:left;">
+Europe
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+72.49
+</td>
+<td style="text-align:right;">
+147962
+</td>
+<td style="text-align:right;">
+7267.688
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Netherlands
+</td>
+<td style="text-align:left;">
+Europe
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+72.13
+</td>
+<td style="text-align:right;">
+10381988
+</td>
+<td style="text-align:right;">
+8941.572
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sweden
+</td>
+<td style="text-align:left;">
+Europe
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+71.86
+</td>
+<td style="text-align:right;">
+7124673
+</td>
+<td style="text-align:right;">
+8527.845
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Denmark
+</td>
+<td style="text-align:left;">
+Europe
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+70.78
+</td>
+<td style="text-align:right;">
+4334000
+</td>
+<td style="text-align:right;">
+9692.385
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Switzerland
+</td>
+<td style="text-align:left;">
+Europe
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+69.62
+</td>
+<td style="text-align:right;">
+4815000
+</td>
+<td style="text-align:right;">
+14734.233
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div id="group_by-summarise-function" class="section level1">
 <h1>group_by() &amp; summarise() function</h1>
 <p align="justify">
@@ -1166,5 +1638,5 @@ gapminder %&gt;%
   summarise(mean_lifeExp = mean(lifeExp)) %&gt;% 
   ggplot(aes(x = year, y = mean_lifeExp, col = continent)) +
     geom_line()</code></pre>
-<p><img src="/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
