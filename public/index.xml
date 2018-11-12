@@ -35,16 +35,69 @@
 &lt;p&gt;Let’s take a look into the &lt;code&gt;gapminder&lt;/code&gt; df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
 library(gapminder)
-head(gapminder)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 6
-##   country     continent  year lifeExp      pop gdpPercap
-##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;    &amp;lt;int&amp;gt;     &amp;lt;dbl&amp;gt;
-## 1 Afghanistan Asia       1952    28.8  8425333      779.
-## 2 Afghanistan Asia       1957    30.3  9240934      821.
-## 3 Afghanistan Asia       1962    32.0 10267083      853.
-## 4 Afghanistan Asia       1967    34.0 11537966      836.
-## 5 Afghanistan Asia       1972    36.1 13079460      740.
-## 6 Afghanistan Asia       1977    38.4 14880372      786.&lt;/code&gt;&lt;/pre&gt;
+knitr::kable(head(gapminder))&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;left&#34;&gt;country&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;continent&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;year&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;lifeExp&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;pop&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;gdpPercap&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Afghanistan&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Asia&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1952&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;28.801&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;8425333&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;779.4453&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Afghanistan&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Asia&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1957&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;30.332&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;9240934&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;820.8530&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Afghanistan&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Asia&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1962&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;31.997&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;10267083&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;853.1007&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Afghanistan&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Asia&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1967&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;34.020&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;11537966&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;836.1971&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Afghanistan&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Asia&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1972&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;36.088&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;13079460&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;739.9811&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;left&#34;&gt;Afghanistan&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;Asia&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1977&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;38.438&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;14880372&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;786.1134&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;p&gt;Now, different aspects of the data may be of interest:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;data for specific year(s)&lt;/li&gt;
@@ -55,30 +108,306 @@ head(gapminder)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# filtering by the year 1997
 gapminder %&amp;gt;% 
   filter(year == 1997) %&amp;gt;% 
-  head()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 6
-##   country     continent  year lifeExp      pop gdpPercap
-##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;    &amp;lt;int&amp;gt;     &amp;lt;dbl&amp;gt;
-## 1 Afghanistan Asia       1997    41.8 22227415      635.
-## 2 Albania     Europe     1997    73.0  3428038     3193.
-## 3 Algeria     Africa     1997    69.2 29072015     4797.
-## 4 Angola      Africa     1997    41.0  9875024     2277.
-## 5 Argentina   Americas   1997    73.3 36203463    10967.
-## 6 Australia   Oceania    1997    78.8 18565243    26998.&lt;/code&gt;&lt;/pre&gt;
+  head() %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+country
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+continent
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+year
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+lifeExp
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+pop
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+gdpPercap
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+41.763
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+22227415
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+635.3414
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Albania
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Europe
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+72.950
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3428038
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3193.0546
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Algeria
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Africa
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+69.152
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+29072015
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+4797.2951
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Angola
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Africa
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+40.963
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9875024
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2277.1409
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Argentina
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Americas
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+73.275
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+36203463
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10967.2820
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Australia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Oceania
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+78.830
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+18565243
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+26997.9366
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;p&gt;It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# filtering by the year 1997 and the continent asia
 gapminder %&amp;gt;% 
   filter(year == 1997 &amp;amp; continent == &amp;quot;Asia&amp;quot;) %&amp;gt;% 
-  head()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 6
-##   country          continent  year lifeExp        pop gdpPercap
-##   &amp;lt;fct&amp;gt;            &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;      &amp;lt;int&amp;gt;     &amp;lt;dbl&amp;gt;
-## 1 Afghanistan      Asia       1997    41.8   22227415      635.
-## 2 Bahrain          Asia       1997    73.9     598561    20292.
-## 3 Bangladesh       Asia       1997    59.4  123315288      973.
-## 4 Cambodia         Asia       1997    56.5   11782962      734.
-## 5 China            Asia       1997    70.4 1230075000     2289.
-## 6 Hong Kong, China Asia       1997    80      6495918    28378.&lt;/code&gt;&lt;/pre&gt;
+  head() %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+country
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+continent
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+year
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+lifeExp
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+pop
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+gdpPercap
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+41.763
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+22227415
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+635.3414
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bahrain
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+73.925
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+598561
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+20292.0168
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bangladesh
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+59.412
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+123315288
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+972.7700
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Cambodia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+56.534
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+11782962
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+734.2852
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+China
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+70.426
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1230075000
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2289.2341
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Hong Kong, China
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+80.000
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+6495918
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+28377.6322
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;p&gt;As you can imagine, there are many logical operators that you can use. I guess, most of you know these operators already.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;&amp;lt;&lt;/code&gt;: less than&lt;/li&gt;
@@ -103,43 +432,352 @@ gapminder %&amp;gt;%
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# let&amp;#39;s select the coloumns country, continent, year and lifeExp
 gapminder %&amp;gt;% 
   select(country, continent, year, lifeExp) %&amp;gt;% 
-  head()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 4
-##   country     continent  year lifeExp
-##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;
-## 1 Afghanistan Asia       1952    28.8
-## 2 Afghanistan Asia       1957    30.3
-## 3 Afghanistan Asia       1962    32.0
-## 4 Afghanistan Asia       1967    34.0
-## 5 Afghanistan Asia       1972    36.1
-## 6 Afghanistan Asia       1977    38.4&lt;/code&gt;&lt;/pre&gt;
+  head() %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+country
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+continent
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+year
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+lifeExp
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+28.801
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1957
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+30.332
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1962
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+31.997
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1967
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+34.020
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1972
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+36.088
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1977
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+38.438
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# a shorter way to select these coloumns
 gapminder %&amp;gt;% 
   select(country:lifeExp) %&amp;gt;% 
-  head()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 4
-##   country     continent  year lifeExp
-##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;
-## 1 Afghanistan Asia       1952    28.8
-## 2 Afghanistan Asia       1957    30.3
-## 3 Afghanistan Asia       1962    32.0
-## 4 Afghanistan Asia       1967    34.0
-## 5 Afghanistan Asia       1972    36.1
-## 6 Afghanistan Asia       1977    38.4&lt;/code&gt;&lt;/pre&gt;
+  head() %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+country
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+continent
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+year
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+lifeExp
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+28.801
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1957
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+30.332
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1962
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+31.997
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1967
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+34.020
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1972
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+36.088
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1977
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+38.438
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;p&gt;If we want to delete only a few columns of the df, we can do this by using &lt;code&gt;-&lt;/code&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# deleting the column population
 gapminder %&amp;gt;% 
   select(-pop) %&amp;gt;% 
-  head()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 5
-##   country     continent  year lifeExp gdpPercap
-##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;
-## 1 Afghanistan Asia       1952    28.8      779.
-## 2 Afghanistan Asia       1957    30.3      821.
-## 3 Afghanistan Asia       1962    32.0      853.
-## 4 Afghanistan Asia       1967    34.0      836.
-## 5 Afghanistan Asia       1972    36.1      740.
-## 6 Afghanistan Asia       1977    38.4      786.&lt;/code&gt;&lt;/pre&gt;
+  head() %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+country
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+continent
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+year
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+lifeExp
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+gdpPercap
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+28.801
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+779.4453
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1957
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+30.332
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+820.8530
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1962
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+31.997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+853.1007
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1967
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+34.020
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+836.1971
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1972
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+36.088
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+739.9811
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1977
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+38.438
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+786.1134
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;/div&gt;
 &lt;div id=&#34;mutate-function&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;mutate() function&lt;/h1&gt;
@@ -147,16 +785,175 @@ gapminder %&amp;gt;%
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# creating a new coloumn where the value is 10% of the population
 gapminder %&amp;gt;% 
   mutate(new_pop = round(pop*0.1)) %&amp;gt;% 
-  head()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 7
-##   country     continent  year lifeExp      pop gdpPercap new_pop
-##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;    &amp;lt;int&amp;gt;     &amp;lt;dbl&amp;gt;   &amp;lt;dbl&amp;gt;
-## 1 Afghanistan Asia       1952    28.8  8425333      779.  842533
-## 2 Afghanistan Asia       1957    30.3  9240934      821.  924093
-## 3 Afghanistan Asia       1962    32.0 10267083      853. 1026708
-## 4 Afghanistan Asia       1967    34.0 11537966      836. 1153797
-## 5 Afghanistan Asia       1972    36.1 13079460      740. 1307946
-## 6 Afghanistan Asia       1977    38.4 14880372      786. 1488037&lt;/code&gt;&lt;/pre&gt;
+  head() %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+country
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+continent
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+year
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+lifeExp
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+pop
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+gdpPercap
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+new_pop
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+28.801
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+8425333
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+779.4453
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+842533
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1957
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+30.332
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9240934
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+820.8530
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+924093
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1962
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+31.997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10267083
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+853.1007
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1026708
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1967
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+34.020
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+11537966
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+836.1971
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1153797
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1972
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+36.088
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+13079460
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+739.9811
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1307946
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1977
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+38.438
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+14880372
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+786.1134
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1488037
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;p&gt;Now, let’s create a new variable with three categories. Therefore, we will use the &lt;code&gt;mutate()&lt;/code&gt; function and the &lt;code&gt;case_when()&lt;/code&gt; function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp &amp;lt; 50), medium life expectancy (lifeExp &amp;gt;= 50 &amp;amp; &amp;lt;70) and high life expectancy (&amp;gt;= 70).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# creating three categories
 gapminder %&amp;gt;% 
@@ -165,16 +962,175 @@ gapminder %&amp;gt;%
     lifeExp &amp;lt; 70 &amp;amp; lifeExp &amp;gt;= 50 ~ &amp;quot;medium&amp;quot;, 
     lifeExp &amp;gt;= 70 ~ &amp;quot;high&amp;quot;
   )) %&amp;gt;% 
-  head()&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## # A tibble: 6 x 7
-##   country     continent  year lifeExp      pop gdpPercap lifeExp_cat
-##   &amp;lt;fct&amp;gt;       &amp;lt;fct&amp;gt;     &amp;lt;int&amp;gt;   &amp;lt;dbl&amp;gt;    &amp;lt;int&amp;gt;     &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;      
-## 1 Afghanistan Asia       1952    28.8  8425333      779. low        
-## 2 Afghanistan Asia       1957    30.3  9240934      821. low        
-## 3 Afghanistan Asia       1962    32.0 10267083      853. low        
-## 4 Afghanistan Asia       1967    34.0 11537966      836. low        
-## 5 Afghanistan Asia       1972    36.1 13079460      740. low        
-## 6 Afghanistan Asia       1977    38.4 14880372      786. low&lt;/code&gt;&lt;/pre&gt;
+  head() %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+country
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+continent
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+year
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+lifeExp
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+pop
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+gdpPercap
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+lifeExp_cat
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1952
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+28.801
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+8425333
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+779.4453
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+low
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1957
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+30.332
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9240934
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+820.8530
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+low
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1962
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+31.997
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+10267083
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+853.1007
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+low
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1967
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+34.020
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+11537966
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+836.1971
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+low
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1972
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+36.088
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+13079460
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+739.9811
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+low
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Afghanistan
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1977
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+38.438
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+14880372
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+786.1134
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+low
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;p&gt;As you can see, you can add a bunch of conditions with the &lt;code&gt;case_when()&lt;/code&gt; function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it’s needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;group_by-summarise-function&#34; class=&#34;section level1&#34;&gt;

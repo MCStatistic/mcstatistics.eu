@@ -39,7 +39,7 @@ Let's take a look into the `gapminder` df, which is an excerpt of the Gapminder 
 ```{r message=FALSE, warning=FALSE}
 library(dplyr)
 library(gapminder)
-head(gapminder)
+knitr::kable(head(gapminder))
 ```
 
 Now, different aspects of the data may be of interest:
@@ -53,7 +53,8 @@ A very simple filtering could look like this one:
 # filtering by the year 1997
 gapminder %>% 
   filter(year == 1997) %>% 
-  head()
+  head() %>% 
+  kableExtra::kable()
 ```
 
 It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.
@@ -61,7 +62,8 @@ It is also possible to filter with more than one condition. If we are only inter
 # filtering by the year 1997 and the continent asia
 gapminder %>% 
   filter(year == 1997 & continent == "Asia") %>% 
-  head()
+  head() %>% 
+  kableExtra::kable()
 ```
 
 As you can imagine, there are many logical operators that you can use. I guess, most of you know these operators already.
@@ -90,12 +92,14 @@ The `select()` function is a very simple one but can be useful, if the data fram
 # let's select the coloumns country, continent, year and lifeExp
 gapminder %>% 
   select(country, continent, year, lifeExp) %>% 
-  head()
+  head() %>% 
+  kableExtra::kable()
 
 # a shorter way to select these coloumns
 gapminder %>% 
   select(country:lifeExp) %>% 
-  head()
+  head() %>% 
+  kableExtra::kable()
 ```
 
 If we want to delete only a few columns of the df, we can do this by using `-`:
@@ -103,7 +107,8 @@ If we want to delete only a few columns of the df, we can do this by using `-`:
 # deleting the column population
 gapminder %>% 
   select(-pop) %>% 
-  head()
+  head() %>% 
+  kableExtra::kable()
 ```
 
 # mutate() function
@@ -114,7 +119,8 @@ You can create new columns with the `mutate()` function. Moreover, it is possibl
 # creating a new coloumn where the value is 10% of the population
 gapminder %>% 
   mutate(new_pop = round(pop*0.1)) %>% 
-  head()
+  head() %>% 
+  kableExtra::kable()
 ```
 
 Now, let's create a new variable with three categories. Therefore, we will use the `mutate()` function and the `case_when()` function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp < 50), medium life expectancy (lifeExp >= 50 & <70) and high life expectancy (>= 70). 
@@ -127,7 +133,8 @@ gapminder %>%
     lifeExp < 70 & lifeExp >= 50 ~ "medium", 
     lifeExp >= 70 ~ "high"
   )) %>% 
-  head()
+  head() %>% 
+  kableExtra::kable()
 ```
 
 As you can see, you can add a bunch of conditions with the `case_when()` function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it's needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.

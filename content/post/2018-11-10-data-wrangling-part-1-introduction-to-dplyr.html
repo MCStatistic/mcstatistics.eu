@@ -39,16 +39,69 @@ output:
 <p>Let’s take a look into the <code>gapminder</code> df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:</p>
 <pre class="r"><code>library(dplyr)
 library(gapminder)
-head(gapminder)</code></pre>
-<pre><code>## # A tibble: 6 x 6
-##   country     continent  year lifeExp      pop gdpPercap
-##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
-## 1 Afghanistan Asia       1952    28.8  8425333      779.
-## 2 Afghanistan Asia       1957    30.3  9240934      821.
-## 3 Afghanistan Asia       1962    32.0 10267083      853.
-## 4 Afghanistan Asia       1967    34.0 11537966      836.
-## 5 Afghanistan Asia       1972    36.1 13079460      740.
-## 6 Afghanistan Asia       1977    38.4 14880372      786.</code></pre>
+knitr::kable(head(gapminder))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">country</th>
+<th align="left">continent</th>
+<th align="right">year</th>
+<th align="right">lifeExp</th>
+<th align="right">pop</th>
+<th align="right">gdpPercap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="left">Asia</td>
+<td align="right">1952</td>
+<td align="right">28.801</td>
+<td align="right">8425333</td>
+<td align="right">779.4453</td>
+</tr>
+<tr class="even">
+<td align="left">Afghanistan</td>
+<td align="left">Asia</td>
+<td align="right">1957</td>
+<td align="right">30.332</td>
+<td align="right">9240934</td>
+<td align="right">820.8530</td>
+</tr>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="left">Asia</td>
+<td align="right">1962</td>
+<td align="right">31.997</td>
+<td align="right">10267083</td>
+<td align="right">853.1007</td>
+</tr>
+<tr class="even">
+<td align="left">Afghanistan</td>
+<td align="left">Asia</td>
+<td align="right">1967</td>
+<td align="right">34.020</td>
+<td align="right">11537966</td>
+<td align="right">836.1971</td>
+</tr>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="left">Asia</td>
+<td align="right">1972</td>
+<td align="right">36.088</td>
+<td align="right">13079460</td>
+<td align="right">739.9811</td>
+</tr>
+<tr class="even">
+<td align="left">Afghanistan</td>
+<td align="left">Asia</td>
+<td align="right">1977</td>
+<td align="right">38.438</td>
+<td align="right">14880372</td>
+<td align="right">786.1134</td>
+</tr>
+</tbody>
+</table>
 <p>Now, different aspects of the data may be of interest:</p>
 <ul>
 <li>data for specific year(s)</li>
@@ -59,30 +112,306 @@ head(gapminder)</code></pre>
 <pre class="r"><code># filtering by the year 1997
 gapminder %&gt;% 
   filter(year == 1997) %&gt;% 
-  head()</code></pre>
-<pre><code>## # A tibble: 6 x 6
-##   country     continent  year lifeExp      pop gdpPercap
-##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
-## 1 Afghanistan Asia       1997    41.8 22227415      635.
-## 2 Albania     Europe     1997    73.0  3428038     3193.
-## 3 Algeria     Africa     1997    69.2 29072015     4797.
-## 4 Angola      Africa     1997    41.0  9875024     2277.
-## 5 Argentina   Americas   1997    73.3 36203463    10967.
-## 6 Australia   Oceania    1997    78.8 18565243    26998.</code></pre>
+  head() %&gt;% 
+  kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+continent
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+lifeExp
+</th>
+<th style="text-align:right;">
+pop
+</th>
+<th style="text-align:right;">
+gdpPercap
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1997
+</td>
+<td style="text-align:right;">
+41.763
+</td>
+<td style="text-align:right;">
+22227415
+</td>
+<td style="text-align:right;">
+635.3414
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Albania
+</td>
+<td style="text-align:left;">
+Europe
+</td>
+<td style="text-align:right;">
+1997
+</td>
+<td style="text-align:right;">
+72.950
+</td>
+<td style="text-align:right;">
+3428038
+</td>
+<td style="text-align:right;">
+3193.0546
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Algeria
+</td>
+<td style="text-align:left;">
+Africa
+</td>
+<td style="text-align:right;">
+1997
+</td>
+<td style="text-align:right;">
+69.152
+</td>
+<td style="text-align:right;">
+29072015
+</td>
+<td style="text-align:right;">
+4797.2951
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Angola
+</td>
+<td style="text-align:left;">
+Africa
+</td>
+<td style="text-align:right;">
+1997
+</td>
+<td style="text-align:right;">
+40.963
+</td>
+<td style="text-align:right;">
+9875024
+</td>
+<td style="text-align:right;">
+2277.1409
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Argentina
+</td>
+<td style="text-align:left;">
+Americas
+</td>
+<td style="text-align:right;">
+1997
+</td>
+<td style="text-align:right;">
+73.275
+</td>
+<td style="text-align:right;">
+36203463
+</td>
+<td style="text-align:right;">
+10967.2820
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Australia
+</td>
+<td style="text-align:left;">
+Oceania
+</td>
+<td style="text-align:right;">
+1997
+</td>
+<td style="text-align:right;">
+78.830
+</td>
+<td style="text-align:right;">
+18565243
+</td>
+<td style="text-align:right;">
+26997.9366
+</td>
+</tr>
+</tbody>
+</table>
 <p>It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.</p>
 <pre class="r"><code># filtering by the year 1997 and the continent asia
 gapminder %&gt;% 
   filter(year == 1997 &amp; continent == &quot;Asia&quot;) %&gt;% 
-  head()</code></pre>
-<pre><code>## # A tibble: 6 x 6
-##   country          continent  year lifeExp        pop gdpPercap
-##   &lt;fct&gt;            &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;
-## 1 Afghanistan      Asia       1997    41.8   22227415      635.
-## 2 Bahrain          Asia       1997    73.9     598561    20292.
-## 3 Bangladesh       Asia       1997    59.4  123315288      973.
-## 4 Cambodia         Asia       1997    56.5   11782962      734.
-## 5 China            Asia       1997    70.4 1230075000     2289.
-## 6 Hong Kong, China Asia       1997    80      6495918    28378.</code></pre>
+  head() %&gt;% 
+  kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+continent
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+lifeExp
+</th>
+<th style="text-align:right;">
+pop
+</th>
+<th style="text-align:right;">
+gdpPercap
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1997
+</td>
+<td style="text-align:right;">
+41.763
+</td>
+<td style="text-align:right;">
+22227415
+</td>
+<td style="text-align:right;">
+635.3414
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bahrain
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1997
+</td>
+<td style="text-align:right;">
+73.925
+</td>
+<td style="text-align:right;">
+598561
+</td>
+<td style="text-align:right;">
+20292.0168
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bangladesh
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1997
+</td>
+<td style="text-align:right;">
+59.412
+</td>
+<td style="text-align:right;">
+123315288
+</td>
+<td style="text-align:right;">
+972.7700
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cambodia
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1997
+</td>
+<td style="text-align:right;">
+56.534
+</td>
+<td style="text-align:right;">
+11782962
+</td>
+<td style="text-align:right;">
+734.2852
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+China
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1997
+</td>
+<td style="text-align:right;">
+70.426
+</td>
+<td style="text-align:right;">
+1230075000
+</td>
+<td style="text-align:right;">
+2289.2341
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hong Kong, China
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1997
+</td>
+<td style="text-align:right;">
+80.000
+</td>
+<td style="text-align:right;">
+6495918
+</td>
+<td style="text-align:right;">
+28377.6322
+</td>
+</tr>
+</tbody>
+</table>
 <p>As you can imagine, there are many logical operators that you can use. I guess, most of you know these operators already.</p>
 <ul>
 <li><code>&lt;</code>: less than</li>
@@ -107,43 +436,352 @@ gapminder %&gt;%
 <pre class="r"><code># let&#39;s select the coloumns country, continent, year and lifeExp
 gapminder %&gt;% 
   select(country, continent, year, lifeExp) %&gt;% 
-  head()</code></pre>
-<pre><code>## # A tibble: 6 x 4
-##   country     continent  year lifeExp
-##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;
-## 1 Afghanistan Asia       1952    28.8
-## 2 Afghanistan Asia       1957    30.3
-## 3 Afghanistan Asia       1962    32.0
-## 4 Afghanistan Asia       1967    34.0
-## 5 Afghanistan Asia       1972    36.1
-## 6 Afghanistan Asia       1977    38.4</code></pre>
+  head() %&gt;% 
+  kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+continent
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+lifeExp
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+28.801
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1957
+</td>
+<td style="text-align:right;">
+30.332
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1962
+</td>
+<td style="text-align:right;">
+31.997
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1967
+</td>
+<td style="text-align:right;">
+34.020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1972
+</td>
+<td style="text-align:right;">
+36.088
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1977
+</td>
+<td style="text-align:right;">
+38.438
+</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code># a shorter way to select these coloumns
 gapminder %&gt;% 
   select(country:lifeExp) %&gt;% 
-  head()</code></pre>
-<pre><code>## # A tibble: 6 x 4
-##   country     continent  year lifeExp
-##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;
-## 1 Afghanistan Asia       1952    28.8
-## 2 Afghanistan Asia       1957    30.3
-## 3 Afghanistan Asia       1962    32.0
-## 4 Afghanistan Asia       1967    34.0
-## 5 Afghanistan Asia       1972    36.1
-## 6 Afghanistan Asia       1977    38.4</code></pre>
+  head() %&gt;% 
+  kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+continent
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+lifeExp
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+28.801
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1957
+</td>
+<td style="text-align:right;">
+30.332
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1962
+</td>
+<td style="text-align:right;">
+31.997
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1967
+</td>
+<td style="text-align:right;">
+34.020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1972
+</td>
+<td style="text-align:right;">
+36.088
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1977
+</td>
+<td style="text-align:right;">
+38.438
+</td>
+</tr>
+</tbody>
+</table>
 <p>If we want to delete only a few columns of the df, we can do this by using <code>-</code>:</p>
 <pre class="r"><code># deleting the column population
 gapminder %&gt;% 
   select(-pop) %&gt;% 
-  head()</code></pre>
-<pre><code>## # A tibble: 6 x 5
-##   country     continent  year lifeExp gdpPercap
-##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;dbl&gt;
-## 1 Afghanistan Asia       1952    28.8      779.
-## 2 Afghanistan Asia       1957    30.3      821.
-## 3 Afghanistan Asia       1962    32.0      853.
-## 4 Afghanistan Asia       1967    34.0      836.
-## 5 Afghanistan Asia       1972    36.1      740.
-## 6 Afghanistan Asia       1977    38.4      786.</code></pre>
+  head() %&gt;% 
+  kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+continent
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+lifeExp
+</th>
+<th style="text-align:right;">
+gdpPercap
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+28.801
+</td>
+<td style="text-align:right;">
+779.4453
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1957
+</td>
+<td style="text-align:right;">
+30.332
+</td>
+<td style="text-align:right;">
+820.8530
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1962
+</td>
+<td style="text-align:right;">
+31.997
+</td>
+<td style="text-align:right;">
+853.1007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1967
+</td>
+<td style="text-align:right;">
+34.020
+</td>
+<td style="text-align:right;">
+836.1971
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1972
+</td>
+<td style="text-align:right;">
+36.088
+</td>
+<td style="text-align:right;">
+739.9811
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1977
+</td>
+<td style="text-align:right;">
+38.438
+</td>
+<td style="text-align:right;">
+786.1134
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="mutate-function" class="section level1">
 <h1>mutate() function</h1>
@@ -151,16 +789,175 @@ gapminder %&gt;%
 <pre class="r"><code># creating a new coloumn where the value is 10% of the population
 gapminder %&gt;% 
   mutate(new_pop = round(pop*0.1)) %&gt;% 
-  head()</code></pre>
-<pre><code>## # A tibble: 6 x 7
-##   country     continent  year lifeExp      pop gdpPercap new_pop
-##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-## 1 Afghanistan Asia       1952    28.8  8425333      779.  842533
-## 2 Afghanistan Asia       1957    30.3  9240934      821.  924093
-## 3 Afghanistan Asia       1962    32.0 10267083      853. 1026708
-## 4 Afghanistan Asia       1967    34.0 11537966      836. 1153797
-## 5 Afghanistan Asia       1972    36.1 13079460      740. 1307946
-## 6 Afghanistan Asia       1977    38.4 14880372      786. 1488037</code></pre>
+  head() %&gt;% 
+  kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+continent
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+lifeExp
+</th>
+<th style="text-align:right;">
+pop
+</th>
+<th style="text-align:right;">
+gdpPercap
+</th>
+<th style="text-align:right;">
+new_pop
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+28.801
+</td>
+<td style="text-align:right;">
+8425333
+</td>
+<td style="text-align:right;">
+779.4453
+</td>
+<td style="text-align:right;">
+842533
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1957
+</td>
+<td style="text-align:right;">
+30.332
+</td>
+<td style="text-align:right;">
+9240934
+</td>
+<td style="text-align:right;">
+820.8530
+</td>
+<td style="text-align:right;">
+924093
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1962
+</td>
+<td style="text-align:right;">
+31.997
+</td>
+<td style="text-align:right;">
+10267083
+</td>
+<td style="text-align:right;">
+853.1007
+</td>
+<td style="text-align:right;">
+1026708
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1967
+</td>
+<td style="text-align:right;">
+34.020
+</td>
+<td style="text-align:right;">
+11537966
+</td>
+<td style="text-align:right;">
+836.1971
+</td>
+<td style="text-align:right;">
+1153797
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1972
+</td>
+<td style="text-align:right;">
+36.088
+</td>
+<td style="text-align:right;">
+13079460
+</td>
+<td style="text-align:right;">
+739.9811
+</td>
+<td style="text-align:right;">
+1307946
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1977
+</td>
+<td style="text-align:right;">
+38.438
+</td>
+<td style="text-align:right;">
+14880372
+</td>
+<td style="text-align:right;">
+786.1134
+</td>
+<td style="text-align:right;">
+1488037
+</td>
+</tr>
+</tbody>
+</table>
 <p>Now, let’s create a new variable with three categories. Therefore, we will use the <code>mutate()</code> function and the <code>case_when()</code> function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp &lt; 50), medium life expectancy (lifeExp &gt;= 50 &amp; &lt;70) and high life expectancy (&gt;= 70).</p>
 <pre class="r"><code># creating three categories
 gapminder %&gt;% 
@@ -169,16 +966,175 @@ gapminder %&gt;%
     lifeExp &lt; 70 &amp; lifeExp &gt;= 50 ~ &quot;medium&quot;, 
     lifeExp &gt;= 70 ~ &quot;high&quot;
   )) %&gt;% 
-  head()</code></pre>
-<pre><code>## # A tibble: 6 x 7
-##   country     continent  year lifeExp      pop gdpPercap lifeExp_cat
-##   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;      
-## 1 Afghanistan Asia       1952    28.8  8425333      779. low        
-## 2 Afghanistan Asia       1957    30.3  9240934      821. low        
-## 3 Afghanistan Asia       1962    32.0 10267083      853. low        
-## 4 Afghanistan Asia       1967    34.0 11537966      836. low        
-## 5 Afghanistan Asia       1972    36.1 13079460      740. low        
-## 6 Afghanistan Asia       1977    38.4 14880372      786. low</code></pre>
+  head() %&gt;% 
+  kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+continent
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+lifeExp
+</th>
+<th style="text-align:right;">
+pop
+</th>
+<th style="text-align:right;">
+gdpPercap
+</th>
+<th style="text-align:left;">
+lifeExp_cat
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1952
+</td>
+<td style="text-align:right;">
+28.801
+</td>
+<td style="text-align:right;">
+8425333
+</td>
+<td style="text-align:right;">
+779.4453
+</td>
+<td style="text-align:left;">
+low
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1957
+</td>
+<td style="text-align:right;">
+30.332
+</td>
+<td style="text-align:right;">
+9240934
+</td>
+<td style="text-align:right;">
+820.8530
+</td>
+<td style="text-align:left;">
+low
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1962
+</td>
+<td style="text-align:right;">
+31.997
+</td>
+<td style="text-align:right;">
+10267083
+</td>
+<td style="text-align:right;">
+853.1007
+</td>
+<td style="text-align:left;">
+low
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1967
+</td>
+<td style="text-align:right;">
+34.020
+</td>
+<td style="text-align:right;">
+11537966
+</td>
+<td style="text-align:right;">
+836.1971
+</td>
+<td style="text-align:left;">
+low
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1972
+</td>
+<td style="text-align:right;">
+36.088
+</td>
+<td style="text-align:right;">
+13079460
+</td>
+<td style="text-align:right;">
+739.9811
+</td>
+<td style="text-align:left;">
+low
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Afghanistan
+</td>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+1977
+</td>
+<td style="text-align:right;">
+38.438
+</td>
+<td style="text-align:right;">
+14880372
+</td>
+<td style="text-align:right;">
+786.1134
+</td>
+<td style="text-align:left;">
+low
+</td>
+</tr>
+</tbody>
+</table>
 <p>As you can see, you can add a bunch of conditions with the <code>case_when()</code> function. Moreover, with this combination of these functions it is very easy to manipulate specific cases if it’s needed. Personally, I use the combination of these functions very often. In this way, it is very easy to implement specific encodings.</p>
 </div>
 <div id="group_by-summarise-function" class="section level1">
