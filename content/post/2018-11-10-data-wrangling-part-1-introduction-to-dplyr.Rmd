@@ -8,6 +8,7 @@ categories:
   - Tutorial
 tags:
   - dplyr
+  - Tidyverse
   - data wrangling
   - data manipulation
 image:
@@ -181,4 +182,16 @@ gapminder %>%
     geom_line()
 ```
 
+<p align="justify">Of course you do not have to plot immediately. However, you can easily extract important data from your dataset. Let's group again by continent but now we will calculate the mean of life expectancy, the total population size for each continent and the median of the GDP per continent:</p>
+
+```{r}
+gapminder %>% 
+  filter(year == 1997) %>% 
+  group_by(continent) %>% 
+  summarise(mean_lifeExp = mean(lifeExp),
+            total_pop = sum(as.numeric(pop)),
+            median_gdp = median(gdpPercap)) %>% 
+  head() %>% 
+  kableExtra::kable()
+```
 

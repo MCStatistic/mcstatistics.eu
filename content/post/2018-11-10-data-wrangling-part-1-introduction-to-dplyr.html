@@ -8,6 +8,7 @@ categories:
   - Tutorial
 tags:
   - dplyr
+  - Tidyverse
   - data wrangling
   - data manipulation
 image:
@@ -1639,4 +1640,105 @@ gapminder %&gt;%
   ggplot(aes(x = year, y = mean_lifeExp, col = continent)) +
     geom_line()</code></pre>
 <p><img src="/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p align="justify">
+Of course you do not have to plot immediately. However, you can easily extract important data from your dataset. Let’s group again by continent but now we will calculate the mean of life expectancy, the total population size for each continent and the median of the GDP per continent:
+</p>
+<pre class="r"><code>gapminder %&gt;% 
+  filter(year == 1997) %&gt;% 
+  group_by(continent) %&gt;% 
+  summarise(mean_lifeExp = mean(lifeExp),
+            total_pop = sum(as.numeric(pop)),
+            median_gdp = median(gdpPercap)) %&gt;% 
+  head() %&gt;% 
+  kableExtra::kable()</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+continent
+</th>
+<th style="text-align:right;">
+mean_lifeExp
+</th>
+<th style="text-align:right;">
+total_pop
+</th>
+<th style="text-align:right;">
+median_gdp
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Africa
+</td>
+<td style="text-align:right;">
+53.59827
+</td>
+<td style="text-align:right;">
+743832984
+</td>
+<td style="text-align:right;">
+1179.883
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Americas
+</td>
+<td style="text-align:right;">
+71.15048
+</td>
+<td style="text-align:right;">
+796900410
+</td>
+<td style="text-align:right;">
+7113.692
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Asia
+</td>
+<td style="text-align:right;">
+68.02052
+</td>
+<td style="text-align:right;">
+3383285500
+</td>
+<td style="text-align:right;">
+3645.380
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Europe
+</td>
+<td style="text-align:right;">
+75.50517
+</td>
+<td style="text-align:right;">
+568944148
+</td>
+<td style="text-align:right;">
+19596.499
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Oceania
+</td>
+<td style="text-align:right;">
+78.19000
+</td>
+<td style="text-align:right;">
+22241430
+</td>
+<td style="text-align:right;">
+24024.175
+</td>
+</tr>
+</tbody>
+</table>
 </div>

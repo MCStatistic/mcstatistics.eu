@@ -1636,6 +1636,107 @@ gapminder %&amp;gt;%
   ggplot(aes(x = year, y = mean_lifeExp, col = continent)) +
     geom_line()&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p align=&#34;justify&#34;&gt;
+Of course you do not have to plot immediately. However, you can easily extract important data from your dataset. Let’s group again by continent but now we will calculate the mean of life expectancy, the total population size for each continent and the median of the GDP per continent:
+&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gapminder %&amp;gt;% 
+  filter(year == 1997) %&amp;gt;% 
+  group_by(continent) %&amp;gt;% 
+  summarise(mean_lifeExp = mean(lifeExp),
+            total_pop = sum(as.numeric(pop)),
+            median_gdp = median(gdpPercap)) %&amp;gt;% 
+  head() %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+continent
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+mean_lifeExp
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+total_pop
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+median_gdp
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Africa
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+53.59827
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+743832984
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1179.883
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Americas
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+71.15048
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+796900410
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+7113.692
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Asia
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+68.02052
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3383285500
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+3645.380
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Europe
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+75.50517
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+568944148
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+19596.499
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Oceania
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+78.19000
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+22241430
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+24024.175
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;/div&gt;
 </description>
     </item>
