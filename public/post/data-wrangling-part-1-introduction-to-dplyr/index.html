@@ -354,7 +354,7 @@ In addition to these functions <code>dplyr</code> offers you the ability to use 
 <div id="filter" class="section level1">
 <h1>filter()</h1>
 <p align="justify">
-n many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the <code>filter()</code> function provides an easy way to do that.
+In many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the <code>filter()</code> function provides an easy way to do that.
 </p>
 <p>Let’s take a look into the <code>gapminder</code> df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:</p>
 <pre class="r"><code>library(dplyr)
@@ -581,7 +581,7 @@ Oceania
 </tbody>
 </table>
 <p align="justify">
-It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.
+It is also possible to filter with more than one condition. If we are only interested in the year 1997 <strong>and</strong> the continent asia, we could use the following code.
 </p>
 <pre class="r"><code># filtering by the year 1997 and the continent asia
 gapminder %&gt;% 
@@ -757,7 +757,7 @@ As you can imagine, there are many logical operators that you can use. I guess, 
 <div id="select-function" class="section level1">
 <h1>select() function</h1>
 <p align="justify">
-The <code>select()</code> function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also <em>delete</em> sepcific coloumns.
+The <code>select()</code> function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also delete sepcific coloumns.
 </p>
 <pre class="r"><code># let&#39;s select the coloumns country, continent, year and lifeExp
 gapminder %&gt;% 
@@ -1114,8 +1114,7 @@ Asia
 <p align="justify">
 You can create new columns with the <code>mutate()</code> function. Moreover, it is possible to use the <code>mutate()</code> function in combination with other functions (e.g. <code>case_when()</code>). In the following code I create a new variable, where the value is the log of the population size.
 </p>
-<pre class="r"><code># creating a new coloumn where the value is 10% of the population
-gapminder %&gt;% 
+<pre class="r"><code>gapminder %&gt;% 
   mutate(log_pop = log(pop)) %&gt;% 
   head() %&gt;% 
   kableExtra::kable()</code></pre>
@@ -1289,8 +1288,7 @@ Asia
 <p align="justify">
 Now, let’s create a new variable with three categories. Therefore, we will use the <code>mutate()</code> function and the <code>case_when()</code> function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp &lt; 50), medium life expectancy (lifeExp &gt;= 50 &amp; &lt;70) and high life expectancy (&gt;= 70).
 </p>
-<pre class="r"><code># creating three categories
-gapminder %&gt;% 
+<pre class="r"><code>gapminder %&gt;% 
   mutate(lifeExp_cat = case_when(
     lifeExp &lt; 50 ~ &quot;low&quot;,
     lifeExp &lt; 70 &amp; lifeExp &gt;= 50 ~ &quot;medium&quot;, 
@@ -1934,7 +1932,7 @@ Europe
 <div id="group_by-summarise-function" class="section level1">
 <h1>group_by() &amp; summarise() function</h1>
 <p align="justify">
-If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The <code>group_by()</code> function in combination with the <code>summarise()</code> function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the pipe operator (<code>%&gt;%</code>). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it.
+If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The <code>group_by()</code> function in combination with the <code>summarise()</code> function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the help of the pipe operator (<code>%&gt;%</code>). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it. In short, the <code>%&gt;%</code>-operator can be seen as a concatenation of functions.
 </p>
 <pre class="r"><code>library(ggplot2)
 gapminder %&gt;% 
@@ -1944,7 +1942,7 @@ gapminder %&gt;%
     geom_line()</code></pre>
 <p><img src="/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p align="justify">
-Of course you do not have to plot immediately. However, you can easily extract important data from your dataset. Let’s group again by continent but now we will calculate the mean of life expectancy, the total population size for each continent and the median of the GDP per continent:
+Of course you do not have to plot immediately. However, you can easily extract important data from your dataset. Let’s group again by continent but now we will calculate the mean of life expectancy, the total population size and the median of the GDP for each continent:
 </p>
 <pre class="r"><code>gapminder %&gt;% 
   filter(year == 1997) %&gt;% 

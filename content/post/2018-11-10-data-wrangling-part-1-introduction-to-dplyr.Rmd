@@ -34,7 +34,7 @@ output:
 
 # filter()
 
-<p align="justify">n many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the `filter()` function provides an easy way to do that.</p>
+<p align="justify">In many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the `filter()` function provides an easy way to do that.</p>
 
 Let's take a look into the `gapminder` df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:
 ```{r message=FALSE, warning=FALSE}
@@ -58,7 +58,7 @@ gapminder %>%
   kableExtra::kable()
 ```
 
-<p align="justify">It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.</p>
+<p align="justify">It is also possible to filter with more than one condition. If we are only interested in the year 1997 **and** the continent asia, we could use the following code.</p>
 ```{r}
 # filtering by the year 1997 and the continent asia
 gapminder %>% 
@@ -87,7 +87,7 @@ You will see a few of these operators in action later.
 
 # select() function
 
-<p align="justify">The `select()` function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also *delete* sepcific coloumns.</p>
+<p align="justify">The `select()` function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also delete sepcific coloumns.</p>
 
 ```{r}
 # let's select the coloumns country, continent, year and lifeExp
@@ -117,7 +117,6 @@ gapminder %>%
 <p align="justify">You can create new columns with the `mutate()` function. Moreover, it is possible to use the `mutate()` function in combination with other functions (e.g. `case_when()`). In the following code I create a new variable, where the value is the log of the population size.</p>
 
 ```{r}
-# creating a new coloumn where the value is 10% of the population
 gapminder %>% 
   mutate(log_pop = log(pop)) %>% 
   head() %>% 
@@ -127,7 +126,6 @@ gapminder %>%
 <p align="justify">Now, let's create a new variable with three categories. Therefore, we will use the `mutate()` function and the `case_when()` function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp < 50), medium life expectancy (lifeExp >= 50 & <70) and high life expectancy (>= 70).</p>
 
 ```{r}
-# creating three categories
 gapminder %>% 
   mutate(lifeExp_cat = case_when(
     lifeExp < 50 ~ "low",
@@ -171,7 +169,7 @@ gapminder %>%
 
 # group_by() & summarise() function
 
-<p align="justify">If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The `group_by()` function in combination with the `summarise()` function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the pipe operator (`%>%`). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it.</p>
+<p align="justify">If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The `group_by()` function in combination with the `summarise()` function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the help of the pipe operator (`%>%`). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it. In short, the `%>%`-operator can be seen as a concatenation of functions.</p>
 
 ```{r}
 library(ggplot2)
@@ -182,7 +180,7 @@ gapminder %>%
     geom_line()
 ```
 
-<p align="justify">Of course you do not have to plot immediately. However, you can easily extract important data from your dataset. Let's group again by continent but now we will calculate the mean of life expectancy, the total population size for each continent and the median of the GDP per continent:</p>
+<p align="justify">Of course you do not have to plot immediately. However, you can easily extract important data from your dataset. Let's group again by continent but now we will calculate the mean of life expectancy, the total population size and the median of the GDP for each continent:</p>
 
 ```{r}
 gapminder %>% 

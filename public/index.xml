@@ -47,7 +47,7 @@ In addition to these functions &lt;code&gt;dplyr&lt;/code&gt; offers you the abi
 &lt;div id=&#34;filter&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;filter()&lt;/h1&gt;
 &lt;p align=&#34;justify&#34;&gt;
-n many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the &lt;code&gt;filter()&lt;/code&gt; function provides an easy way to do that.
+In many cases you need to filter your dataset because you are only interested in specific cases or you want to exclude some cases. For that, the &lt;code&gt;filter()&lt;/code&gt; function provides an easy way to do that.
 &lt;/p&gt;
 &lt;p&gt;Let’s take a look into the &lt;code&gt;gapminder&lt;/code&gt; df, which is an excerpt of the Gapminder data on life expectancy, GDP per capita, and population by country:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
@@ -274,7 +274,7 @@ Oceania
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p align=&#34;justify&#34;&gt;
-It is also possible to filter with more than one condition. If we are only interested in the year 1997 and the continent asia, we could use the following code.
+It is also possible to filter with more than one condition. If we are only interested in the year 1997 &lt;strong&gt;and&lt;/strong&gt; the continent asia, we could use the following code.
 &lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# filtering by the year 1997 and the continent asia
 gapminder %&amp;gt;% 
@@ -450,7 +450,7 @@ As you can imagine, there are many logical operators that you can use. I guess, 
 &lt;div id=&#34;select-function&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;select() function&lt;/h1&gt;
 &lt;p align=&#34;justify&#34;&gt;
-The &lt;code&gt;select()&lt;/code&gt; function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also &lt;em&gt;delete&lt;/em&gt; sepcific coloumns.
+The &lt;code&gt;select()&lt;/code&gt; function is a very simple one but can be useful, if the data frame is very large but you only need a few variables. You can select specific coloumns and you can also delete sepcific coloumns.
 &lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# let&amp;#39;s select the coloumns country, continent, year and lifeExp
 gapminder %&amp;gt;% 
@@ -807,8 +807,7 @@ Asia
 &lt;p align=&#34;justify&#34;&gt;
 You can create new columns with the &lt;code&gt;mutate()&lt;/code&gt; function. Moreover, it is possible to use the &lt;code&gt;mutate()&lt;/code&gt; function in combination with other functions (e.g. &lt;code&gt;case_when()&lt;/code&gt;). In the following code I create a new variable, where the value is the log of the population size.
 &lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# creating a new coloumn where the value is 10% of the population
-gapminder %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gapminder %&amp;gt;% 
   mutate(log_pop = log(pop)) %&amp;gt;% 
   head() %&amp;gt;% 
   kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
@@ -982,8 +981,7 @@ Asia
 &lt;p align=&#34;justify&#34;&gt;
 Now, let’s create a new variable with three categories. Therefore, we will use the &lt;code&gt;mutate()&lt;/code&gt; function and the &lt;code&gt;case_when()&lt;/code&gt; function in combination. In the following example the new variable should include three categories: low life expectancy (lifeExp &amp;lt; 50), medium life expectancy (lifeExp &amp;gt;= 50 &amp;amp; &amp;lt;70) and high life expectancy (&amp;gt;= 70).
 &lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# creating three categories
-gapminder %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gapminder %&amp;gt;% 
   mutate(lifeExp_cat = case_when(
     lifeExp &amp;lt; 50 ~ &amp;quot;low&amp;quot;,
     lifeExp &amp;lt; 70 &amp;amp; lifeExp &amp;gt;= 50 ~ &amp;quot;medium&amp;quot;, 
@@ -1627,7 +1625,7 @@ Europe
 &lt;div id=&#34;group_by-summarise-function&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;group_by() &amp;amp; summarise() function&lt;/h1&gt;
 &lt;p align=&#34;justify&#34;&gt;
-If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The &lt;code&gt;group_by()&lt;/code&gt; function in combination with the &lt;code&gt;summarise()&lt;/code&gt; function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the pipe operator (&lt;code&gt;%&amp;gt;%&lt;/code&gt;). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it.
+If you take a look into the data for the first time, it is often very useful to make some exploratory data analysis. The &lt;code&gt;group_by()&lt;/code&gt; function in combination with the &lt;code&gt;summarise()&lt;/code&gt; function makes it easy. For example, we can group by continent, calculate the mean for the life expectancy and plot the results for each continent over the time. I did that all with the help of the pipe operator (&lt;code&gt;%&amp;gt;%&lt;/code&gt;). If you are unfamiliar with the use of this operator, you should familiarize yourself with it. In my opinion, you can work much more efficiently with it. In short, the &lt;code&gt;%&amp;gt;%&lt;/code&gt;-operator can be seen as a concatenation of functions.
 &lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(ggplot2)
 gapminder %&amp;gt;% 
@@ -1637,7 +1635,7 @@ gapminder %&amp;gt;%
     geom_line()&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p align=&#34;justify&#34;&gt;
-Of course you do not have to plot immediately. However, you can easily extract important data from your dataset. Let’s group again by continent but now we will calculate the mean of life expectancy, the total population size for each continent and the median of the GDP per continent:
+Of course you do not have to plot immediately. However, you can easily extract important data from your dataset. Let’s group again by continent but now we will calculate the mean of life expectancy, the total population size and the median of the GDP for each continent:
 &lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gapminder %&amp;gt;% 
   filter(year == 1997) %&amp;gt;% 
