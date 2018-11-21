@@ -15,7 +15,7 @@
   
     
   
-  <meta name="description" content="Introduction to dplyr filter() select() function mutate() function arrange() function group_by() &amp; summarise() function   Introduction to dplyr When it comes to data manipulation, dplyr is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:  filter() select() mutate() arrange() group_by() summarise()  In addition to these functions dplyr offers you the ability to use the pipe-operator out of the magrittr package.">
+  <meta name="description" content="Introduction to dplyr filter() select() function mutate() function arrange() function group_by() &amp; summarise() function   library(rmdformats) Introduction to dplyr When it comes to data manipulation, dplyr is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:  filter() select() mutate() arrange() group_by() summarise()  In addition to these functions dplyr offers you the ability to use the pipe-operator out of the magrittr package.">
 
   
   <link rel="alternate" hreflang="en-us" href="/post/data-wrangling-part-1-introduction-to-dplyr/">
@@ -91,7 +91,7 @@
   <meta property="og:site_name" content="mcstatistics">
   <meta property="og:url" content="/post/data-wrangling-part-1-introduction-to-dplyr/">
   <meta property="og:title" content="Data Wrangling Part 1: Introduction to dplyr | mcstatistics">
-  <meta property="og:description" content="Introduction to dplyr filter() select() function mutate() function arrange() function group_by() &amp; summarise() function   Introduction to dplyr When it comes to data manipulation, dplyr is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:  filter() select() mutate() arrange() group_by() summarise()  In addition to these functions dplyr offers you the ability to use the pipe-operator out of the magrittr package.">
+  <meta property="og:description" content="Introduction to dplyr filter() select() function mutate() function arrange() function group_by() &amp; summarise() function   library(rmdformats) Introduction to dplyr When it comes to data manipulation, dplyr is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:  filter() select() mutate() arrange() group_by() summarise()  In addition to these functions dplyr offers you the ability to use the pipe-operator out of the magrittr package.">
   
   
     
@@ -334,6 +334,7 @@
 </ul>
 </div>
 
+<pre class="r"><code>library(rmdformats)</code></pre>
 <div id="introduction-to-dplyr" class="section level1">
 <h1>Introduction to dplyr</h1>
 <p align="justify">
@@ -1940,7 +1941,7 @@ gapminder %&gt;%
   summarise(mean_lifeExp = mean(lifeExp)) %&gt;% 
   ggplot(aes(x = year, y = mean_lifeExp, col = continent)) +
     geom_line()</code></pre>
-<p><img src="/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p align="justify">
 Of course you do not have to plot immediately. However, you can easily extract important data from your dataset. Let’s group again by continent but now we will calculate the mean of life expectancy, the total population size and the median of the GDP for each continent:
 </p>

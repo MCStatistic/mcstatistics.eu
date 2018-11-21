@@ -31,6 +31,7 @@ output:
 </ul>
 </div>
 
+<pre class="r"><code>library(rmdformats)</code></pre>
 <div id="introduction-to-dplyr" class="section level1">
 <h1>Introduction to dplyr</h1>
 <p align="justify">
@@ -1637,7 +1638,7 @@ gapminder %&gt;%
   summarise(mean_lifeExp = mean(lifeExp)) %&gt;% 
   ggplot(aes(x = year, y = mean_lifeExp, col = continent)) +
     geom_line()</code></pre>
-<p><img src="/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p align="justify">
 Of course you do not have to plot immediately. However, you can easily extract important data from your dataset. Let’s group again by continent but now we will calculate the mean of life expectancy, the total population size and the median of the GDP for each continent:
 </p>

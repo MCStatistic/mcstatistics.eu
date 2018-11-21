@@ -27,6 +27,7 @@
 &lt;/ul&gt;
 &lt;/div&gt;
 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(rmdformats)&lt;/code&gt;&lt;/pre&gt;
 &lt;div id=&#34;introduction-to-dplyr&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Introduction to dplyr&lt;/h1&gt;
 &lt;p align=&#34;justify&#34;&gt;
@@ -1633,7 +1634,7 @@ gapminder %&amp;gt;%
   summarise(mean_lifeExp = mean(lifeExp)) %&amp;gt;% 
   ggplot(aes(x = year, y = mean_lifeExp, col = continent)) +
     geom_line()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-11-10-data-wrangling-part-1-introduction-to-dplyr_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p align=&#34;justify&#34;&gt;
 Of course you do not have to plot immediately. However, you can easily extract important data from your dataset. Let’s group again by continent but now we will calculate the mean of life expectancy, the total population size and the median of the GDP for each continent:
 &lt;/p&gt;

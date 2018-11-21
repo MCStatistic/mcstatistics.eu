@@ -11,7 +11,7 @@ weight = 5
 [interests]
   interests = [
     "R & Python",
-    "Data Analytics",
+    "Data Science",
     "Data Visualization",
     "Financial Analysis",
     "Political & Social Research"

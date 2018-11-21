@@ -19,6 +19,10 @@ output:
     toc: true
 ---
 
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+library(rmdformats)
+```
+
 # Introduction to dplyr
 
 <p align="justify">When it comes to data manipulation, `dplyr` is a very powerful package with very intuitive functions. There are six important functions you will use often, if it comes to data manipulation:</p>
