@@ -204,7 +204,7 @@ df_english %>%
   ggtitle("") + ylab("") + xlab("") +
   theme_bw() + theme(text=element_text(size = 12,
                           family = "LM Roman 10")) +
-  scale_y_continuous(labels = scales::percent_format(), limits=c(0,0.25)) +
+  scale_y_continuous(labels = scales::percent_format(), limits=c(0,0.23)) +
   coord_flip()
 ```
 
@@ -339,7 +339,7 @@ df_english %>%
   coord_flip()
 ```
 
-This plot shows the percentage of each topic for each party. You can clearly see that almost every party has a clear thematic focus. *Immigration* has the highest share of the minor interpolations of the AfD. By contrast, *law and crime* make up the largest share of *Die Linke*. Among *Güne*, *transport* makes up the biggest share, with a focus on e-mobility. The FDP also has the largest share in *transport*, but it is lower than in the *Grünen*. In general, the FDP has no such clear focus on a specific topic as the other parties do. In contrast, the FDP is moderately represented on some topics.
+This plot shows the percentage of each topic for each party. You can clearly see that almost every party has a clear thematic focus. *Immigration* has the highest share of the minor interpolations of the AfD. By contrast, *law and crime* makes up the largest share of *Die Linke*. Among *Grüne*, *transport* makes up the biggest share, with a focus on e-mobility. The FDP also has the largest share in *transport*, but it is lower than in the *Grünen*. In general, the FDP has no such clear focus on a specific topic as the other parties do. In contrast, the FDP is moderately represented on some topics.
 
 ## Sentiment Analysis 
 

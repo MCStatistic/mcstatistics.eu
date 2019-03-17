@@ -568,7 +568,7 @@ df_complete_clean %&lt;&gt;%
   ggtitle(&quot;&quot;) + ylab(&quot;&quot;) + xlab(&quot;&quot;) +
   theme_bw() + theme(text=element_text(size = 12,
                           family = &quot;LM Roman 10&quot;)) +
-  scale_y_continuous(labels = scales::percent_format(), limits=c(0,0.25)) +
+  scale_y_continuous(labels = scales::percent_format(), limits=c(0,0.23)) +
   coord_flip()</code></pre>
 <p><img src="/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>It can be seen that the distribution is very unbalanced and some topics are hardly represented. This point should in principle be taken into account when using Random Forest. For example, with strongly unbalanced data, the major class can be down-sampled or the minor class over-sampled.</p>
@@ -689,7 +689,7 @@ prob_plot_df &lt;- rbind.data.frame(df_rf_200_eng, df_svm_eng)</code></pre>
   facet_wrap(~bt_f) +
   coord_flip()</code></pre>
 <p><img src="/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>This plot shows the percentage of each topic for each party. You can clearly see that almost every party has a clear thematic focus. <em>Immigration</em> has the highest share of the minor interpolations of the AfD. By contrast, <em>law and crime</em> make up the largest share of <em>Die Linke</em>. Among <em>Güne</em>, <em>transport</em> makes up the biggest share, with a focus on e-mobility. The FDP also has the largest share in <em>transport</em>, but it is lower than in the <em>Grünen</em>. In general, the FDP has no such clear focus on a specific topic as the other parties do. In contrast, the FDP is moderately represented on some topics.</p>
+<p>This plot shows the percentage of each topic for each party. You can clearly see that almost every party has a clear thematic focus. <em>Immigration</em> has the highest share of the minor interpolations of the AfD. By contrast, <em>law and crime</em> makes up the largest share of <em>Die Linke</em>. Among <em>Grüne</em>, <em>transport</em> makes up the biggest share, with a focus on e-mobility. The FDP also has the largest share in <em>transport</em>, but it is lower than in the <em>Grünen</em>. In general, the FDP has no such clear focus on a specific topic as the other parties do. In contrast, the FDP is moderately represented on some topics.</p>
 </div>
 <div id="sentiment-analysis" class="section level2">
 <h2>Sentiment Analysis</h2>
