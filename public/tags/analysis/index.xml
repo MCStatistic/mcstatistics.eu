@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Analysis on mcstatistics</title>
+    <link>/tags/analysis/</link>
+    <description>Recent content in Analysis on mcstatistics</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Marlon Schumacher &amp;copy; 2018</copyright>
+    <lastBuildDate>Thu, 14 Feb 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/analysis/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>German Bundestag - Minor Interpellations </title>
+      <link>/post/german-bundestag-minor-interpellations/</link>
+      <pubDate>Thu, 14 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/german-bundestag-minor-interpellations/</guid>
+      <description>Packages &amp;amp; Data Source Data Acquisition Word Matching Supervised Machine Learning Results Sentiment Analysis   For my studies I wrote a seminar paper about the agenda setting of the opposition parties in the German Bundestag. To analyze the agenda setting of the opposition parties, the minor interpellations were used. In the following I would like to show on the one hand the data acquisition and on the other hand the basic aspects of the evaluation.</description>
+    </item>
+    
+  </channel>
+</rss>

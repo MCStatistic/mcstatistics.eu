@@ -11,9 +11,416 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>German Bundestag - Minor Interpellations </title>
+      <link>/post/german-bundestag-minor-interpellations/</link>
+      <pubDate>Thu, 14 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/german-bundestag-minor-interpellations/</guid>
+      <description>&lt;div id=&#34;TOC&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#packages-data-source&#34;&gt;Packages &amp;amp; Data Source&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#data-acquisition&#34;&gt;Data Acquisition&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#word-matching&#34;&gt;Word Matching&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#supervised-machine-learning&#34;&gt;Supervised Machine Learning&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#results&#34;&gt;Results&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#sentiment-analysis&#34;&gt;Sentiment Analysis&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For my studies I wrote a seminar paper about the agenda setting of the opposition parties in the German Bundestag. To analyze the agenda setting of the opposition parties, the minor interpellations were used. In the following I would like to show on the one hand the data acquisition and on the other hand the basic aspects of the evaluation. In addition, I will build a Shiny App, so you can look at the data in more detail.&lt;/p&gt;
+&lt;p&gt;Code Details can be found on &lt;a href=&#34;https://github.com/MCStatistic/SeminarPaper_ASGB&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;div id=&#34;packages-data-source&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Packages &amp;amp; Data Source&lt;/h2&gt;
+&lt;p&gt;Some packages were used for the analysis. I guess most packages do not need an explanation. However, &lt;code&gt;purrr&lt;/code&gt; and &lt;code&gt;downloader&lt;/code&gt; were used for downloading all documents of the 18th and 19th Bundestag. For the classification process in terms of supervised machine learning &lt;code&gt;RTextTools&lt;/code&gt; was used.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(dplyr, haven, readr, purrr, ggplot2, downloader, 
+               pdftools, stringr, ggthemes, lubridate, tm, RTextTools, forcats)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All documents for the German Bundestag are are freely accessible. The source of downloaded data can be found here: &lt;a href=&#34;https://dipbt.bundestag.de/dip21.web/bt&#34;&gt;DIP (Dokumentations- und Informationssystem für Parlamentarische Vorgänge)&lt;/a&gt;. Each PDF-Document has its own URL and of course, there is a quite simple pattern which you can use. The pattern can best be shown by two URLs:&lt;/p&gt;
+&lt;p&gt;The first Document of the 19th Bundestag: &lt;code&gt;http://dipbt.bundestag.de/dip21/btd/19/000/1900001.pdf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The 101th Document of the 19th Bundestag: &lt;code&gt;http://dipbt.bundestag.de/dip21/btd/19/001/1900101.pdf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;To produce all the needed URLs I replicated the static components of the URLS so many times as needed. The varying part of the URL consists of a simple numbering in two places of it. Therefore, the pattern was reprocuded and also replicated n-times depending on the logic of the numbering.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# URLs for the 18th legislature
+urls_18 &amp;lt;- str_c(rep(&amp;quot;http://dipbt.bundestag.de/dip21/btd/18/&amp;quot;, each = 13700), 
+                 as.character(sprintf(&amp;quot;%03d&amp;quot;, 000:136)) %&amp;gt;% rep(each = 100), 
+                 rep(&amp;quot;/18&amp;quot;, each = 13700), 
+                 as.character(sprintf(&amp;quot;%05d&amp;quot;, 00000:13699)), 
+                 rep(&amp;quot;.pdf&amp;quot;, each = 13700), 
+                 spe = &amp;quot;&amp;quot;) %&amp;gt;% 
+  .[!. == &amp;quot;http://dipbt.bundestag.de/dip21/btd/18/000/1800000.pdf&amp;quot;]
+
+# URLs for the 19th legislature
+urls_19 &amp;lt;- str_c(rep(&amp;quot;http://dipbt.bundestag.de/dip21/btd/19/0&amp;quot;, each = 6700), 
+                 as.character(sprintf(&amp;quot;%02d&amp;quot;, 00:66)) %&amp;gt;% rep(each = 100) , 
+                 rep(&amp;quot;/190&amp;quot;, each = 6700), 
+                 as.character(sprintf(&amp;quot;%04d&amp;quot;, 0000:6699)), 
+                 rep(&amp;quot;.pdf&amp;quot;, each = 6700), 
+                 sep = &amp;quot;&amp;quot;) %&amp;gt;% 
+  .[!. == &amp;quot;http://dipbt.bundestag.de/dip21/btd/19/000/1900000.pdf&amp;quot;]
+
+# for downloading the documents with the downloader package, a file path is needed
+path_18 &amp;lt;- paste(&amp;quot;./18_btd/&amp;quot;, basename(urls_18), sep = &amp;quot;&amp;quot;)
+path_19 &amp;lt;- paste(&amp;quot;./19_btd/&amp;quot;, basename(urls_19), sep = &amp;quot;&amp;quot;)
+
+# resulting URLs and file paths
+head(urls_18) %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+x
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a href=&#34;http://dipbt.bundestag.de/dip21/btd/18/000/1800001.pdf&#34; class=&#34;uri&#34;&gt;http://dipbt.bundestag.de/dip21/btd/18/000/1800001.pdf&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a href=&#34;http://dipbt.bundestag.de/dip21/btd/18/000/1800002.pdf&#34; class=&#34;uri&#34;&gt;http://dipbt.bundestag.de/dip21/btd/18/000/1800002.pdf&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a href=&#34;http://dipbt.bundestag.de/dip21/btd/18/000/1800003.pdf&#34; class=&#34;uri&#34;&gt;http://dipbt.bundestag.de/dip21/btd/18/000/1800003.pdf&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a href=&#34;http://dipbt.bundestag.de/dip21/btd/18/000/1800004.pdf&#34; class=&#34;uri&#34;&gt;http://dipbt.bundestag.de/dip21/btd/18/000/1800004.pdf&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a href=&#34;http://dipbt.bundestag.de/dip21/btd/18/000/1800005.pdf&#34; class=&#34;uri&#34;&gt;http://dipbt.bundestag.de/dip21/btd/18/000/1800005.pdf&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+&lt;a href=&#34;http://dipbt.bundestag.de/dip21/btd/18/000/1800006.pdf&#34; class=&#34;uri&#34;&gt;http://dipbt.bundestag.de/dip21/btd/18/000/1800006.pdf&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;head(path_18) %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+x
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+./18_btd/1800001.pdf
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+./18_btd/1800002.pdf
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+./18_btd/1800003.pdf
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+./18_btd/1800004.pdf
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+./18_btd/1800005.pdf
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+./18_btd/1800006.pdf
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Now, the creaeted URLs can be used for downloading all documents. Instead of building a for loop, the &lt;code&gt;map2()&lt;/code&gt; function out of the &lt;code&gt;purrr&lt;/code&gt; package was used.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# creating sleep function
+sleep_down &amp;lt;- function(...) {
+  download(...)
+  Sys.sleep(0.5)
+}
+
+# creating safely function (if something goes wrong)
+safe_download &amp;lt;- safely(sleep_down)
+
+# downloading all files for the 18th Bundestag
+map_results_18 &amp;lt;- map2(urls_18, path_18,
+                    ~safe_download(.x, .y, mode =&amp;quot;wb&amp;quot;))
+
+# downloading all files for the 18th Bundestag
+map_results_19 &amp;lt;- map2(urls_19, path_19,
+                       ~safe_download(.x, .y, mode = &amp;quot;wb&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data-acquisition&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Data Acquisition&lt;/h2&gt;
+&lt;p&gt;As you can see, I used a For Loop to extract some information. Anyway, the whole thing is very nested and today I would try to realize it differently. Nevertheless, the required information could be extracted in this way. A for loop was also used for extracting the other information. You can find more infromation on my repository &lt;a href=&#34;https://github.com/MCStatistic/SeminarPaper_ASGB&#34;&gt;SeminarPaper_ASGB&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;party &amp;lt;- c()
+for(i in seq_along(path_anfragen_18_clean)){
+  text_string &amp;lt;- pdf_text(path_anfragen_18_clean[i]) %&amp;gt;% 
+     strsplit(&amp;quot;\n&amp;quot;) %&amp;gt;% 
+     unlist()
+  party &amp;lt;- text_string[4:20]
+  a &amp;lt;- str_detect(party, &amp;quot;GRÜNEN&amp;quot;)
+  
+  if(TRUE %in% a){
+    z &amp;lt;- &amp;quot;Grüne&amp;quot;
+  } else{
+      b &amp;lt;- str_detect(party, &amp;quot;LINKE&amp;quot;)
+      
+      if(TRUE %in% b){
+        z &amp;lt;- &amp;quot;Linke&amp;quot;
+      } else{
+        g &amp;lt;- str_detect(party, &amp;quot;FDP&amp;quot;)
+        
+        if(TRUE %in% g){
+          z &amp;lt;- &amp;quot;FDP&amp;quot;
+        } else{
+          h &amp;lt;- str_detect(party, &amp;quot;AfD&amp;quot;)
+          
+          if(TRUE %in% h){
+            z &amp;lt;- &amp;quot;AfD&amp;quot;
+          }else{
+            c &amp;lt;- str_detect(party, &amp;quot;SPD&amp;quot;)
+        
+          if(TRUE %in% c){
+           z &amp;lt;- &amp;quot;SPD&amp;quot;
+            } else{
+              d &amp;lt;- str_detect(party, &amp;quot;CDU/CSU&amp;quot;)
+          
+           if(TRUE %in% d){
+             z &amp;lt;- &amp;quot;Union&amp;quot;
+              } else{
+                z &amp;lt;- &amp;quot;NA&amp;quot;
+          }
+        }
+      }
+    }
+  }
+}
+  party &amp;lt;- c(party, z)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;word-matching&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Word Matching&lt;/h2&gt;
+&lt;p&gt;After cleaning title and content (e.g. numbers, stopwords, punctuations) we can start with the categorization of the documents. Two methods were used. First of all, a simple word-matching with topic-specific words was made. For each topic a vector of words were created. Furthermore, overlapping matches were detected and corrected. Finally, supervised machine learning was used (Random Forest and Support Vector Machines).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# labeling the topic with word matching
+df_complete_clean %&amp;lt;&amp;gt;% 
+  mutate(topic = case_when(
+    str_detect(title, makroöko) ~ &amp;quot;Macroeconomics&amp;quot;, 
+    str_detect(title, buerger) ~ &amp;quot;Civil Rights&amp;quot;,
+    str_detect(title, gesundheit) ~ &amp;quot;Health&amp;quot;, 
+    str_detect(title, agrar) ~ &amp;quot;Agriculture&amp;quot;, 
+    str_detect(title, arbeit) ~ &amp;quot;Labor&amp;quot;, 
+    str_detect(title, bildung) ~ &amp;quot;Education&amp;quot;, 
+    str_detect(title, umwelt) ~ &amp;quot;Environment&amp;quot;, 
+    str_detect(title, energie) ~ &amp;quot;Energy&amp;quot;, 
+    str_detect(title, einwanderung) ~ &amp;quot;Immigration&amp;quot;, 
+    str_detect(title, transport) ~ &amp;quot;Transportation&amp;quot;, 
+    str_detect(title, krimi) ~ &amp;quot;Law and Crime&amp;quot;, 
+    str_detect(title, sozi) ~ &amp;quot;Social Welfare&amp;quot;, 
+    str_detect(title, wohn) ~ &amp;quot;Housing&amp;quot;, 
+    str_detect(title, banken) ~ &amp;quot;Domestic Commerce&amp;quot;, 
+    str_detect(title, verteidigung) ~ &amp;quot;Defense&amp;quot;,
+    str_detect(title, tech_kom) ~ &amp;quot;Technology&amp;quot;, 
+    str_detect(title, außenh) ~ &amp;quot;Foreign Trade&amp;quot;,
+    str_detect(title, int_aus) ~ &amp;quot;International Affairs&amp;quot;,
+    str_detect(title, regierung) ~ &amp;quot;Government Operations&amp;quot;,
+    TRUE ~ &amp;quot;Other&amp;quot;
+  ))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;After the word matching and the correction of some overlaps, this results in the following topic distribution.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_english %&amp;gt;%
+  filter(label_eng != &amp;quot;Other&amp;quot;) %&amp;gt;% 
+  mutate(label_eng_f = as.factor(label_eng)) %&amp;gt;% 
+  group_by(label_eng_f) %&amp;gt;%
+  filter(!is.na(label_eng_f)) %&amp;gt;% 
+  summarise(n = n()) %&amp;gt;%
+  mutate(perc = (n/sum(n))) %&amp;gt;%
+  mutate(label_eng_f = fct_reorder(label_eng_f, perc, .desc = F)) %&amp;gt;% 
+  ggplot(aes(x = label_eng_f, y = perc)) +
+  geom_bar(position = &amp;quot;dodge&amp;quot;, 
+           stat = &amp;quot;identity&amp;quot;,
+           fill = &amp;quot;skyblue4&amp;quot;,
+           alpha = 0.9) +
+  geom_text(aes(y = perc, 
+                label = sprintf(&amp;quot;%1.1f%%&amp;quot;, round(100*perc, 1))),
+            size = 3.1,
+            color=rgb(100,100,100, maxColorValue=255),
+            hjust=-0.1) +
+  ggtitle(&amp;quot;&amp;quot;) + ylab(&amp;quot;&amp;quot;) + xlab(&amp;quot;&amp;quot;) +
+  theme_bw() + theme(text=element_text(size = 12,
+                          family = &amp;quot;LM Roman 10&amp;quot;)) +
+  scale_y_continuous(labels = scales::percent_format(), limits=c(0,0.25)) +
+  coord_flip()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;It can be seen that the distribution is very unbalanced and some topics are hardly represented. This point should in principle be taken into account when using Random Forest. For example, with strongly unbalanced data, the major class can be down-sampled or the minor class over-sampled.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;supervised-machine-learning&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Supervised Machine Learning&lt;/h2&gt;
+&lt;p&gt;The package &lt;code&gt;RTextTools&lt;/code&gt; was used for using Random Forest and Support Vector Machines. Before the final classification, a text classification was performed to test the performance of both methods and to determine the best parameters. For this purpose, a container was created, which contains only the already classified requests. In addition, the requests were split into test and training data. For Random Forest, 200 n&lt;sub&gt;trees&lt;/sub&gt; were ultimately used and for Support Vector Machines the C-Parameter was set to 10.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# creating training set
+df_training_eng &amp;lt;- df_english %&amp;gt;% 
+  filter(thema != &amp;quot;Other&amp;quot;) %&amp;gt;% 
+  sample_n(3047) 
+
+# creating document-term matrix
+df_content_matrix &amp;lt;- create_matrix(df_training_eng$content)
+
+# remove sparse terms
+df_content_matrix &amp;lt;- removeSparseTerms(df_content_matrix, sparse = .99)
+
+# creating a container
+container_eng &amp;lt;- create_container(df_content_matrix, 
+                                  df_training_eng$thema, 
+                                  trainSize=1:2300,
+                                  testSize=2301:3047, 
+                                  virgin=FALSE)
+
+# Support Vector Machines 
+svm &amp;lt;- train_model(container_eng,&amp;quot;SVM&amp;quot;, kernel = &amp;quot;linear&amp;quot;, cost = 10)
+svm_classify &amp;lt;- classify_model(container_eng, svm)
+
+# data preparation for plotting
+df_svm_eng &amp;lt;- svm_classify %&amp;gt;% 
+  mutate(model = as.factor(&amp;quot;Support Vector Machine&amp;quot;)) %&amp;gt;% 
+  rename(prob = SVM_PROB,
+         label = SVM_LABEL) 
+
+# Random Forest
+rf_200 &amp;lt;- train_model(container_eng, &amp;quot;RF&amp;quot;, ntree = 200)
+rf_classify_200 &amp;lt;- classify_model(container_eng, rf_200)
+
+# data preparation for plotting
+df_rf_200_eng &amp;lt;- rf_classify_200 %&amp;gt;% 
+  mutate(model = as.factor(&amp;quot;Random Forest&amp;quot;)) %&amp;gt;% 
+  rename(prob = FORESTS_PROB,
+         label = FORESTS_LABEL)
+
+prob_plot_df &amp;lt;- rbind.data.frame(df_rf_200_eng, df_svm_eng)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, we can check the class probabilities. The class probabilities were also used for the final classification to ensure the most reliable classification possible.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;prob_plot_df %&amp;gt;% 
+  group_by(model) %&amp;gt;% 
+  mutate(label = fct_reorder(label, prob)) %&amp;gt;% 
+  ggplot(aes(x = label, y = prob, fill = label)) +
+  geom_boxplot(alpha = 0.2) +
+  geom_jitter(width = 0.2, alpha = 0.2) +
+  theme_bw() +
+  xlab(&amp;quot;&amp;quot;) +
+  ylab(&amp;quot;Class Probabilities&amp;quot;) +
+  facet_wrap(~ model) +
+  theme(legend.position = &amp;quot;none&amp;quot;,
+        text=element_text(size = 12, 
+                          family = &amp;quot;LM Roman 10&amp;quot;)) +
+  coord_flip() &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As you can see, the performance of both algorithms is not good on every topic. Therefore, cut off values for the class probability were used for the final classification.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;results&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Results&lt;/h2&gt;
+&lt;p&gt;Now, we can take a look to the results. However, I will keep it short regarding the interpretation though.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_english %&amp;gt;% 
+  filter(party != &amp;quot;NA&amp;quot;) %&amp;gt;% 
+  mutate(date_n = as.Date(date, &amp;quot;%d.%m.%Y&amp;quot;)) %&amp;gt;% 
+  mutate(year = year(date_n),
+         party = case_when(party == &amp;quot;Union&amp;quot; ~ &amp;quot;CDU/CSU&amp;quot;,
+                           TRUE ~ party)) %&amp;gt;% 
+  mutate(year = as.character(year)) %&amp;gt;% 
+  group_by(party, year, bt_f) %&amp;gt;% 
+  summarise(n = n()) %&amp;gt;% 
+  ggplot(aes(x = as.factor(year), fill = reorder(party, -n), y = n)) +
+  geom_bar(position=&amp;quot;dodge&amp;quot;, 
+           stat=&amp;quot;identity&amp;quot;,
+           alpha = 0.9) +
+  geom_text(position = position_dodge(width = 1),
+            aes(label = n),
+            vjust = -0.5, 
+            size = 3) + 
+  xlab(&amp;quot;&amp;quot;) + 
+  ylab(&amp;quot;&amp;quot;) + 
+  labs(fill = &amp;quot;&amp;quot;) +
+  theme_bw() +
+  theme(legend.position=&amp;quot;bottom&amp;quot;,
+        text=element_text(size = 12, 
+                          family = &amp;quot;LM Roman 10&amp;quot;)) +
+  scale_fill_manual(values = c(&amp;quot;Grüne&amp;quot; = &amp;quot;#50822E&amp;quot;, &amp;quot;Linke&amp;quot; = &amp;quot;#B61C3E&amp;quot;, 
+                     &amp;quot;CDU/CSU&amp;quot; = &amp;quot;#32372C&amp;quot;, &amp;quot;SPD&amp;quot; = &amp;quot;#E3000F&amp;quot;, &amp;quot;AfD&amp;quot; = &amp;quot;#0088FF&amp;quot;, &amp;quot;FDP&amp;quot; = &amp;quot;#FFD600&amp;quot;)) +
+  facet_wrap(~ bt_f, 
+             strip.position = &amp;quot;top&amp;quot;, 
+             dir = &amp;quot;v&amp;quot;) +
+  scale_y_continuous(limits = c(0,800))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;There are no significant differences in the number of minor interpellations. Only &lt;em&gt;Die Linke&lt;/em&gt; always has more minor interpellations than the other parties. And, of course, it is clear that the minor interpellations are above all a means of opposition. The governing parties almost do not use this instrument at all.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_english %&amp;gt;%
+  filter(label_eng != &amp;quot;Other&amp;quot;) %&amp;gt;% 
+  mutate(label_eng_f = as.factor(label_eng)) %&amp;gt;% 
+  group_by(bt_f, party, label_eng_f) %&amp;gt;%
+  filter(party != &amp;quot;SPD&amp;quot; &amp;amp; party != &amp;quot;Union&amp;quot; &amp;amp; party != &amp;quot;NA&amp;quot;) %&amp;gt;% 
+  filter(!is.na(label_eng_f)) %&amp;gt;% 
+  summarise(n = n()) %&amp;gt;%
+  mutate(perc = (n/sum(n))) %&amp;gt;%
+  mutate(label_eng_f = fct_reorder2(label_eng_f, party, perc, .desc = F)) %&amp;gt;% 
+  ggplot(aes(x = label_eng_f, y = perc, fill = party)) +
+  geom_bar(position = &amp;quot;dodge&amp;quot;,
+           stat = &amp;quot;identity&amp;quot;,
+           alpha = 0.9) +
+  scale_fill_manual(values = c(&amp;quot;Grüne&amp;quot; = &amp;quot;#50822E&amp;quot;, &amp;quot;Linke&amp;quot; = &amp;quot;#B61C3E&amp;quot;, 
+                     &amp;quot;CDU/CSU&amp;quot; = &amp;quot;#32372C&amp;quot;, &amp;quot;SPD&amp;quot; = &amp;quot;#E3000F&amp;quot;, &amp;quot;AfD&amp;quot; = &amp;quot;#0088FF&amp;quot;, &amp;quot;FDP&amp;quot; = &amp;quot;#FFD600&amp;quot;)) + 
+  xlab(&amp;quot;&amp;quot;) + ylab(&amp;quot;&amp;quot;) + labs(fill = &amp;quot;&amp;quot;) +
+  theme_bw() + theme(text=element_text(size = 12), legend.position=&amp;quot;bottom&amp;quot;) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  facet_wrap(~bt_f) +
+  coord_flip()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This plot shows the percentage of each topic for each party. You can clearly see that almost every party has a clear thematic focus. &lt;em&gt;Immigration&lt;/em&gt; has the highest share of the minor interpolations of the AfD. By contrast, &lt;em&gt;law and crime&lt;/em&gt; make up the largest share of &lt;em&gt;Die Linke&lt;/em&gt;. Among &lt;em&gt;Güne&lt;/em&gt;, &lt;em&gt;transport&lt;/em&gt; makes up the biggest share, with a focus on e-mobility. The FDP also has the largest share in &lt;em&gt;transport&lt;/em&gt;, but it is lower than in the &lt;em&gt;Grünen&lt;/em&gt;. In general, the FDP has no such clear focus on a specific topic as the other parties do. In contrast, the FDP is moderately represented on some topics.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;sentiment-analysis&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Sentiment Analysis&lt;/h2&gt;
+&lt;p&gt;As a small addition, a sentiment analysis was also performed. For this, the sentiment for each minor interpolation was determined based on the content. Subsequently, an averaging comparison was made between the parties.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;comparisons &amp;lt;- list( c(&amp;quot;AfD&amp;quot;, &amp;quot;Linke&amp;quot;), c(&amp;quot;AfD&amp;quot;, &amp;quot;Grüne&amp;quot;), c(&amp;quot;AfD&amp;quot;, &amp;quot;FDP&amp;quot;), 
+                        c(&amp;quot;FDP&amp;quot;, &amp;quot;Linke&amp;quot;), c(&amp;quot;FDP&amp;quot;, &amp;quot;Grüne&amp;quot;), c(&amp;quot;Grüne&amp;quot;, &amp;quot;Linke&amp;quot;))
+
+df_english %&amp;gt;% 
+  filter(party != &amp;quot;SPD&amp;quot; &amp;amp; party != &amp;quot;Union&amp;quot;) %&amp;gt;% 
+  filter(label_eng == &amp;quot;Law and Crime&amp;quot; | label_eng == &amp;quot;Immigration&amp;quot; | label_eng == &amp;quot;Environment&amp;quot; | label_eng == &amp;quot;Transportation&amp;quot; | 
+           label_eng == &amp;quot;Defense&amp;quot; | label_eng == &amp;quot;Energy&amp;quot;) %&amp;gt;% 
+  group_by(label_eng, party) %&amp;gt;% 
+  ggplot(., aes(x = party, y = sentiment, col = party)) +
+  geom_boxplot(alpha = 1, width = 0.2) +
+  geom_violin(alpha = 0.3) +
+  labs(fill =&amp;quot;&amp;quot;, color = &amp;quot;&amp;quot;) +
+  ggpubr::stat_compare_means(comparisons = comparisons, bracket.size = 0.3, size = 3, 
+                             text = element_text(family = &amp;quot;LM Roman 10&amp;quot;)) +
+  scale_color_manual(values = c(&amp;quot;Grüne&amp;quot; = &amp;quot;#50822E&amp;quot;, &amp;quot;Linke&amp;quot; = &amp;quot;#B61C3E&amp;quot;, 
+                     &amp;quot;CDU/CSU&amp;quot; = &amp;quot;#32372C&amp;quot;, &amp;quot;SPD&amp;quot; = &amp;quot;#E3000F&amp;quot;, &amp;quot;AfD&amp;quot; = &amp;quot;#0088FF&amp;quot;, &amp;quot;FDP&amp;quot; = &amp;quot;#FFD600&amp;quot;)) +
+  theme_bw() +
+  theme(text=element_text(size = 12, family = &amp;quot;LM Roman 10&amp;quot;), 
+        plot.margin=grid::unit(c(0,0,0,0), &amp;quot;mm&amp;quot;),
+        axis.title.x=element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = &amp;quot;bottom&amp;quot;) +
+  facet_wrap(~label_eng) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Data Wrangling Part 1: Introduction to dplyr</title>
       <link>/post/data-wrangling-part-1-introduction-to-dplyr/</link>
-      <pubDate>Sat, 10 Nov 2018 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 16 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/data-wrangling-part-1-introduction-to-dplyr/</guid>
       <description>&lt;div id=&#34;TOC&#34;&gt;

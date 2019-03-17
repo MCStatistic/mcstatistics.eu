@@ -1,0 +1,373 @@
+---
+title: 'German Bundestag - Minor Interpellations '
+author: Marlon Schumacher
+date: '2019-02-14'
+slug: german-bundestag-minor-interpellations
+categories:
+  - R
+tags:
+  - R
+  - Analysis
+  - sentiment Analysis
+image:
+  caption: ''
+  focal_point: ''
+output: 
+  blogdown::html_page:
+    toc: true
+---
+
+For my studies I wrote a seminar paper about the agenda setting of the opposition parties in the German Bundestag. To analyze the agenda setting of the opposition parties, the minor interpellations were used. In the following I would like to show on the one hand the data acquisition and on the other hand the basic aspects of the evaluation. In addition, I will build a Shiny App, so you can look at the data in more detail.
+
+Code Details can be found on [GitHub](https://github.com/MCStatistic/SeminarPaper_ASGB).
+
+## Packages & Data Source
+
+Some packages were used for the analysis. I guess most packages do not need an explanation. However, `purrr` and `downloader` were used for downloading all documents of the 18th and 19th Bundestag. For the classification process in terms of supervised machine learning `RTextTools` was used. 
+
+```{r}
+pacman::p_load(dplyr, haven, readr, purrr, ggplot2, downloader, 
+               pdftools, stringr, ggthemes, lubridate, tm, RTextTools, forcats)
+```
+
+All documents for the German Bundestag are are freely accessible. The source of downloaded data can be found here: [DIP (Dokumentations- und Informationssystem für Parlamentarische Vorgänge)](https://dipbt.bundestag.de/dip21.web/bt). Each PDF-Document has its own URL and of course, there is a quite simple pattern which you can use. The pattern can best be shown by two URLs:
+
+The first Document of the 19th Bundestag: `http://dipbt.bundestag.de/dip21/btd/19/000/1900001.pdf`
+
+The 101th Document of the 19th Bundestag: `http://dipbt.bundestag.de/dip21/btd/19/001/1900101.pdf`
+
+To produce all the needed URLs I replicated the static components of the URLS so many times as needed. The varying part of the URL consists of a simple numbering in two places of it. Therefore, the pattern was reprocuded and also replicated n-times depending on the logic of the numbering. 
+
+```{r}
+# URLs for the 18th legislature
+urls_18 <- str_c(rep("http://dipbt.bundestag.de/dip21/btd/18/", each = 13700), 
+                 as.character(sprintf("%03d", 000:136)) %>% rep(each = 100), 
+                 rep("/18", each = 13700), 
+                 as.character(sprintf("%05d", 00000:13699)), 
+                 rep(".pdf", each = 13700), 
+                 spe = "") %>% 
+  .[!. == "http://dipbt.bundestag.de/dip21/btd/18/000/1800000.pdf"]
+
+# URLs for the 19th legislature
+urls_19 <- str_c(rep("http://dipbt.bundestag.de/dip21/btd/19/0", each = 6700), 
+                 as.character(sprintf("%02d", 00:66)) %>% rep(each = 100) , 
+                 rep("/190", each = 6700), 
+                 as.character(sprintf("%04d", 0000:6699)), 
+                 rep(".pdf", each = 6700), 
+                 sep = "") %>% 
+  .[!. == "http://dipbt.bundestag.de/dip21/btd/19/000/1900000.pdf"]
+
+# for downloading the documents with the downloader package, a file path is needed
+path_18 <- paste("./18_btd/", basename(urls_18), sep = "")
+path_19 <- paste("./19_btd/", basename(urls_19), sep = "")
+
+# resulting URLs and file paths
+head(urls_18) %>% 
+  kableExtra::kable()
+head(path_18) %>% 
+  kableExtra::kable()
+```
+
+Now, the creaeted URLs can be used for downloading all documents. Instead of building a for loop, the `map2()` function out of the `purrr` package was used.
+
+```{r, eval=F, echo=T}
+# creating sleep function
+sleep_down <- function(...) {
+  download(...)
+  Sys.sleep(0.5)
+}
+
+# creating safely function (if something goes wrong)
+safe_download <- safely(sleep_down)
+
+# downloading all files for the 18th Bundestag
+map_results_18 <- map2(urls_18, path_18,
+                    ~safe_download(.x, .y, mode ="wb"))
+
+# downloading all files for the 18th Bundestag
+map_results_19 <- map2(urls_19, path_19,
+                       ~safe_download(.x, .y, mode = "wb"))
+```
+
+## Data Acquisition
+
+As you can see, I used a For Loop to extract some information. Anyway, the whole thing is very nested and today I would try to realize it differently. Nevertheless, the required information could be extracted in this way. A for loop was also used for extracting the other information. You can find more infromation on my repository [SeminarPaper_ASGB](https://github.com/MCStatistic/SeminarPaper_ASGB).
+
+```{r, eval=F, echo=T}
+party <- c()
+for(i in seq_along(path_anfragen_18_clean)){
+  text_string <- pdf_text(path_anfragen_18_clean[i]) %>% 
+     strsplit("\n") %>% 
+     unlist()
+  party <- text_string[4:20]
+  a <- str_detect(party, "GRÜNEN")
+  
+  if(TRUE %in% a){
+    z <- "Grüne"
+  } else{
+      b <- str_detect(party, "LINKE")
+      
+      if(TRUE %in% b){
+        z <- "Linke"
+      } else{
+        g <- str_detect(party, "FDP")
+        
+        if(TRUE %in% g){
+          z <- "FDP"
+        } else{
+          h <- str_detect(party, "AfD")
+          
+          if(TRUE %in% h){
+            z <- "AfD"
+          }else{
+            c <- str_detect(party, "SPD")
+        
+          if(TRUE %in% c){
+           z <- "SPD"
+            } else{
+              d <- str_detect(party, "CDU/CSU")
+          
+           if(TRUE %in% d){
+             z <- "Union"
+              } else{
+                z <- "NA"
+          }
+        }
+      }
+    }
+  }
+}
+  party <- c(party, z)
+}
+
+```
+
+## Word Matching
+
+After cleaning title and content (e.g. numbers, stopwords, punctuations) we can start with the categorization of the documents. Two methods were used. First of all, a simple word-matching with topic-specific words was made. For each topic a vector of words were created. Furthermore, overlapping matches were detected and corrected. Finally, supervised machine learning was used (Random Forest and Support Vector Machines). 
+
+```{r eval=T, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+load("df_english.RData")
+load("prob_plot_df.RData")
+library(extrafont)
+loadfonts()
+```
+
+```{r, eval=F, echo=T}
+# labeling the topic with word matching
+df_complete_clean %<>% 
+  mutate(topic = case_when(
+    str_detect(title, makroöko) ~ "Macroeconomics", 
+    str_detect(title, buerger) ~ "Civil Rights",
+    str_detect(title, gesundheit) ~ "Health", 
+    str_detect(title, agrar) ~ "Agriculture", 
+    str_detect(title, arbeit) ~ "Labor", 
+    str_detect(title, bildung) ~ "Education", 
+    str_detect(title, umwelt) ~ "Environment", 
+    str_detect(title, energie) ~ "Energy", 
+    str_detect(title, einwanderung) ~ "Immigration", 
+    str_detect(title, transport) ~ "Transportation", 
+    str_detect(title, krimi) ~ "Law and Crime", 
+    str_detect(title, sozi) ~ "Social Welfare", 
+    str_detect(title, wohn) ~ "Housing", 
+    str_detect(title, banken) ~ "Domestic Commerce", 
+    str_detect(title, verteidigung) ~ "Defense",
+    str_detect(title, tech_kom) ~ "Technology", 
+    str_detect(title, außenh) ~ "Foreign Trade",
+    str_detect(title, int_aus) ~ "International Affairs",
+    str_detect(title, regierung) ~ "Government Operations",
+    TRUE ~ "Other"
+  ))
+```
+
+After the word matching and the correction of some overlaps, this results in the following topic distribution.
+
+```{r}
+df_english %>%
+  filter(label_eng != "Other") %>% 
+  mutate(label_eng_f = as.factor(label_eng)) %>% 
+  group_by(label_eng_f) %>%
+  filter(!is.na(label_eng_f)) %>% 
+  summarise(n = n()) %>%
+  mutate(perc = (n/sum(n))) %>%
+  mutate(label_eng_f = fct_reorder(label_eng_f, perc, .desc = F)) %>% 
+  ggplot(aes(x = label_eng_f, y = perc)) +
+  geom_bar(position = "dodge", 
+           stat = "identity",
+           fill = "skyblue4",
+           alpha = 0.9) +
+  geom_text(aes(y = perc, 
+                label = sprintf("%1.1f%%", round(100*perc, 1))),
+            size = 3.1,
+            color=rgb(100,100,100, maxColorValue=255),
+            hjust=-0.1) +
+  ggtitle("") + ylab("") + xlab("") +
+  theme_bw() + theme(text=element_text(size = 12,
+                          family = "LM Roman 10")) +
+  scale_y_continuous(labels = scales::percent_format(), limits=c(0,0.25)) +
+  coord_flip()
+```
+
+It can be seen that the distribution is very unbalanced and some topics are hardly represented. This point should in principle be taken into account when using Random Forest. For example, with strongly unbalanced data, the major class can be down-sampled or the minor class over-sampled. 
+
+## Supervised Machine Learning
+
+The package `RTextTools` was used for using Random Forest and Support Vector Machines. Before the final classification, a text classification was performed to test the performance of both methods and to determine the best parameters. For this purpose, a container was created, which contains only the already classified requests. In addition, the requests were split into test and training data. For Random Forest, 200 n~trees~ were ultimately used and for Support Vector Machines the C-Parameter was set to 10.
+
+```{r, eval=F, echo=T}
+# creating training set
+df_training_eng <- df_english %>% 
+  filter(thema != "Other") %>% 
+  sample_n(3047) 
+
+# creating document-term matrix
+df_content_matrix <- create_matrix(df_training_eng$content)
+
+# remove sparse terms
+df_content_matrix <- removeSparseTerms(df_content_matrix, sparse = .99)
+
+# creating a container
+container_eng <- create_container(df_content_matrix, 
+                                  df_training_eng$thema, 
+                                  trainSize=1:2300,
+                                  testSize=2301:3047, 
+                                  virgin=FALSE)
+
+# Support Vector Machines 
+svm <- train_model(container_eng,"SVM", kernel = "linear", cost = 10)
+svm_classify <- classify_model(container_eng, svm)
+
+# data preparation for plotting
+df_svm_eng <- svm_classify %>% 
+  mutate(model = as.factor("Support Vector Machine")) %>% 
+  rename(prob = SVM_PROB,
+         label = SVM_LABEL) 
+
+# Random Forest
+rf_200 <- train_model(container_eng, "RF", ntree = 200)
+rf_classify_200 <- classify_model(container_eng, rf_200)
+
+# data preparation for plotting
+df_rf_200_eng <- rf_classify_200 %>% 
+  mutate(model = as.factor("Random Forest")) %>% 
+  rename(prob = FORESTS_PROB,
+         label = FORESTS_LABEL)
+
+prob_plot_df <- rbind.data.frame(df_rf_200_eng, df_svm_eng)
+```
+
+Now, we can check the class probabilities. The class probabilities were also used for the final classification to ensure the most reliable classification possible.
+
+```{r}
+prob_plot_df %>% 
+  group_by(model) %>% 
+  mutate(label = fct_reorder(label, prob)) %>% 
+  ggplot(aes(x = label, y = prob, fill = label)) +
+  geom_boxplot(alpha = 0.2) +
+  geom_jitter(width = 0.2, alpha = 0.2) +
+  theme_bw() +
+  xlab("") +
+  ylab("Class Probabilities") +
+  facet_wrap(~ model) +
+  theme(legend.position = "none",
+        text=element_text(size = 12, 
+                          family = "LM Roman 10")) +
+  coord_flip() 
+```
+
+As you can see, the performance of both algorithms is not good on every topic. Therefore, cut off values for the class probability were used for the final classification.
+
+## Results 
+
+Now, we can take a look to the results. However, I will keep it short regarding the interpretation though.
+
+```{r}
+df_english %>% 
+  filter(party != "NA") %>% 
+  mutate(date_n = as.Date(date, "%d.%m.%Y")) %>% 
+  mutate(year = year(date_n),
+         party = case_when(party == "Union" ~ "CDU/CSU",
+                           TRUE ~ party)) %>% 
+  mutate(year = as.character(year)) %>% 
+  group_by(party, year, bt_f) %>% 
+  summarise(n = n()) %>% 
+  ggplot(aes(x = as.factor(year), fill = reorder(party, -n), y = n)) +
+  geom_bar(position="dodge", 
+           stat="identity",
+           alpha = 0.9) +
+  geom_text(position = position_dodge(width = 1),
+            aes(label = n),
+            vjust = -0.5, 
+            size = 3) + 
+  xlab("") + 
+  ylab("") + 
+  labs(fill = "") +
+  theme_bw() +
+  theme(legend.position="bottom",
+        text=element_text(size = 12, 
+                          family = "LM Roman 10")) +
+  scale_fill_manual(values = c("Grüne" = "#50822E", "Linke" = "#B61C3E", 
+                     "CDU/CSU" = "#32372C", "SPD" = "#E3000F", "AfD" = "#0088FF", "FDP" = "#FFD600")) +
+  facet_wrap(~ bt_f, 
+             strip.position = "top", 
+             dir = "v") +
+  scale_y_continuous(limits = c(0,800))
+```
+
+There are no significant differences in the number of minor interpellations. Only *Die Linke* always has more minor interpellations than the other parties. And, of course, it is clear that the minor interpellations are above all a means of opposition. The governing parties almost do not use this instrument at all.
+
+```{r}
+df_english %>%
+  filter(label_eng != "Other") %>% 
+  mutate(label_eng_f = as.factor(label_eng)) %>% 
+  group_by(bt_f, party, label_eng_f) %>%
+  filter(party != "SPD" & party != "Union" & party != "NA") %>% 
+  filter(!is.na(label_eng_f)) %>% 
+  summarise(n = n()) %>%
+  mutate(perc = (n/sum(n))) %>%
+  mutate(label_eng_f = fct_reorder2(label_eng_f, party, perc, .desc = F)) %>% 
+  ggplot(aes(x = label_eng_f, y = perc, fill = party)) +
+  geom_bar(position = "dodge",
+           stat = "identity",
+           alpha = 0.9) +
+  scale_fill_manual(values = c("Grüne" = "#50822E", "Linke" = "#B61C3E", 
+                     "CDU/CSU" = "#32372C", "SPD" = "#E3000F", "AfD" = "#0088FF", "FDP" = "#FFD600")) + 
+  xlab("") + ylab("") + labs(fill = "") +
+  theme_bw() + theme(text=element_text(size = 12), legend.position="bottom") +
+  scale_y_continuous(labels = scales::percent_format()) +
+  facet_wrap(~bt_f) +
+  coord_flip()
+```
+
+This plot shows the percentage of each topic for each party. You can clearly see that almost every party has a clear thematic focus. *Immigration* has the highest share of the minor interpolations of the AfD. By contrast, *law and crime* make up the largest share of *Die Linke*. Among *Güne*, *transport* makes up the biggest share, with a focus on e-mobility. The FDP also has the largest share in *transport*, but it is lower than in the *Grünen*. In general, the FDP has no such clear focus on a specific topic as the other parties do. In contrast, the FDP is moderately represented on some topics.
+
+## Sentiment Analysis 
+
+As a small addition, a sentiment analysis was also performed. For this, the sentiment for each minor interpolation was determined based on the content. Subsequently, an averaging comparison was made between the parties.
+
+```{r}
+comparisons <- list( c("AfD", "Linke"), c("AfD", "Grüne"), c("AfD", "FDP"), 
+                        c("FDP", "Linke"), c("FDP", "Grüne"), c("Grüne", "Linke"))
+
+df_english %>% 
+  filter(party != "SPD" & party != "Union") %>% 
+  filter(label_eng == "Law and Crime" | label_eng == "Immigration" | label_eng == "Environment" | label_eng == "Transportation" | 
+           label_eng == "Defense" | label_eng == "Energy") %>% 
+  group_by(label_eng, party) %>% 
+  ggplot(., aes(x = party, y = sentiment, col = party)) +
+  geom_boxplot(alpha = 1, width = 0.2) +
+  geom_violin(alpha = 0.3) +
+  labs(fill ="", color = "") +
+  ggpubr::stat_compare_means(comparisons = comparisons, bracket.size = 0.3, size = 3, 
+                             text = element_text(family = "LM Roman 10")) +
+  scale_color_manual(values = c("Grüne" = "#50822E", "Linke" = "#B61C3E", 
+                     "CDU/CSU" = "#32372C", "SPD" = "#E3000F", "AfD" = "#0088FF", "FDP" = "#FFD600")) +
+  theme_bw() +
+  theme(text=element_text(size = 12, family = "LM Roman 10"), 
+        plot.margin=grid::unit(c(0,0,0,0), "mm"),
+        axis.title.x=element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = "bottom") +
+  facet_wrap(~label_eng) 
+```
+

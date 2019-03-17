@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Marlon Schumacher &amp;copy; 2018</copyright>
-    <lastBuildDate>Wed, 24 Oct 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 14 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Analysis</title>
+      <link>/tags/analysis/</link>
+      <pubDate>Thu, 14 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R</title>
+      <link>/tags/r/</link>
+      <pubDate>Thu, 14 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/r/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>SEM</title>
@@ -33,7 +51,7 @@
     <item>
       <title>Tidyverse</title>
       <link>/tags/tidyverse/</link>
-      <pubDate>Sat, 10 Nov 2018 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 16 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/tidyverse/</guid>
       <description></description>
@@ -42,7 +60,7 @@
     <item>
       <title>data manipulation</title>
       <link>/tags/data-manipulation/</link>
-      <pubDate>Sat, 10 Nov 2018 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 16 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/data-manipulation/</guid>
       <description></description>
@@ -51,7 +69,7 @@
     <item>
       <title>data wrangling</title>
       <link>/tags/data-wrangling/</link>
-      <pubDate>Sat, 10 Nov 2018 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 16 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/data-wrangling/</guid>
       <description></description>
@@ -60,7 +78,7 @@
     <item>
       <title>dplyr</title>
       <link>/tags/dplyr/</link>
-      <pubDate>Sat, 10 Nov 2018 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 16 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/dplyr/</guid>
       <description></description>
@@ -90,6 +108,15 @@
       <pubDate>Wed, 24 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/semplot/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sentiment Analysis</title>
+      <link>/tags/sentiment-analysis/</link>
+      <pubDate>Thu, 14 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/sentiment-analysis/</guid>
       <description></description>
     </item>
     

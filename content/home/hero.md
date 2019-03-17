@@ -23,4 +23,4 @@ weight = 3
 #   url = "./post/getting-started/"
 #   label = '<i class="fas fa-download"></i> Install Now'
 +++
-R Tutorials | Data Analytics
+R Tutorials | Data Science
