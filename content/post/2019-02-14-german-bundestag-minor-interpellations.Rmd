@@ -316,7 +316,7 @@ df_english %>%
 
 There are no significant differences in the number of minor interpellations. Only *Die Linke* always has more minor interpellations than the other parties. And, of course, it is clear that the minor interpellations are above all a means of opposition. The governing parties almost do not use this instrument at all.
 
-```{r}
+```{r, fig.height=12}
 df_english %>%
   filter(label_eng != "Other") %>% 
   mutate(label_eng_f = as.factor(label_eng)) %>% 
@@ -345,7 +345,7 @@ This plot shows the percentage of each topic for each party. You can clearly see
 
 As a small addition, a sentiment analysis was also performed. For this, the sentiment for each minor interpolation was determined based on the content. Subsequently, an averaging comparison was made between the parties.
 
-```{r}
+```{r, fig.width= 12, fig.height=8}
 comparisons <- list( c("AfD", "Linke"), c("AfD", "Grüne"), c("AfD", "FDP"), 
                         c("FDP", "Linke"), c("FDP", "Grüne"), c("Grüne", "Linke"))
 
