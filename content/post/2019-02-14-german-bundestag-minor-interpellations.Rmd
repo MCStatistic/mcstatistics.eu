@@ -26,8 +26,9 @@ Code Details can be found on [GitHub](https://github.com/MCStatistic/SeminarPape
 Some packages were used for the analysis. I guess most packages do not need an explanation. However, `purrr` and `downloader` were used for downloading all documents of the 18th and 19th Bundestag. For the classification process in terms of supervised machine learning `RTextTools` was used. 
 
 ```{r}
-pacman::p_load(dplyr, haven, readr, purrr, ggplot2, downloader, 
-               pdftools, stringr, ggthemes, lubridate, tm, RTextTools, forcats)
+pacman::p_load(dplyr, haven, readr, purrr, ggplot2, downloader, pdftools, 
+               stringr, ggthemes, lubridate, tm, RTextTools, forcats,
+               SentimentAnalysis)
 ```
 
 All documents for the German Bundestag are are freely accessible. The source of downloaded data can be found here: [DIP (Dokumentations- und Informationssystem für Parlamentarische Vorgänge)](https://dipbt.bundestag.de/dip21.web/bt). Each PDF-Document has its own URL and of course, there is a quite simple pattern which you can use. The pattern can best be shown by two URLs:
@@ -343,7 +344,41 @@ This plot shows the percentage of each topic for each party. You can clearly see
 
 ## Sentiment Analysis 
 
-As a small addition, a sentiment analysis was also performed. For this, the sentiment for each minor interpolation was determined based on the content. Subsequently, an averaging comparison was made between the parties.
+As a small addition, a sentiment analysis was also performed. For this, the sentiment for each minor interpolation was determined based on the content. Subsequently, an averaging comparison was made between the parties. The dictionary, [SentiWS](http://wortschatz.uni-leipzig.de/de/download), of the University of Leipzig was used.
+
+```{r, eval=F, echo=T}
+# creating two types of dictionaries
+senti_dict_binary <- SentimentDictionaryBinary(pos_df$Wort, neg_df$Wort)
+
+# splitting df because memory can't handle the amount of data :(
+df_sonst_f <- df_complete_clean_f %>% 
+  filter(label == "Sonstiges")
+
+df_lab_f <- df_complete_clean_f %>% 
+  filter(label != "Sonstiges")
+
+# sentiment analysis for the two splitted parts of the df
+df_lab_f$sentiment <- analyzeSentiment(df_lab_f$content, 
+                                       rules=list("Amplifiers"=list(ruleSentiment,
+                                                                    senti_dict_binary)))[,1]
+
+df_sonst_f$sentiment <- analyzeSentiment(df_sonst_f$content, 
+                                         rules=list("Amplifiers"=list(ruleSentiment,
+                                                                      senti_dict_binary)))[,1]
+
+# combining splitted df with sentiment-scores
+df_complete_fin <- rbind(df_lab_f, df_sonst_f)
+
+# sentiment analysis for the two splitted parts of the df
+df_lab_f$sentiment2 <- analyzeSentiment(df_lab_f$content,
+                                        rules=list("Amplifiers"=list(ruleSentimentPolarity,
+                                                                     senti_dict_binary)))[,1]
+
+df_sonst_f$sentiment2 <- analyzeSentiment(df_sonst_f$content,
+                                          rules=list("Amplifiers"=list(ruleSentimentPolarity,
+                                                                       senti_dict_binary)))[,1]
+```
+
 
 ```{r, fig.width= 12, fig.height=8}
 comparisons <- list( c("AfD", "Linke"), c("AfD", "Grüne"), c("AfD", "FDP"), 

@@ -34,8 +34,9 @@ output:
 <div id="packages-data-source" class="section level2">
 <h2>Packages &amp; Data Source</h2>
 <p>Some packages were used for the analysis. I guess most packages do not need an explanation. However, <code>purrr</code> and <code>downloader</code> were used for downloading all documents of the 18th and 19th Bundestag. For the classification process in terms of supervised machine learning <code>RTextTools</code> was used.</p>
-<pre class="r"><code>pacman::p_load(dplyr, haven, readr, purrr, ggplot2, downloader, 
-               pdftools, stringr, ggthemes, lubridate, tm, RTextTools, forcats)</code></pre>
+<pre class="r"><code>pacman::p_load(dplyr, haven, readr, purrr, ggplot2, downloader, pdftools, 
+               stringr, ggthemes, lubridate, tm, RTextTools, forcats,
+               SentimentAnalysis)</code></pre>
 <p>All documents for the German Bundestag are are freely accessible. The source of downloaded data can be found here: <a href="https://dipbt.bundestag.de/dip21.web/bt">DIP (Dokumentations- und Informationssystem für Parlamentarische Vorgänge)</a>. Each PDF-Document has its own URL and of course, there is a quite simple pattern which you can use. The pattern can best be shown by two URLs:</p>
 <p>The first Document of the 19th Bundestag: <code>http://dipbt.bundestag.de/dip21/btd/19/000/1900001.pdf</code></p>
 <p>The 101th Document of the 19th Bundestag: <code>http://dipbt.bundestag.de/dip21/btd/19/001/1900101.pdf</code></p>
@@ -390,7 +391,37 @@ prob_plot_df &lt;- rbind.data.frame(df_rf_200_eng, df_svm_eng)</code></pre>
 </div>
 <div id="sentiment-analysis" class="section level2">
 <h2>Sentiment Analysis</h2>
-<p>As a small addition, a sentiment analysis was also performed. For this, the sentiment for each minor interpolation was determined based on the content. Subsequently, an averaging comparison was made between the parties.</p>
+<p>As a small addition, a sentiment analysis was also performed. For this, the sentiment for each minor interpolation was determined based on the content. Subsequently, an averaging comparison was made between the parties. The dictionary, <a href="http://wortschatz.uni-leipzig.de/de/download">SentiWS</a>, of the University of Leipzig was used.</p>
+<pre class="r"><code># creating two types of dictionaries
+senti_dict_binary &lt;- SentimentDictionaryBinary(pos_df$Wort, neg_df$Wort)
+
+# splitting df because memory can&#39;t handle the amount of data :(
+df_sonst_f &lt;- df_complete_clean_f %&gt;% 
+  filter(label == &quot;Sonstiges&quot;)
+
+df_lab_f &lt;- df_complete_clean_f %&gt;% 
+  filter(label != &quot;Sonstiges&quot;)
+
+# sentiment analysis for the two splitted parts of the df
+df_lab_f$sentiment &lt;- analyzeSentiment(df_lab_f$content, 
+                                       rules=list(&quot;Amplifiers&quot;=list(ruleSentiment,
+                                                                    senti_dict_binary)))[,1]
+
+df_sonst_f$sentiment &lt;- analyzeSentiment(df_sonst_f$content, 
+                                         rules=list(&quot;Amplifiers&quot;=list(ruleSentiment,
+                                                                      senti_dict_binary)))[,1]
+
+# combining splitted df with sentiment-scores
+df_complete_fin &lt;- rbind(df_lab_f, df_sonst_f)
+
+# sentiment analysis for the two splitted parts of the df
+df_lab_f$sentiment2 &lt;- analyzeSentiment(df_lab_f$content,
+                                        rules=list(&quot;Amplifiers&quot;=list(ruleSentimentPolarity,
+                                                                     senti_dict_binary)))[,1]
+
+df_sonst_f$sentiment2 &lt;- analyzeSentiment(df_sonst_f$content,
+                                          rules=list(&quot;Amplifiers&quot;=list(ruleSentimentPolarity,
+                                                                       senti_dict_binary)))[,1]</code></pre>
 <pre class="r"><code>comparisons &lt;- list( c(&quot;AfD&quot;, &quot;Linke&quot;), c(&quot;AfD&quot;, &quot;Grüne&quot;), c(&quot;AfD&quot;, &quot;FDP&quot;), 
                         c(&quot;FDP&quot;, &quot;Linke&quot;), c(&quot;FDP&quot;, &quot;Grüne&quot;), c(&quot;Grüne&quot;, &quot;Linke&quot;))
 
@@ -414,5 +445,5 @@ df_english %&gt;%
         axis.title.y = element_blank(),
         legend.position = &quot;bottom&quot;) +
   facet_wrap(~label_eng) </code></pre>
-<p><img src="/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-12-1.png" width="1152" /></p>
+<p><img src="/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-13-1.png" width="1152" /></p>
 </div>
