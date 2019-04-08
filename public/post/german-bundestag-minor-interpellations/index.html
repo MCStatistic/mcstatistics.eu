@@ -339,7 +339,7 @@
 <p>Some packages were used for the analysis. I guess most packages do not need an explanation. However, <code>purrr</code> and <code>downloader</code> were used for downloading all documents of the 18th and 19th Bundestag. For the classification process in terms of supervised machine learning <code>RTextTools</code> was used.</p>
 <pre class="r"><code>pacman::p_load(dplyr, haven, readr, purrr, ggplot2, downloader, pdftools, 
                stringr, ggthemes, lubridate, tm, RTextTools, forcats,
-               SentimentAnalysis)</code></pre>
+               SentimentAnalysis, magrittr)</code></pre>
 <p>All documents for the German Bundestag are are freely accessible. The source of downloaded data can be found here: <a href="https://dipbt.bundestag.de/dip21.web/bt">DIP (Dokumentations- und Informationssystem für Parlamentarische Vorgänge)</a>. Each PDF-Document has its own URL and of course, there is a quite simple pattern which you can use. The pattern can best be shown by two URLs:</p>
 <p>The first Document of the 19th Bundestag: <code>http://dipbt.bundestag.de/dip21/btd/19/000/1900001.pdf</code></p>
 <p>The 101th Document of the 19th Bundestag: <code>http://dipbt.bundestag.de/dip21/btd/19/001/1900101.pdf</code></p>
@@ -619,8 +619,8 @@ prob_plot_df &lt;- rbind.data.frame(df_rf_200_eng, df_svm_eng)</code></pre>
 <p>Now, we can check the class probabilities. The class probabilities were also used for the final classification to ensure the most reliable classification possible.</p>
 <pre class="r"><code>prob_plot_df %&gt;% 
   group_by(model) %&gt;% 
-  mutate(label = fct_reorder(label, prob)) %&gt;% 
-  ggplot(aes(x = label, y = prob, fill = label)) +
+  mutate(label_eng = fct_reorder(label_eng, prob)) %&gt;% 
+  ggplot(aes(x = label_eng, y = prob, fill = label_eng)) +
   geom_boxplot(alpha = 0.2) +
   geom_jitter(width = 0.2, alpha = 0.2) +
   theme_bw() +
@@ -631,7 +631,14 @@ prob_plot_df &lt;- rbind.data.frame(df_rf_200_eng, df_svm_eng)</code></pre>
         text=element_text(size = 12, 
                           family = &quot;LM Roman 10&quot;)) +
   coord_flip() </code></pre>
-<p><img src="/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre><code>## Warning in mutate_impl(.data, dots): Unequal factor levels: coercing to
+## character</code></pre>
+<pre><code>## Warning in mutate_impl(.data, dots): binding character and factor vector,
+## coercing into character vector
+
+## Warning in mutate_impl(.data, dots): binding character and factor vector,
+## coercing into character vector</code></pre>
+<p><img src="/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>As you can see, the performance of both algorithms is not good on every topic. Therefore, cut off values for the class probability were used for the final classification.</p>
 </div>
 <div id="results" class="section level2">
@@ -667,7 +674,7 @@ prob_plot_df &lt;- rbind.data.frame(df_rf_200_eng, df_svm_eng)</code></pre>
              strip.position = &quot;top&quot;, 
              dir = &quot;v&quot;) +
   scale_y_continuous(limits = c(0,800))</code></pre>
-<p><img src="/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>There are no significant differences in the number of minor interpellations. Only <em>Die Linke</em> always has more minor interpellations than the other parties. And, of course, it is clear that the minor interpellations are above all a means of opposition. The governing parties almost do not use this instrument at all.</p>
 <pre class="r"><code>df_english %&gt;%
   filter(label_eng != &quot;Other&quot;) %&gt;% 
@@ -689,7 +696,7 @@ prob_plot_df &lt;- rbind.data.frame(df_rf_200_eng, df_svm_eng)</code></pre>
   scale_y_continuous(labels = scales::percent_format()) +
   facet_wrap(~bt_f) +
   coord_flip()</code></pre>
-<p><img src="/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>This plot shows the percentage of each topic for each party. You can clearly see that almost every party has a clear thematic focus. <em>Immigration</em> has the highest share of the minor interpolations of the AfD. By contrast, <em>law and crime</em> makes up the largest share of <em>Die Linke</em>. Among <em>Grüne</em>, <em>transport</em> makes up the biggest share, with a focus on e-mobility. The FDP also has the largest share in <em>transport</em>, but it is lower than in the <em>Grünen</em>. In general, the FDP has no such clear focus on a specific topic as the other parties do. In contrast, the FDP is moderately represented on some topics.</p>
 </div>
 <div id="sentiment-analysis" class="section level2">
@@ -748,7 +755,7 @@ df_english %&gt;%
         axis.title.y = element_blank(),
         legend.position = &quot;bottom&quot;) +
   facet_wrap(~label_eng) </code></pre>
-<p><img src="/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-13-1.png" width="1152" /></p>
+<p><img src="/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-14-1.png" width="1152" /></p>
 </div>
 
     </div>

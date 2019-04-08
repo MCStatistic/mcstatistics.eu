@@ -34,7 +34,7 @@
 &lt;p&gt;Some packages were used for the analysis. I guess most packages do not need an explanation. However, &lt;code&gt;purrr&lt;/code&gt; and &lt;code&gt;downloader&lt;/code&gt; were used for downloading all documents of the 18th and 19th Bundestag. For the classification process in terms of supervised machine learning &lt;code&gt;RTextTools&lt;/code&gt; was used.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(dplyr, haven, readr, purrr, ggplot2, downloader, pdftools, 
                stringr, ggthemes, lubridate, tm, RTextTools, forcats,
-               SentimentAnalysis)&lt;/code&gt;&lt;/pre&gt;
+               SentimentAnalysis, magrittr)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;All documents for the German Bundestag are are freely accessible. The source of downloaded data can be found here: &lt;a href=&#34;https://dipbt.bundestag.de/dip21.web/bt&#34;&gt;DIP (Dokumentations- und Informationssystem für Parlamentarische Vorgänge)&lt;/a&gt;. Each PDF-Document has its own URL and of course, there is a quite simple pattern which you can use. The pattern can best be shown by two URLs:&lt;/p&gt;
 &lt;p&gt;The first Document of the 19th Bundestag: &lt;code&gt;http://dipbt.bundestag.de/dip21/btd/19/000/1900001.pdf&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;The 101th Document of the 19th Bundestag: &lt;code&gt;http://dipbt.bundestag.de/dip21/btd/19/001/1900101.pdf&lt;/code&gt;&lt;/p&gt;
@@ -314,8 +314,8 @@ prob_plot_df &amp;lt;- rbind.data.frame(df_rf_200_eng, df_svm_eng)&lt;/code&gt;&
 &lt;p&gt;Now, we can check the class probabilities. The class probabilities were also used for the final classification to ensure the most reliable classification possible.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;prob_plot_df %&amp;gt;% 
   group_by(model) %&amp;gt;% 
-  mutate(label = fct_reorder(label, prob)) %&amp;gt;% 
-  ggplot(aes(x = label, y = prob, fill = label)) +
+  mutate(label_eng = fct_reorder(label_eng, prob)) %&amp;gt;% 
+  ggplot(aes(x = label_eng, y = prob, fill = label_eng)) +
   geom_boxplot(alpha = 0.2) +
   geom_jitter(width = 0.2, alpha = 0.2) +
   theme_bw() +
@@ -326,7 +326,14 @@ prob_plot_df &amp;lt;- rbind.data.frame(df_rf_200_eng, df_svm_eng)&lt;/code&gt;&
         text=element_text(size = 12, 
                           family = &amp;quot;LM Roman 10&amp;quot;)) +
   coord_flip() &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in mutate_impl(.data, dots): Unequal factor levels: coercing to
+## character&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in mutate_impl(.data, dots): binding character and factor vector,
+## coercing into character vector
+
+## Warning in mutate_impl(.data, dots): binding character and factor vector,
+## coercing into character vector&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As you can see, the performance of both algorithms is not good on every topic. Therefore, cut off values for the class probability were used for the final classification.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;results&#34; class=&#34;section level2&#34;&gt;
@@ -362,7 +369,7 @@ prob_plot_df &amp;lt;- rbind.data.frame(df_rf_200_eng, df_svm_eng)&lt;/code&gt;&
              strip.position = &amp;quot;top&amp;quot;, 
              dir = &amp;quot;v&amp;quot;) +
   scale_y_continuous(limits = c(0,800))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;There are no significant differences in the number of minor interpellations. Only &lt;em&gt;Die Linke&lt;/em&gt; always has more minor interpellations than the other parties. And, of course, it is clear that the minor interpellations are above all a means of opposition. The governing parties almost do not use this instrument at all.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_english %&amp;gt;%
   filter(label_eng != &amp;quot;Other&amp;quot;) %&amp;gt;% 
@@ -384,7 +391,7 @@ prob_plot_df &amp;lt;- rbind.data.frame(df_rf_200_eng, df_svm_eng)&lt;/code&gt;&
   scale_y_continuous(labels = scales::percent_format()) +
   facet_wrap(~bt_f) +
   coord_flip()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;This plot shows the percentage of each topic for each party. You can clearly see that almost every party has a clear thematic focus. &lt;em&gt;Immigration&lt;/em&gt; has the highest share of the minor interpolations of the AfD. By contrast, &lt;em&gt;law and crime&lt;/em&gt; makes up the largest share of &lt;em&gt;Die Linke&lt;/em&gt;. Among &lt;em&gt;Grüne&lt;/em&gt;, &lt;em&gt;transport&lt;/em&gt; makes up the biggest share, with a focus on e-mobility. The FDP also has the largest share in &lt;em&gt;transport&lt;/em&gt;, but it is lower than in the &lt;em&gt;Grünen&lt;/em&gt;. In general, the FDP has no such clear focus on a specific topic as the other parties do. In contrast, the FDP is moderately represented on some topics.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;sentiment-analysis&#34; class=&#34;section level2&#34;&gt;
@@ -443,7 +450,7 @@ df_english %&amp;gt;%
         axis.title.y = element_blank(),
         legend.position = &amp;quot;bottom&amp;quot;) +
   facet_wrap(~label_eng) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 </description>
     </item>
