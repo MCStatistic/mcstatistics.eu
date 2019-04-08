@@ -28,7 +28,7 @@ Some packages were used for the analysis. I guess most packages do not need an e
 ```{r}
 pacman::p_load(dplyr, haven, readr, purrr, ggplot2, downloader, pdftools, 
                stringr, ggthemes, lubridate, tm, RTextTools, forcats,
-               SentimentAnalysis)
+               SentimentAnalysis, magrittr)
 ```
 
 All documents for the German Bundestag are are freely accessible. The source of downloaded data can be found here: [DIP (Dokumentations- und Informationssystem für Parlamentarische Vorgänge)](https://dipbt.bundestag.de/dip21.web/bt). Each PDF-Document has its own URL and of course, there is a quite simple pattern which you can use. The pattern can best be shown by two URLs:
@@ -259,11 +259,38 @@ prob_plot_df <- rbind.data.frame(df_rf_200_eng, df_svm_eng)
 
 Now, we can check the class probabilities. The class probabilities were also used for the final classification to ensure the most reliable classification possible.
 
+```{r eval=T, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+# labeling the topic with word matching
+prob_plot_df %<>% 
+  mutate(label_eng = case_when(
+    label == "Makroökonomie" ~ "Macroeconomics", 
+    label == "Bürgerrechte" ~ "Civil Rights",
+    label == "Gesundheit" ~ "Health", 
+    label == "Agrarwirtschaft" ~ "Agriculture", 
+    label == "Arbeit" ~ "Labor", 
+    label == "Bildung" ~ "Education", 
+    label == "Umwelt" ~ "Environment", 
+    label == "Energie" ~ "Energy", 
+    label == "Einwanderung" ~ "Immigration", 
+    label == "Transport" ~ "Transportation", 
+    label == "Gesetz & Kriminalität" ~ "Law and Crime", 
+    label == "Soziale Wohlfahrt" ~ "Social Welfare", 
+    label == "Wohnungsbau" ~ "Housing", 
+    label == "Binnenhandel" ~ "Domestic Commerce", 
+    label == "Verteidigung" ~ "Defense",
+    label == "Technologie" ~ "Technology", 
+    label == "Außenhandel" ~ "Foreign Trade",
+    label == "Int. Angelegenheiten" ~ "International Affairs",
+    label == "Regierungsoperationen" ~ "Government Operations",
+    TRUE ~ "Other"
+  ))
+```
+
 ```{r}
 prob_plot_df %>% 
   group_by(model) %>% 
-  mutate(label = fct_reorder(label, prob)) %>% 
-  ggplot(aes(x = label, y = prob, fill = label)) +
+  mutate(label_eng = fct_reorder(label_eng, prob)) %>% 
+  ggplot(aes(x = label_eng, y = prob, fill = label_eng)) +
   geom_boxplot(alpha = 0.2) +
   geom_jitter(width = 0.2, alpha = 0.2) +
   theme_bw() +
