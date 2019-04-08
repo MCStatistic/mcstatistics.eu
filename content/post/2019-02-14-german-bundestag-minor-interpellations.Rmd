@@ -259,7 +259,7 @@ prob_plot_df <- rbind.data.frame(df_rf_200_eng, df_svm_eng)
 
 Now, we can check the class probabilities. The class probabilities were also used for the final classification to ensure the most reliable classification possible.
 
-```{r eval=T, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE}
 # labeling the topic with word matching
 prob_plot_df %<>% 
   mutate(label_eng = case_when(
