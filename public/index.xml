@@ -326,13 +326,6 @@ prob_plot_df &amp;lt;- rbind.data.frame(df_rf_200_eng, df_svm_eng)&lt;/code&gt;&
         text=element_text(size = 12, 
                           family = &amp;quot;LM Roman 10&amp;quot;)) +
   coord_flip() &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## Warning in mutate_impl(.data, dots): Unequal factor levels: coercing to
-## character&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## Warning in mutate_impl(.data, dots): binding character and factor vector,
-## coercing into character vector
-
-## Warning in mutate_impl(.data, dots): binding character and factor vector,
-## coercing into character vector&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-02-14-german-bundestag-minor-interpellations_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As you can see, the performance of both algorithms is not good on every topic. Therefore, cut off values for the class probability were used for the final classification.&lt;/p&gt;
 &lt;/div&gt;
