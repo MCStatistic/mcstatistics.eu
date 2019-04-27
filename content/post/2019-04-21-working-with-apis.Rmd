@@ -1,0 +1,80 @@
+---
+title: Working with APIs
+author: Marlon Schumacher
+date: '2019-04-21'
+slug: working-with-apis
+categories:
+  - R
+tags:
+  - API
+  - R
+  - Forecasting
+  - json
+image:
+  caption: ''
+  focal_point: ''
+---
+
+```{r}
+pacman::p_load(tidyverse, httr, jsonlite, crypto, coindeskr, anytime)
+```
+
+
+
+```{r}
+coincap_hist_df <- GET("https://api.coincap.io/v2/assets/bitcoin/history", query = list(id = "BTC",
+                                                                                        interval = "d1"))
+
+coincap_hist_df %>% 
+  content(as = "parse") %>%
+  .$data %>% 
+  bind_rows() %>% 
+  mutate(date = substr(date, start = 1, stop = 10) %>% as.Date(),
+         price_USD = as.numeric(priceUsd) %>% round(.,2)) %>% 
+  select(-priceUsd, -time)
+```
+
+```{r}
+key_cc <- "0f30ada169bfc36bc21d5dd0cfc7ebc8d21846a449565ae8ca3bb382444d66f9"
+url_hist <- "https://min-api.cryptocompare.com/data/histoday"
+
+test <- GET(url_hist, query = list(api_key = key_cc,
+                           fsym = "BTC",
+                           tsym = "USD",
+                           limit = 2000))
+
+test2 <- GET(url_hist, query = list(api_key = key_cc,
+                           fsym = "ETH",
+                           tsym = "USD",
+                           limit = 2000))
+
+btc_df_01 <- content(test, as = "parse")$Data %>% 
+  bind_rows() %>% 
+  mutate(date = anytime::anytime(time)) %>% 
+  mutate(Date = as.Date(date, format = "Y%-m%-d%"),
+         ID = "BTC",
+         asset = "Bitcoin")
+
+eth_df_01 <- content(test2, as = "parse")$Data %>% 
+  bind_rows() %>% 
+  mutate(date = anytime::anytime(time)) %>% 
+  mutate(Date = as.Date(date, format = "Y%-m%-d%"),
+         ID = "ETH",
+         asset = "Ethereum") %>% 
+  filter(open != 0)
+
+btc_eth_df <- bind_rows(btc_df_01, eth_df_01)
+```
+
+
+```{r}
+btc_eth_df %>% 
+  ggplot(aes(x = Date, y = close, col = asset)) +
+  geom_line() +
+  ggtitle("Bitcoin & Ethereum", subtitle = "Price (USD) since 04/11/2013") +
+  xlab("") +
+  ylab("USD") +
+  theme_bw() +
+  theme(legend.title = element_blank())
+```
+
