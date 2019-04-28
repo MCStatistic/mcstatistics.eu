@@ -16,7 +16,7 @@ image:
 ---
 
 ```{r}
-pacman::p_load(tidyverse, httr, jsonlite, crypto, coindeskr, anytime)
+pacman::p_load(tidyverse, httr, jsonlite, coindeskr, anytime, rlist, forecast, tseries)
 ```
 
 
@@ -34,28 +34,68 @@ coincap_hist_df %>%
   select(-priceUsd, -time)
 ```
 
+https://min-api.cryptocompare.com
+
 ```{r}
 key_cc <- "0f30ada169bfc36bc21d5dd0cfc7ebc8d21846a449565ae8ca3bb382444d66f9"
 url_hist <- "https://min-api.cryptocompare.com/data/histoday"
 
-test <- GET(url_hist, query = list(api_key = key_cc,
-                           fsym = "BTC",
-                           tsym = "USD",
-                           limit = 2000))
+btc_data <- GET(url_hist, query = list(api_key = key_cc,
+                                       fsym = "BTC",
+                                       tsym = "USD",
+                                       limit = 2000))
 
-test2 <- GET(url_hist, query = list(api_key = key_cc,
-                           fsym = "ETH",
-                           tsym = "USD",
-                           limit = 2000))
+btc_data2 <- GET(url_hist, query = list(api_key = key_cc,
+                                       fsym = "BTC",
+                                       tsym = "USD",
+                                       allData = "true"))
 
-btc_df_01 <- content(test, as = "parse")$Data %>% 
+bch_data <- GET(url_hist, query = list(api_key = key_cc,
+                                       fsym = "BCH",
+                                       tsym = "USD",
+                                       limit = 2000))
+
+btg_data <- GET(url_hist, query = list(api_key = key_cc,
+                                       fsym = "BTG",
+                                       tsym = "USD",
+                                       limit = 2000))
+
+eth_data <- GET(url_hist, query = list(api_key = key_cc,
+                                       fsym = "ETH",
+                                       tsym = "USD",
+                                       limit = 2000))
+
+btc_df_01 <- content(btc_data, as = "parse")$Data %>% 
   bind_rows() %>% 
   mutate(date = anytime::anytime(time)) %>% 
   mutate(Date = as.Date(date, format = "Y%-m%-d%"),
          ID = "BTC",
          asset = "Bitcoin")
 
-eth_df_01 <- content(test2, as = "parse")$Data %>% 
+btc_df_02 <- content(btc_data2, as = "parse")$Data %>% 
+  bind_rows() %>% 
+  mutate(date = anytime::anytime(time)) %>% 
+  mutate(Date = as.Date(date, format = "Y%-m%-d%"),
+         ID = "BTC",
+         asset = "Bitcoin")
+
+bch_df <- content(bch_data, as = "parse")$Data %>% 
+  bind_rows() %>% 
+  mutate(date = anytime::anytime(time)) %>% 
+  mutate(Date = as.Date(date, format = "Y%-m%-d%"),
+         ID = "BCH",
+         asset = "Bitcoin Cash") %>% 
+  filter(open != 0)
+
+btg_df <- content(btg_data, as = "parse")$Data %>% 
+  bind_rows() %>% 
+  mutate(date = anytime::anytime(time)) %>% 
+  mutate(Date = as.Date(date, format = "Y%-m%-d%"),
+         ID = "BTG",
+         asset = "Bitcoin Gold") %>% 
+  filter(open != 0)
+
+eth_df <- content(eth_data, as = "parse")$Data %>% 
   bind_rows() %>% 
   mutate(date = anytime::anytime(time)) %>% 
   mutate(Date = as.Date(date, format = "Y%-m%-d%"),
@@ -63,36 +103,59 @@ eth_df_01 <- content(test2, as = "parse")$Data %>%
          asset = "Ethereum") %>% 
   filter(open != 0)
 
-btc_eth_df <- bind_rows(btc_df_01, eth_df_01)
+coin_df <- bind_rows(btc_df_02, eth_df, bch_df, btg_df, bsv_df)
 ```
 
 
 ```{r}
-btc_eth_df %>% 
+coin_df %>% 
   ggplot(aes(x = Date, y = close, col = asset)) +
   geom_line() +
-  ggtitle("Bitcoin & Ethereum", subtitle = "Price (USD) since 04/11/2013") +
+  ggtitle("Bitcoin, Bitcoin Hard Forks & Ethereum", subtitle = "Price (USD) since 04/11/2013") +
   xlab("") +
   ylab("USD") +
   theme_bw() +
   scale_x_date(breaks = scales::date_breaks("6 months"),
                date_labels = "%b %y") +
-  theme(legend.title = element_blank(),
-        legend.position = "bottom",
+  labs(color="Cryptocurrency") +
+  theme(legend.position = "right",
         axis.text.x = element_text(angle=45, vjust = 0.5))
 
-btc_eth_df %>% 
+coin_df %>% 
   ggplot(aes(x = Date, y = close, col = asset)) +
   geom_line() +
-  ggtitle("Bitcoin & Ethereum", subtitle = "Price (USD) since 04/11/2013") +
+  ggtitle("Bitcoin, Bitcoin Hard Forks & Ethereum", subtitle = "Price (USD) since 04/11/2013") +
   xlab("") +
   ylab("USD") +
   scale_y_log10() +
   theme_bw() +
   scale_x_date(breaks = scales::date_breaks("6 months"),
                date_labels = "%b %y") +
-  theme(legend.title = element_blank(),
-        legend.position = "bottom",
-        axis.text.x = element_text(angle=45, vjust = 0.5))
+  labs(color="Cryptocurrency") +
+  theme(legend.position = "right",
+        axis.text.x = element_text(angle=45, vjust = 0.5)) 
+```
+
+
+```{r}
+news_key <- "28a191272894475fb3d77ce0a2ed36ca"
+url <- "https://newsapi.org/v2/everything"
+
+news_btc <- GET(url, query = list(apiKey = news_key,
+                                  q = "bitcoin"))
+
+
+news_btc_list <- content(news_btc, as = "parse")$articles 
+
+df_news <- data.frame(title = NULL, date = NULL, url = NULL)
+for (i in seq_along(news_btc_list)){
+  df_element_i <- data.frame(title = news_btc_list[[i]]$title,
+                             date = news_btc_list[[i]]$publishedAt,
+                             url = news_btc_list[[i]]$url)
+  
+  df_news <- bind_rows(df_news, df_element_i)
+}
+
+df_news
 ```
 
