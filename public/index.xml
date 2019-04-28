@@ -11,6 +11,628 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Working with APIs: Cryptocurrencies</title>
+      <link>/post/working-with-apis/</link>
+      <pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/working-with-apis/</guid>
+      <description>&lt;div id=&#34;TOC&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#introduction&#34;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#api-for-cryptocurrencies-getting-the-data&#34;&gt;API for Cryptocurrencies &amp;amp; Getting the Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#plotting-the-data&#34;&gt;Plotting the Data&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Working with APIs is a really powerful way to get new data you can work with. Especially if you want to make some personal projects by yourself or with friends/colleagues. However, to get full access to the data with an API, you will need to pay for it in most cases. I would like to show you a very simple way to work with APIs.&lt;/p&gt;
+&lt;p&gt;The packages &lt;code&gt;tidyverse&lt;/code&gt;,&lt;code&gt;httr&lt;/code&gt; and &lt;code&gt;jsonlite&lt;/code&gt; are the basic packages I mostly use when I am working with APIs. If you are working with APIs you will notice that you will often need to handle lists. The package &lt;code&gt;rlist&lt;/code&gt; can be useful for handling lists. But in most cases the &lt;code&gt;dplyr&lt;/code&gt; package is sufficient. Since I work with time series here, I also use the &lt;code&gt;anytime&lt;/code&gt; package next to &lt;code&gt;lubridate&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pacman::p_load(tidyverse, httr, jsonlite, rlist, coindeskr, anytime, forecast, tseries, predtoolsTS)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;api-for-cryptocurrencies-getting-the-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;API for Cryptocurrencies &amp;amp; Getting the Data&lt;/h2&gt;
+&lt;p&gt;There are some different APIs you can use to get the price for different cryptocurrencies. However, you often need to pay for the APIs to get a key with access to all historical data. With the &lt;a href=&#34;https://min-api.cryptocompare.com&#34;&gt;API from cryptocompare&lt;/a&gt; you are able to get all historical data in day format. You can find the documentation of the API &lt;a href=&#34;https://min-api.cryptocompare.com/documentation&#34;&gt;here&lt;/a&gt;. First of all, we need an API key for using the API from cryptocompare. Most APIs require a key which you can get for free mostly. Moreover, the urls for APIs are mostly divided into two parts: the base url and the endpoint. If we take the API from cryptocompare, we have the base url &lt;code&gt;https://min-api.cryptocompare.com/data&lt;/code&gt;. Depending on the data you want to get, you need to use a different endpoint for the url. Since wie want to get the historic data for specific currencies in day format, we need to use the endpoint &lt;code&gt;/histoday&lt;/code&gt;. Now, we only need the paramters to get the specific data we want. You can find the parameters in the documentation of the API you’re working with.&lt;/p&gt;
+&lt;p&gt;If we want to get the price for Bitcoin for the past 365 days, we can use the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;url_hist &amp;lt;- &amp;quot;https://min-api.cryptocompare.com/data/histoday&amp;quot;
+
+btc_data &amp;lt;- GET(url_hist, query = list(api_key = key_cc, # providing the api key (as a string)
+                                       fsym = &amp;quot;BTC&amp;quot;, # define the cryptocurrency
+                                       tsym = &amp;quot;USD&amp;quot;,
+                                       limit = 365)) # defining the number of days (depending on the time format you&amp;#39;re working with)
+
+btc_data&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Response [https://min-api.cryptocompare.com/data/histoday?api_key=0f30ada169bfc36bc21d5dd0cfc7ebc8d21846a449565ae8ca3bb382444d66f9&amp;amp;fsym=BTC&amp;amp;tsym=USD&amp;amp;limit=365]
+##   Date: 2019-04-28 15:27
+##   Status: 200
+##   Content-Type: application/json; charset=UTF-8
+##   Size: 46.1 kB&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see, we made a successful call. The status code needs to be 200. Otherwise, something went wrong with your call (e.g. wrong API key). However, the object we’re getting with the &lt;code&gt;GET()&lt;/code&gt; function out of the &lt;code&gt;httr&lt;/code&gt; package, is not a simple data frame, it’s a JASON format. Therefore, we need to transform this object into a data frame. To do this, we will use the &lt;code&gt;content()&lt;/code&gt; function from &lt;code&gt;httr&lt;/code&gt; and transform the list into a data frame.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;btc_df_365 &amp;lt;- content(btc_data, as = &amp;quot;parse&amp;quot;)$Data %&amp;gt;% 
+  bind_rows() %&amp;gt;% 
+  mutate(date = anytime::anytime(time)) %&amp;gt;% 
+  mutate(Date = as.Date(date, format = &amp;quot;Y%-m%-d%&amp;quot;), # transforming the date format into ISO...IMPORTANIMPORTANT
+         ID = &amp;quot;BTC&amp;quot;, # adding the column ID
+         asset = &amp;quot;Bitcoin&amp;quot;) # adding the column asset
+
+head(btc_df_365) %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+time
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+close
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+high
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+low
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+open
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+volumefrom
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+volumeto
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+date
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+Date
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+ID
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+asset
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1524873600
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9351.47
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9435.90
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+8892.52
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+8938.47
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+83347.10
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+774111705
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2018-04-28 02:00:00
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2018-04-28
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BTC
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bitcoin
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1524960000
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9407.04
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9552.67
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9189.07
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9349.94
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+68227.03
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+640931911
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2018-04-29 02:00:00
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2018-04-29
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BTC
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bitcoin
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1525046400
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9248.45
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9459.81
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9133.60
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9407.35
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+61631.36
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+574099218
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2018-04-30 02:00:00
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2018-04-30
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BTC
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bitcoin
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1525132800
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9077.28
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9251.66
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+8851.10
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9248.25
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+74147.80
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+669555437
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2018-05-01 02:00:00
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2018-05-01
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BTC
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bitcoin
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1525219200
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9232.19
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9271.62
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+8993.82
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9077.28
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+57618.44
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+527488395
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2018-05-02 02:00:00
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2018-05-02
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BTC
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bitcoin
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1525305600
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9745.04
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9817.19
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9172.28
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+9232.19
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+90631.98
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+857646889
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2018-05-03 02:00:00
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2018-05-03
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BTC
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bitcoin
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;We got the data we wanted. However, we would need to write a code for each cryptocurrency that we want. To avoid a long code, we can simply write a function that needs a vector with the cryptocurrencies and stores the data in a data frame. Moreover, we can set the parameter &lt;code&gt;allData&lt;/code&gt; to “true” for getting every day.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# writing a little function
+get_crypto_history &amp;lt;- function(asset = &amp;quot;BTC&amp;quot;, url = FALSE, api_key = FALSE){
+  
+  # creating little dummy df which is used to combine all data frames
+  df &amp;lt;- data.frame(time = 1, close = 1.0, high = 1.0, low = 1.0, open = 1.0, volumefrom = 1.0, 
+                   volumeto = 1.0, date = as.POSIXct(&amp;quot;2010-07-17 02:00:00&amp;quot;), Date = as.Date(&amp;quot;2001-01-01&amp;quot;))
+  
+  # for loop to get the data for all given cryptos
+  for(i in seq_along(asset)){
+    df_raw &amp;lt;- GET(url, query = list(api_key = api_key,
+                                    fsym = asset[i],
+                                    tsym = &amp;quot;USD&amp;quot;,
+                                    allData = &amp;quot;true&amp;quot;)) # need to be a string
+    
+      df_raw &amp;lt;- content(df_raw, as = &amp;quot;parse&amp;quot;)$Data %&amp;gt;% 
+      bind_rows() %&amp;gt;% 
+      mutate(date = anytime::anytime(time)) %&amp;gt;% 
+      mutate(Date = as.Date(date, format = &amp;quot;Y%-m%-d%&amp;quot;),
+             ID = asset[i])
+      
+    df &amp;lt;- bind_rows(df, df_raw)
+  }
+  df &amp;lt;- df[-1,]
+  df
+}
+
+# using the written function for getting the data from 4 coins
+coin_df &amp;lt;- get_crypto_history(asset = c(&amp;quot;BTC&amp;quot;, &amp;quot;BCH&amp;quot;, &amp;quot;BTG&amp;quot;, &amp;quot;ETH&amp;quot;), 
+                              url = url_hist, 
+                              api_key = key_cc) %&amp;gt;% 
+  mutate(asset = case_when(
+    ID == &amp;quot;BTC&amp;quot; ~ &amp;quot;Bitcoin&amp;quot;,
+    ID == &amp;quot;BCH&amp;quot; ~ &amp;quot;Bitcoin Cash&amp;quot;,
+    ID == &amp;quot;BTG&amp;quot; ~ &amp;quot;Bitcoin Gold&amp;quot;,
+    ID == &amp;quot;ETH&amp;quot; ~ &amp;quot;Ethereum&amp;quot;))
+
+head(coin_df) %&amp;gt;% 
+  kableExtra::kable()&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+time
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+close
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+high
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+low
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+open
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+volumefrom
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+volumeto
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+date
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+Date
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+ID
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+asset
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1279324800
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.04951
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.04951
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.04951
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.04951
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+20.00
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.9902
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2010-07-17
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2010-07-17
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BTC
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bitcoin
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1279411200
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.08584
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.08585
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.05941
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.04951
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+75.01
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+5.0900
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2010-07-18
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2010-07-18
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BTC
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bitcoin
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1279497600
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.08080
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.09307
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.07723
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.08584
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+574.00
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+49.6600
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2010-07-19
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2010-07-19
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BTC
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bitcoin
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1279584000
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.07474
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.08181
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.07426
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.08080
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+262.00
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+20.5900
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2010-07-20
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2010-07-20
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BTC
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bitcoin
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1279670400
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.07921
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.07921
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.06634
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.07474
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+575.00
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+42.2600
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2010-07-21
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2010-07-21
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BTC
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bitcoin
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+1279756800
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.05050
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.08181
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.05050
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.07921
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+2160.00
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+129.7800
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2010-07-22
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+2010-07-22
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BTC
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+Bitcoin
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;plotting-the-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Plotting the Data&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;coin_df %&amp;gt;% 
+  ggplot(aes(x = Date, y = close, col = asset)) +
+  geom_line() +
+  ggtitle(&amp;quot;Bitcoin, Bitcoin Hard Forks &amp;amp; Ethereum&amp;quot;, subtitle = &amp;quot;Price (USD) since 17/07/2010&amp;quot;) +
+  xlab(&amp;quot;&amp;quot;) +
+  ylab(&amp;quot;&amp;quot;) +
+  theme_bw() +
+  scale_x_date(breaks = scales::date_breaks(&amp;quot;6 months&amp;quot;),
+               date_labels = &amp;quot;%b %y&amp;quot;) +
+  labs(color=&amp;quot;Cryptocurrency&amp;quot;) +
+  theme(legend.position = &amp;quot;right&amp;quot;,
+        axis.text.x = element_text(angle=45, vjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-21-working-with-apis_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;coin_df %&amp;gt;% 
+  ggplot(aes(x = Date, y = close, col = asset)) +
+  geom_line() +
+  ggtitle(&amp;quot;Bitcoin, Bitcoin Hard Forks &amp;amp; Ethereum&amp;quot;, subtitle = &amp;quot;Price (log10) since 17/07/2010&amp;quot;) +
+  xlab(&amp;quot;&amp;quot;) +
+  ylab(&amp;quot;&amp;quot;) +
+  scale_y_log10() +
+  theme_bw() +
+  scale_x_date(breaks = scales::date_breaks(&amp;quot;6 months&amp;quot;),
+               date_labels = &amp;quot;%b %y&amp;quot;) +
+  labs(color=&amp;quot;Cryptocurrency&amp;quot;) +
+  theme(legend.position = &amp;quot;right&amp;quot;,
+        axis.text.x = element_text(angle=45, vjust = 0.5)) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-21-working-with-apis_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>German Bundestag - Minor Interpellations </title>
       <link>/post/german-bundestag-minor-interpellations/</link>
       <pubDate>Mon, 04 Mar 2019 00:00:00 +0000</pubDate>

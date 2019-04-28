@@ -1,5 +1,5 @@
 ---
-title: Working with APIs
+title: "Working with APIs: Cryptocurrencies"
 author: Marlon Schumacher
 date: '2019-04-21'
 slug: working-with-apis
@@ -13,120 +13,126 @@ tags:
 image:
   caption: ''
   focal_point: ''
+bibliography: bibliography_001.bib 
+csl: mcstatistics.csl
+output: 
+  blogdown::html_page:
+    toc: true
 ---
 
+## Introduction 
+
+Working with APIs is a really powerful way to get new data you can work with. Especially if you want to make some personal projects by yourself or with friends/colleagues. However, to get full access to the data with an API, you will need to pay for it in most cases. I would like to show you a very simple way to work with APIs. 
+
+The packages `tidyverse`,` httr` and `jsonlite` are the basic packages I mostly use when I am working with APIs. If you are working with APIs you will notice that you will often need to handle lists. The package `rlist` can be useful for handling lists.  But in most cases the `dplyr` package is sufficient. Since I work with time series here, I also use the `anytime` package next to `lubridate`.
+
 ```{r}
-pacman::p_load(tidyverse, httr, jsonlite, coindeskr, anytime, rlist, forecast, tseries)
+pacman::p_load(tidyverse, httr, jsonlite, rlist, coindeskr, anytime, forecast, tseries, predtoolsTS)
 ```
 
 
+## API for Cryptocurrencies & Getting the Data
 
-```{r}
-coincap_hist_df <- GET("https://api.coincap.io/v2/assets/bitcoin/history", query = list(id = "BTC",
-                                                                                        interval = "d1"))
+There are some different APIs you can use to get the price for different cryptocurrencies. However, you often need to pay for the APIs to get a key with access to all historical data. With the [API from cryptocompare](https://min-api.cryptocompare.com) you are able to get all historical data in day format. You can find the documentation of the API [here](https://min-api.cryptocompare.com/documentation). First of all, we need an API key for using the API from cryptocompare. Most APIs require a key which you can get for free mostly. Moreover, the urls for APIs are mostly divided into two parts: the base url and the endpoint. If we take the API from cryptocompare, we have the base url `https://min-api.cryptocompare.com/data`. Depending on the data you want to get, you need to use a different endpoint for the url. Since wie want to get the historic data for specific currencies in day format, we need to use the endpoint `/histoday`. Now, we only need the paramters to get the specific data we want. You can find the parameters in the documentation of the API you're working with.
 
-coincap_hist_df %>% 
-  content(as = "parse") %>%
-  .$data %>% 
-  bind_rows() %>% 
-  mutate(date = substr(date, start = 1, stop = 10) %>% as.Date(),
-         price_USD = as.numeric(priceUsd) %>% round(.,2)) %>% 
-  select(-priceUsd, -time)
-```
-
-https://min-api.cryptocompare.com
-
-```{r}
+If we want to get the price for Bitcoin for the past 365 days, we can use the following code.
+```{r include=FALSE}
 key_cc <- "0f30ada169bfc36bc21d5dd0cfc7ebc8d21846a449565ae8ca3bb382444d66f9"
+```
+
+```{r}
 url_hist <- "https://min-api.cryptocompare.com/data/histoday"
 
-btc_data <- GET(url_hist, query = list(api_key = key_cc,
-                                       fsym = "BTC",
+btc_data <- GET(url_hist, query = list(api_key = key_cc, # providing the api key (as a string)
+                                       fsym = "BTC", # define the cryptocurrency
                                        tsym = "USD",
-                                       limit = 2000))
+                                       limit = 365)) # defining the number of days (depending on the time format you're working with)
 
-btc_data2 <- GET(url_hist, query = list(api_key = key_cc,
-                                       fsym = "BTC",
-                                       tsym = "USD",
-                                       allData = "true"))
-
-bch_data <- GET(url_hist, query = list(api_key = key_cc,
-                                       fsym = "BCH",
-                                       tsym = "USD",
-                                       limit = 2000))
-
-btg_data <- GET(url_hist, query = list(api_key = key_cc,
-                                       fsym = "BTG",
-                                       tsym = "USD",
-                                       limit = 2000))
-
-eth_data <- GET(url_hist, query = list(api_key = key_cc,
-                                       fsym = "ETH",
-                                       tsym = "USD",
-                                       limit = 2000))
-
-btc_df_01 <- content(btc_data, as = "parse")$Data %>% 
-  bind_rows() %>% 
-  mutate(date = anytime::anytime(time)) %>% 
-  mutate(Date = as.Date(date, format = "Y%-m%-d%"),
-         ID = "BTC",
-         asset = "Bitcoin")
-
-btc_df_02 <- content(btc_data2, as = "parse")$Data %>% 
-  bind_rows() %>% 
-  mutate(date = anytime::anytime(time)) %>% 
-  mutate(Date = as.Date(date, format = "Y%-m%-d%"),
-         ID = "BTC",
-         asset = "Bitcoin")
-
-bch_df <- content(bch_data, as = "parse")$Data %>% 
-  bind_rows() %>% 
-  mutate(date = anytime::anytime(time)) %>% 
-  mutate(Date = as.Date(date, format = "Y%-m%-d%"),
-         ID = "BCH",
-         asset = "Bitcoin Cash") %>% 
-  filter(open != 0)
-
-btg_df <- content(btg_data, as = "parse")$Data %>% 
-  bind_rows() %>% 
-  mutate(date = anytime::anytime(time)) %>% 
-  mutate(Date = as.Date(date, format = "Y%-m%-d%"),
-         ID = "BTG",
-         asset = "Bitcoin Gold") %>% 
-  filter(open != 0)
-
-eth_df <- content(eth_data, as = "parse")$Data %>% 
-  bind_rows() %>% 
-  mutate(date = anytime::anytime(time)) %>% 
-  mutate(Date = as.Date(date, format = "Y%-m%-d%"),
-         ID = "ETH",
-         asset = "Ethereum") %>% 
-  filter(open != 0)
-
-coin_df <- bind_rows(btc_df_02, eth_df, bch_df, btg_df, bsv_df)
+btc_data
 ```
 
+As you can see, we made a successful call. The status code needs to be 200. Otherwise, something went wrong with your call (e.g. wrong API key). However, the object we're getting with the `GET()` function out of the `httr` package, is not a simple data frame, it's a JASON format. Therefore, we need to transform this object into a data frame. To do this, we will use the `content()` function from `httr` and transform the list into a data frame. 
+
+```{r}
+btc_df_365 <- content(btc_data, as = "parse")$Data %>% 
+  bind_rows() %>% 
+  mutate(date = anytime::anytime(time)) %>% 
+  mutate(Date = as.Date(date, format = "Y%-m%-d%"), # transforming the date format into ISO...IMPORTANIMPORTANT
+         ID = "BTC", # adding the column ID
+         asset = "Bitcoin") # adding the column asset
+
+head(btc_df_365) %>% 
+  kableExtra::kable()
+```
+
+We got the data we wanted. However, we would need to write a code for each cryptocurrency that we want. To avoid a long code, we can simply write a function that needs a vector with the cryptocurrencies and stores the data in a data frame. Moreover, we can set the parameter `allData` to "true" for getting every day.
+
+```{r}
+# writing a little function
+get_crypto_history <- function(asset = "BTC", url = FALSE, api_key = FALSE){
+  
+  # creating little dummy df which is used to combine all data frames
+  df <- data.frame(time = 1, close = 1.0, high = 1.0, low = 1.0, open = 1.0, volumefrom = 1.0, 
+                   volumeto = 1.0, date = as.POSIXct("2010-07-17 02:00:00"), Date = as.Date("2001-01-01"))
+  
+  # for loop to get the data for all given cryptos
+  for(i in seq_along(asset)){
+    df_raw <- GET(url, query = list(api_key = api_key,
+                                    fsym = asset[i],
+                                    tsym = "USD",
+                                    allData = "true")) # need to be a string
+    
+      df_raw <- content(df_raw, as = "parse")$Data %>% 
+      bind_rows() %>% 
+      mutate(date = anytime::anytime(time)) %>% 
+      mutate(Date = as.Date(date, format = "Y%-m%-d%"),
+             ID = asset[i])
+      
+    df <- bind_rows(df, df_raw)
+  }
+  df <- df[-1,]
+  df
+}
+
+# using the written function for getting the data from 4 coins
+coin_df <- get_crypto_history(asset = c("BTC", "BCH", "BTG", "ETH"), 
+                              url = url_hist, 
+                              api_key = key_cc) %>% 
+  mutate(asset = case_when(
+    ID == "BTC" ~ "Bitcoin",
+    ID == "BCH" ~ "Bitcoin Cash",
+    ID == "BTG" ~ "Bitcoin Gold",
+    ID == "ETH" ~ "Ethereum"))
+
+head(coin_df) %>% 
+  kableExtra::kable()
+```
+
+## Plotting the Data
 
 ```{r}
 coin_df %>% 
   ggplot(aes(x = Date, y = close, col = asset)) +
   geom_line() +
-  ggtitle("Bitcoin, Bitcoin Hard Forks & Ethereum", subtitle = "Price (USD) since 04/11/2013") +
+  ggtitle("Bitcoin, Bitcoin Hard Forks & Ethereum", subtitle = "Price (USD) since 17/07/2010") +
   xlab("") +
-  ylab("USD") +
+  ylab("") +
   theme_bw() +
   scale_x_date(breaks = scales::date_breaks("6 months"),
                date_labels = "%b %y") +
   labs(color="Cryptocurrency") +
   theme(legend.position = "right",
         axis.text.x = element_text(angle=45, vjust = 0.5))
+```
 
+
+```{r}
 coin_df %>% 
   ggplot(aes(x = Date, y = close, col = asset)) +
   geom_line() +
-  ggtitle("Bitcoin, Bitcoin Hard Forks & Ethereum", subtitle = "Price (USD) since 04/11/2013") +
+  ggtitle("Bitcoin, Bitcoin Hard Forks & Ethereum", subtitle = "Price (log10) since 17/07/2010") +
   xlab("") +
-  ylab("USD") +
+  ylab("") +
   scale_y_log10() +
   theme_bw() +
   scale_x_date(breaks = scales::date_breaks("6 months"),
@@ -134,28 +140,5 @@ coin_df %>%
   labs(color="Cryptocurrency") +
   theme(legend.position = "right",
         axis.text.x = element_text(angle=45, vjust = 0.5)) 
-```
-
-
-```{r}
-news_key <- "28a191272894475fb3d77ce0a2ed36ca"
-url <- "https://newsapi.org/v2/everything"
-
-news_btc <- GET(url, query = list(apiKey = news_key,
-                                  q = "bitcoin"))
-
-
-news_btc_list <- content(news_btc, as = "parse")$articles 
-
-df_news <- data.frame(title = NULL, date = NULL, url = NULL)
-for (i in seq_along(news_btc_list)){
-  df_element_i <- data.frame(title = news_btc_list[[i]]$title,
-                             date = news_btc_list[[i]]$publishedAt,
-                             url = news_btc_list[[i]]$url)
-  
-  df_news <- bind_rows(df_news, df_element_i)
-}
-
-df_news
 ```
 
